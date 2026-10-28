@@ -118,7 +118,7 @@ if (($active_module ?? '') === 'dashboard') {
               <?php endforeach; ?>
               <li><hr class="dropdown-divider"></li>
               <li>
-                <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="<?php echo base_url('login.php'); ?>">
+                <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="<?php echo base_url('login.php?logout=1'); ?>">
                   <i class="bi bi-box-arrow-right"></i> Sign Out
                 </a>
               </li>

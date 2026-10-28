@@ -14,6 +14,41 @@ require_once __DIR__ . '/../includes/sidebar.php';
 require_once __DIR__ . '/../includes/topbar.php';
 ?>
 
+<!-- Super Admin Banner -->
+<div class="erp-card mb-4 bg-gradient text-dark border-primary border-opacity-25 shadow-xs" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);">
+  <div class="erp-card-body p-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div class="d-flex align-items-center gap-3">
+        <div class="avatar-lg rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold font-size-24" style="width: 60px; height: 60px;">
+          SA
+        </div>
+        <div>
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <h4 class="fw-bold text-dark mb-0">Super Admin Command Center</h4>
+            <span class="badge bg-primary text-white font-size-12 px-2.5 py-1 rounded-pill">Institutional Root</span>
+            <span class="badge bg-success-subtle text-success border border-success border-opacity-25 font-size-11">28 Modules Online</span>
+          </div>
+          <div class="font-size-13 text-muted">
+            <span>Admin ID: <strong class="text-dark font-mono">ROOT-MASTER-001</strong></span>
+            <span class="mx-2">•</span>
+            <span>Academic Session: <strong class="text-dark">2024–2025 Active</strong></span>
+            <span class="mx-2">•</span>
+            <span>Platform Health: <strong class="text-success"><i class="bi bi-shield-check"></i> 100% Operational</strong></span>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <a href="<?php echo base_url('modules/administration/school-settings.php'); ?>" class="btn btn-primary btn-sm fw-bold px-3 py-2 rounded-pill">
+          <i class="bi bi-gear-fill me-1"></i> System Settings
+        </a>
+        <a href="<?php echo base_url('modules/compliance/audit-trail.php'); ?>" class="btn btn-outline-primary btn-sm fw-bold px-3 py-2 rounded-pill">
+          <i class="bi bi-journal-text me-1"></i> Audit Trail
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">

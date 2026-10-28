@@ -5,6 +5,154 @@
  */
 $depth = 0;
 require_once __DIR__ . '/includes/config.php';
+
+// Handle Forked Login Submission (POST or quick GET)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['quick_login'])) {
+    $email = trim($_POST['email'] ?? $_GET['email'] ?? '');
+    $role_id = trim($_POST['role_id'] ?? $_GET['role'] ?? '');
+    
+    $selected_role = null;
+    if ($email !== '') {
+        foreach ($demo_roles as $r) {
+            if (strtolower($r['email']) === strtolower($email)) {
+                $selected_role = $r;
+                break;
+            }
+        }
+    }
+    if (!$selected_role && $role_id !== '') {
+        foreach ($demo_roles as $r) {
+            if ($r['id'] === $role_id) {
+                $selected_role = $r;
+                break;
+            }
+        }
+    }
+    if (!$selected_role) {
+        $selected_role = $demo_roles[0]; // fallback
+    }
+    
+    $_SESSION['edusys_user'] = $selected_role;
+    $target_url = base_url($selected_role['path']);
+    header("Location: " . $target_url);
+    exit;
+}
+
+$is_logged_out = isset($_GET['logout']);
+
+// Role metadata for dynamic fork flow previews
+$role_previews = [
+    'super_admin' => [
+        'name' => 'Super Admin',
+        'title' => 'Master System Administrator',
+        'badge' => 'FULL ROOT ACCESS',
+        'badge_class' => 'bg-primary-subtle text-primary border-primary',
+        'destination' => 'dashboards/admin.php',
+        'stat1_label' => 'Total Students', 'stat1_val' => '1,878',
+        'stat2_label' => 'Total Collection', 'stat2_val' => '₹4.21 Cr',
+        'stat3_label' => 'Staff On Duty', 'stat3_val' => '118 / 122',
+        'focus' => 'Global configurations, academic sessions, RBAC permissions, and system audit trails.'
+    ],
+    'principal' => [
+        'name' => 'Dr. Sunita Rao',
+        'title' => 'Principal & Academic Head',
+        'badge' => 'ACADEMIC EXECUTIVE',
+        'badge_class' => 'bg-success-subtle text-success border-success',
+        'destination' => 'dashboards/principal.php',
+        'stat1_label' => 'School Attendance', 'stat1_val' => '95.4%',
+        'stat2_label' => 'Staff On Duty', 'stat2_val' => '118 / 122',
+        'stat3_label' => 'CBSE LOC Status', 'stat3_val' => '100% OK',
+        'focus' => 'Curriculum oversight, teacher observations, CBSE board compliance, and institutional analytics.'
+    ],
+    'teacher' => [
+        'name' => 'Vikram Rathore',
+        'title' => 'PGT Physics & Class Teacher 10-A',
+        'badge' => 'FACULTY WORKPLACE',
+        'badge_class' => 'bg-warning-subtle text-warning border-warning',
+        'destination' => 'dashboards/teacher.php',
+        'stat1_label' => 'My Students', 'stat1_val' => '164 Pupils',
+        'stat2_label' => 'Periods Today', 'stat2_val' => '5 Lectures',
+        'stat3_label' => '10-A Attendance', 'stat3_val' => '41 / 42',
+        'focus' => 'Daily period timetable, class attendance, digital homework, and CBSE CCE marks entry.'
+    ],
+    'accountant' => [
+        'name' => 'M. K. Sharma',
+        'title' => 'Chief Institutional Accountant',
+        'badge' => 'FINANCE & POS',
+        'badge_class' => 'bg-info-subtle text-info border-info',
+        'destination' => 'dashboards/accountant.php',
+        'stat1_label' => 'Counter Today', 'stat1_val' => '₹3,48,500',
+        'stat2_label' => 'Receipts Issued', 'stat2_val' => '28 Receipts',
+        'stat3_label' => 'Overdue Dues', 'stat3_val' => '142 Pupils',
+        'focus' => 'Counter POS, multi-mode receipt printing (UPI/Cash/Cheque), bank reconciliation, and defaulters.'
+    ],
+    'student' => [
+        'name' => 'Aarav Sharma',
+        'title' => 'Student • Class 10-A (Roll #1014)',
+        'badge' => 'STUDENT PORTAL',
+        'badge_class' => 'bg-success-subtle text-success border-success',
+        'destination' => 'dashboards/student.php',
+        'stat1_label' => 'My Attendance', 'stat1_val' => '95.9%',
+        'stat2_label' => 'CBSE CGPA', 'stat2_val' => '9.8 (A1)',
+        'stat3_label' => 'Fee Balance', 'stat3_val' => '₹0 (Paid)',
+        'focus' => 'Personal timetable, assignments, online CBT tests, report card, and live bus GPS.'
+    ],
+    'parent' => [
+        'name' => 'Rajesh Sharma',
+        'title' => 'Parent of Aarav Sharma (X-A)',
+        'badge' => 'PARENT GUARDIAN',
+        'badge_class' => 'bg-danger-subtle text-danger border-danger',
+        'destination' => 'dashboards/parent.php',
+        'stat1_label' => 'Child In Campus', 'stat1_val' => '07:55 AM',
+        'stat2_label' => 'Bus #12 ETA', 'stat2_val' => '8 Mins',
+        'stat3_label' => 'Latest Grade', 'stat3_val' => '93.8% A1',
+        'focus' => 'Live school bus GPS, instant UPI fee payment, teacher remarks, and daily attendance logs.'
+    ],
+    'transport_manager' => [
+        'name' => 'H. Singh',
+        'title' => 'Transport Fleet Supervisor',
+        'badge' => 'LOGISTICS & FLEET',
+        'badge_class' => 'bg-info-subtle text-info border-info',
+        'destination' => 'dashboards/transport-manager.php',
+        'stat1_label' => 'Active Buses', 'stat1_val' => '14 / 14 Live',
+        'stat2_label' => 'Pupils On Route', 'stat2_val' => '680 Pupils',
+        'stat3_label' => 'Speed Alerts', 'stat3_val' => '0 Violations',
+        'focus' => 'Live bus GPS tracking, route & stop allocation, driver compliance, and geofence alerts.'
+    ],
+    'admission_officer' => [
+        'name' => 'Rashmi Sen',
+        'title' => 'Admissions Head',
+        'badge' => 'ADMISSIONS CRM',
+        'badge_class' => 'bg-rose-subtle text-danger border-danger',
+        'destination' => 'dashboards/admission-officer.php',
+        'stat1_label' => 'Total Inquiries', 'stat1_val' => '245',
+        'stat2_label' => 'Applications', 'stat2_val' => '180',
+        'stat3_label' => 'Enrolled', 'stat3_val' => '45 / 120',
+        'focus' => 'Lead pipeline, applicant document verification, merit list generation, and seat allocation.'
+    ],
+    'librarian' => [
+        'name' => 'S. Nair',
+        'title' => 'Chief Librarian',
+        'badge' => 'LIBRARY RESOURCE',
+        'badge_class' => 'bg-purple-subtle text-primary border-primary',
+        'destination' => 'dashboards/librarian.php',
+        'stat1_label' => 'Total Catalog', 'stat1_val' => '18,450',
+        'stat2_label' => 'Issued Today', 'stat2_val' => '84 Books',
+        'stat3_label' => 'Overdue', 'stat3_val' => '12 Books',
+        'focus' => 'Barcode scanning, book issue/returns, OPAC catalog, and overdue fine collection desk.'
+    ],
+    'hr_manager' => [
+        'name' => 'Anjali Saxena',
+        'title' => 'HR & Payroll Lead',
+        'badge' => 'STAFF OPERATIONS',
+        'badge_class' => 'bg-primary-subtle text-primary border-primary',
+        'destination' => 'dashboards/hr-manager.php',
+        'stat1_label' => 'Staff On Duty', 'stat1_val' => '118 / 122',
+        'stat2_label' => 'Leaves Pending', 'stat2_val' => '4 Requests',
+        'stat3_label' => 'Payroll Month', 'stat3_val' => 'Nov 2024',
+        'focus' => 'Biometric punch logs, leave approval workflows, service books, and monthly salary slips.'
+    ]
+];
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -16,7 +164,7 @@ require_once __DIR__ . '/includes/config.php';
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Bootstrap 5.3 & Icons CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -28,12 +176,16 @@ require_once __DIR__ . '/includes/config.php';
 
   <style>
     :root {
-      --brand-navy: #0b1120;
-      --brand-navy-light: #131c31;
+      --brand-navy: #060913;
+      --brand-navy-card: #0b1120;
+      --brand-navy-light: #0f172a;
       --brand-blue: #2563eb;
       --brand-blue-hover: #1d4ed8;
       --brand-indigo: #4f46e5;
       --brand-accent: #38bdf8;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
     
     body {
@@ -41,11 +193,12 @@ require_once __DIR__ . '/includes/config.php';
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: var(--font-body);
       color: #f1f5f9;
       margin: 0;
       padding: 0;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* Outer Wrapper */
@@ -53,10 +206,11 @@ require_once __DIR__ . '/includes/config.php';
       min-height: 100vh;
       display: flex;
       position: relative;
-      background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.18) 0%, transparent 45%),
-                  radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.16) 0%, transparent 40%),
-                  radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.08) 0%, transparent 55%),
-                  #0b1120;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.22) 0%, transparent 45%),
+        radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.18) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.08) 0%, transparent 55%),
+        #060913;
     }
 
     /* Left Brand Showcase Panel (Desktop) */
@@ -68,9 +222,9 @@ require_once __DIR__ . '/includes/config.php';
       justify-content: space-between;
       position: relative;
       border-right: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(11, 17, 32, 0.6);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(11, 17, 32, 0.65);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
     }
 
     /* Right Auth Form Panel */
@@ -80,40 +234,41 @@ require_once __DIR__ . '/includes/config.php';
       display: flex;
       flex-direction: column;
       justify-content: center;
-      background: rgba(15, 23, 42, 0.4);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       overflow-y: auto;
     }
 
     .auth-card-inner {
-      max-width: 560px;
+      max-width: 580px;
       width: 100%;
       margin: 0 auto;
     }
 
     /* Brand Header Box */
     .brand-crest-box {
-      width: 52px;
-      height: 52px;
+      width: 50px;
+      height: 50px;
       background: linear-gradient(135deg, #38bdf8 0%, #2563eb 50%, #1e40af 100%);
       border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.85rem;
+      font-size: 1.75rem;
       color: white;
       box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
     }
 
-    /* Glass KPI Card on Left */
+    /* Glass KPI Card on Left - Shows Dynamic Fork Data */
     .glass-status-card {
       background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
       padding: 1.75rem;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
       position: relative;
+      transition: all 0.3s ease;
     }
 
     .live-status-pill {
@@ -149,8 +304,8 @@ require_once __DIR__ . '/includes/config.php';
     .role-fast-panel {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.25rem;
+      border-radius: 18px;
+      padding: 1.35rem;
       margin-bottom: 1.75rem;
     }
 
@@ -172,7 +327,7 @@ require_once __DIR__ . '/includes/config.php';
       color: #94a3b8;
       font-size: 0.8rem;
       font-weight: 600;
-      padding: 0.45rem 0.95rem;
+      padding: 0.4rem 0.95rem;
       border-radius: 10px;
       white-space: nowrap;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -193,44 +348,54 @@ require_once __DIR__ . '/includes/config.php';
     /* Role Cards Grid */
     .roles-compact-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-      gap: 0.6rem;
+      grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+      gap: 0.65rem;
     }
 
     .role-btn-card {
       background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
       padding: 0.75rem 0.85rem;
       display: flex;
       align-items: center;
-      gap: 0.7rem;
+      gap: 0.75rem;
       cursor: pointer;
       text-align: left;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
       color: inherit;
       text-decoration: none;
+      position: relative;
     }
     .role-btn-card:hover {
       background: rgba(255, 255, 255, 0.08);
       border-color: rgba(96, 165, 250, 0.4);
       transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
     }
     .role-btn-card.active {
-      background: rgba(37, 99, 235, 0.18);
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 1px #3b82f6, 0 6px 18px rgba(37, 99, 235, 0.35);
+      background: rgba(37, 99, 235, 0.2);
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px #38bdf8, 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+    .role-btn-card .fork-indicator {
+      display: none;
+      font-size: 0.75rem;
+      color: #38bdf8;
+      margin-left: auto;
+    }
+    .role-btn-card.active .fork-indicator {
+      display: block;
     }
 
     .role-icon-box {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       flex-shrink: 0;
     }
     .icon-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
@@ -241,7 +406,7 @@ require_once __DIR__ . '/includes/config.php';
     .icon-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
 
     .role-card-info h6 {
-      font-size: 0.8125rem;
+      font-size: 0.825rem;
       font-weight: 700;
       color: #ffffff;
       margin: 0;
@@ -275,7 +440,7 @@ require_once __DIR__ . '/includes/config.php';
     .custom-input {
       width: 100%;
       height: 50px;
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(15, 23, 42, 0.75);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 12px;
       padding: 0 46px 0 46px;
@@ -352,8 +517,18 @@ require_once __DIR__ . '/includes/config.php';
       box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
       color: #ffffff;
     }
-    .btn-login-cta:active {
-      transform: translateY(0);
+
+    /* Fork Destination Banner */
+    .fork-destination-banner {
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
     }
 
     /* Mobile Brand Header Bar */
@@ -406,49 +581,55 @@ require_once __DIR__ . '/includes/config.php';
             <i class="bi bi-patch-check-fill me-1 text-info"></i> CBSE Affiliated • Senior Secondary (2130892)
           </span>
         </div>
-        <h1 class="display-6 fw-bold mb-3 text-white" style="letter-spacing: -0.03em; line-height: 1.2;">
-          The Central Academic Command Center
+        <h1 class="display-6 fw-bold mb-2 text-white" style="letter-spacing: -0.03em; line-height: 1.2;">
+          Role-Tailored Command Center
         </h1>
-        <p class="text-secondary font-size-15 mb-0" style="max-width: 480px; line-height: 1.6; color: #94a3b8 !important;">
-          Unified institutional platform orchestrating admissions, automated multi-mode fee counter POS, real-time bus fleet GPS tracking, and official CBSE CCE progress reports.
+        <p class="text-secondary font-size-14 mb-0" style="max-width: 480px; line-height: 1.6; color: #94a3b8 !important;">
+          The login flow dynamically forks to your specific stakeholder portal, loading your isolated workspace, tailored KPIs, and permissions.
         </p>
       </div>
 
-      <!-- Live Floating System KPI Card -->
-      <div class="glass-status-card my-4" style="position: relative; z-index: 2;">
+      <!-- DYNAMIC FORK PREVIEW CARD ON LEFT -->
+      <div class="glass-status-card my-4" id="forkLivePreviewCard" style="position: relative; z-index: 2;">
         <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-secondary border-opacity-25">
           <div class="d-flex align-items-center gap-2">
             <span class="pulse-green"></span>
-            <span class="text-white fw-bold font-size-13"><?php echo htmlspecialchars($school_config['name']); ?></span>
+            <span class="text-white fw-bold font-size-13" id="prevRoleName">Super Admin</span>
           </div>
-          <span class="live-status-pill">Active Session 2024–25</span>
+          <span class="badge bg-primary-subtle text-primary border border-primary border-opacity-25 font-size-11" id="prevRoleBadge">
+            FULL ROOT ACCESS
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <small class="text-secondary font-size-11 text-uppercase fw-bold d-block mb-1" style="color: #94a3b8 !important;">Target Stakeholder Route</small>
+          <span class="font-monospace text-info font-size-13 fw-bold" id="prevRoleRoute">dashboards/admin.php</span>
         </div>
 
         <div class="row g-2 text-center mb-3">
           <div class="col-4">
             <div class="p-2 rounded-3" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255,255,255,0.06);">
-              <h5 class="fw-bold text-white mb-0">1,878</h5>
-              <small class="text-secondary font-size-11" style="color: #94a3b8 !important;">Pupils Enrolled</small>
+              <h5 class="fw-bold text-white mb-0" id="prevStat1Val">1,878</h5>
+              <small class="text-secondary font-size-11" id="prevStat1Label" style="color: #94a3b8 !important;">Total Students</small>
             </div>
           </div>
           <div class="col-4">
             <div class="p-2 rounded-3" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255,255,255,0.06);">
-              <h5 class="fw-bold text-success mb-0">₹4.21 Cr</h5>
-              <small class="text-secondary font-size-11" style="color: #94a3b8 !important;">Fee Collected</small>
+              <h5 class="fw-bold text-success mb-0" id="prevStat2Val">₹4.21 Cr</h5>
+              <small class="text-secondary font-size-11" id="prevStat2Label" style="color: #94a3b8 !important;">Fee Collected</small>
             </div>
           </div>
           <div class="col-4">
             <div class="p-2 rounded-3" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255,255,255,0.06);">
-              <h5 class="fw-bold text-warning mb-0">95.4%</h5>
-              <small class="text-secondary font-size-11" style="color: #94a3b8 !important;">Today's Attendance</small>
+              <h5 class="fw-bold text-warning mb-0" id="prevStat3Val">118 / 122</h5>
+              <small class="text-secondary font-size-11" id="prevStat3Label" style="color: #94a3b8 !important;">Staff On Duty</small>
             </div>
           </div>
         </div>
 
-        <div class="d-flex align-items-center justify-content-between font-size-12 text-secondary" style="color: #94a3b8 !important;">
-          <span><i class="bi bi-shield-check text-info me-1"></i> NEP 2020 Compliant</span>
-          <span><i class="bi bi-lock-fill text-success me-1"></i> 256-Bit SSL Encrypted</span>
-        </div>
+        <p class="font-size-12 text-secondary mb-0" id="prevRoleFocus" style="color: #94a3b8 !important; line-height: 1.5;">
+          Global configurations, academic sessions, RBAC permissions, and system audit trails.
+        </p>
       </div>
 
       <!-- Bottom Panel Footer -->
@@ -463,6 +644,17 @@ require_once __DIR__ . '/includes/config.php';
     <!-- RIGHT AUTHENTICATION PANEL -->
     <div class="auth-form-side">
       <div class="auth-card-inner">
+
+        <!-- Logout Notice Banner if applicable -->
+        <?php if ($is_logged_out): ?>
+          <div class="alert alert-info bg-primary bg-opacity-10 border-primary border-opacity-25 text-white d-flex align-items-center gap-2 p-3 rounded-3 mb-4">
+            <i class="bi bi-info-circle-fill text-info font-size-18"></i>
+            <div>
+              <strong class="d-block font-size-13">Signed Out Successfully</strong>
+              <small class="font-size-12 text-white-50">Your session was closed. Choose any demo profile below to re-enter.</small>
+            </div>
+          </div>
+        <?php endif; ?>
 
         <!-- Mobile Header (Visible only on tablets/phones) -->
         <div class="mobile-brand-bar">
@@ -480,7 +672,7 @@ require_once __DIR__ . '/includes/config.php';
           <div>
             <h2 class="fw-bold text-white mb-1" style="letter-spacing: -0.02em;">Institutional Sign In</h2>
             <p class="font-size-14 text-secondary mb-0" style="color: #94a3b8 !important;">
-              Select a stakeholder profile or enter your credentials
+              Select a stakeholder persona to fork directly into their portal
             </p>
           </div>
           <a href="<?php echo base_url('index.php'); ?>" class="btn btn-sm btn-outline-secondary px-3 py-1 text-white border-secondary rounded-pill font-size-12 fw-semibold">
@@ -493,10 +685,10 @@ require_once __DIR__ . '/includes/config.php';
           <div class="d-flex justify-content-between align-items-center mb-2">
             <div class="d-flex align-items-center gap-2">
               <i class="bi bi-lightning-charge-fill text-warning font-size-14"></i>
-              <span class="font-size-12 fw-bold text-uppercase text-white letter-spacing-1">1-Click Demo Profiles (15 Roles)</span>
+              <span class="font-size-12 fw-bold text-uppercase text-white letter-spacing-1">1-Click Stakeholder Personas</span>
             </div>
             <span class="badge bg-success-subtle text-success border border-success border-opacity-25 font-size-11">
-              Auto-Fills Form
+              Direct Fork Active
             </span>
           </div>
 
@@ -513,7 +705,7 @@ require_once __DIR__ . '/includes/config.php';
           <div class="roles-compact-grid" id="rolesGrid">
             
             <!-- Super Admin -->
-            <div class="role-btn-card active" data-cat="leadership" onclick="selectRole('admin@edusys.com', 'dashboards/admin.php', this)">
+            <div class="role-btn-card active" data-cat="leadership" data-role="super_admin" onclick="selectRole('super_admin', 'admin@edusys.com', 'dashboards/admin.php', this)">
               <div class="role-icon-box icon-blue">
                 <i class="bi bi-shield-lock-fill"></i>
               </div>
@@ -521,10 +713,11 @@ require_once __DIR__ . '/includes/config.php';
                 <h6>Super Admin</h6>
                 <small>Full ERP Access</small>
               </div>
+              <i class="bi bi-arrow-right-short fork-indicator"></i>
             </div>
 
             <!-- Principal -->
-            <div class="role-btn-card" data-cat="leadership" onclick="selectRole('principal@edusys.com', 'dashboards/principal.php', this)">
+            <div class="role-btn-card" data-cat="leadership" data-role="principal" onclick="selectRole('principal', 'principal@edusys.com', 'dashboards/principal.php', this)">
               <div class="role-icon-box icon-emerald">
                 <i class="bi bi-mortarboard-fill"></i>
               </div>
@@ -532,10 +725,11 @@ require_once __DIR__ . '/includes/config.php';
                 <h6>Principal Desk</h6>
                 <small>Dr. Sunita Rao</small>
               </div>
+              <i class="bi bi-arrow-right-short fork-indicator"></i>
             </div>
 
             <!-- Teacher -->
-            <div class="role-btn-card" data-cat="academic" onclick="selectRole('teacher@edusys.com', 'dashboards/teacher.php', this)">
+            <div class="role-btn-card" data-cat="academic" data-role="teacher" onclick="selectRole('teacher', 'teacher@edusys.com', 'dashboards/teacher.php', this)">
               <div class="role-icon-box icon-amber">
                 <i class="bi bi-person-video3"></i>
               </div>
@@ -543,10 +737,11 @@ require_once __DIR__ . '/includes/config.php';
                 <h6>PGT Teacher</h6>
                 <small>Vikram Rathore</small>
               </div>
+              <i class="bi bi-arrow-right-short fork-indicator"></i>
             </div>
 
             <!-- Accountant -->
-            <div class="role-btn-card" data-cat="finance" onclick="selectRole('accounts@edusys.com', 'dashboards/accountant.php', this)">
+            <div class="role-btn-card" data-cat="finance" data-role="accountant" onclick="selectRole('accountant', 'accounts@edusys.com', 'dashboards/accountant.php', this)">
               <div class="role-icon-box icon-cyan">
                 <i class="bi bi-cash-coin"></i>
               </div>
@@ -554,54 +749,11 @@ require_once __DIR__ . '/includes/config.php';
                 <h6>Accountant</h6>
                 <small>Fee Counter POS</small>
               </div>
-            </div>
-
-            <!-- Admission Officer -->
-            <div class="role-btn-card" data-cat="finance" onclick="selectRole('admissions@edusys.com', 'dashboards/admission-officer.php', this)">
-              <div class="role-icon-box icon-rose">
-                <i class="bi bi-person-lines-fill"></i>
-              </div>
-              <div class="role-card-info">
-                <h6>Admissions</h6>
-                <small>Leads & Merits</small>
-              </div>
-            </div>
-
-            <!-- Librarian -->
-            <div class="role-btn-card" data-cat="academic" onclick="selectRole('library@edusys.com', 'dashboards/librarian.php', this)">
-              <div class="role-icon-box icon-purple">
-                <i class="bi bi-book-half"></i>
-              </div>
-              <div class="role-card-info">
-                <h6>Librarian</h6>
-                <small>Barcode & Books</small>
-              </div>
-            </div>
-
-            <!-- Transport Manager -->
-            <div class="role-btn-card" data-cat="finance" onclick="selectRole('transport@edusys.com', 'dashboards/transport-manager.php', this)">
-              <div class="role-icon-box icon-blue">
-                <i class="bi bi-bus-front-fill"></i>
-              </div>
-              <div class="role-card-info">
-                <h6>Transport Mgr</h6>
-                <small>Live Fleet GPS</small>
-              </div>
-            </div>
-
-            <!-- HR Manager -->
-            <div class="role-btn-card" data-cat="finance" onclick="selectRole('hr@edusys.com', 'dashboards/hr-manager.php', this)">
-              <div class="role-icon-box icon-emerald">
-                <i class="bi bi-people-fill"></i>
-              </div>
-              <div class="role-card-info">
-                <h6>HR Manager</h6>
-                <small>Staff & Payroll</small>
-              </div>
+              <i class="bi bi-arrow-right-short fork-indicator"></i>
             </div>
 
             <!-- Student Portal -->
-            <div class="role-btn-card" data-cat="student" onclick="selectRole('student@edusys.com', 'dashboards/student.php', this)">
+            <div class="role-btn-card" data-cat="student" data-role="student" onclick="selectRole('student', 'student@edusys.com', 'dashboards/student.php', this)">
               <div class="role-icon-box icon-amber">
                 <i class="bi bi-backpack-fill"></i>
               </div>
@@ -609,10 +761,11 @@ require_once __DIR__ . '/includes/config.php';
                 <h6>Student Portal</h6>
                 <small>Aarav S. (10-A)</small>
               </div>
+              <i class="bi bi-arrow-right-short fork-indicator"></i>
             </div>
 
             <!-- Parent Portal -->
-            <div class="role-btn-card" data-cat="student" onclick="selectRole('parent@edusys.com', 'dashboards/parent.php', this)">
+            <div class="role-btn-card" data-cat="student" data-role="parent" onclick="selectRole('parent', 'parent@edusys.com', 'dashboards/parent.php', this)">
               <div class="role-icon-box icon-rose">
                 <i class="bi bi-house-heart-fill"></i>
               </div>
@@ -620,22 +773,82 @@ require_once __DIR__ . '/includes/config.php';
                 <h6>Parent Portal</h6>
                 <small>Rajesh Sharma</small>
               </div>
+              <i class="bi bi-arrow-right-short fork-indicator"></i>
+            </div>
+
+            <!-- Transport Manager -->
+            <div class="role-btn-card" data-cat="finance" data-role="transport_manager" onclick="selectRole('transport_manager', 'transport@edusys.com', 'dashboards/transport-manager.php', this)">
+              <div class="role-icon-box icon-blue">
+                <i class="bi bi-bus-front-fill"></i>
+              </div>
+              <div class="role-card-info">
+                <h6>Transport Mgr</h6>
+                <small>Live Fleet GPS</small>
+              </div>
+              <i class="bi bi-arrow-right-short fork-indicator"></i>
+            </div>
+
+            <!-- Admission Officer -->
+            <div class="role-btn-card" data-cat="finance" data-role="admission_officer" onclick="selectRole('admission_officer', 'admissions@edusys.com', 'dashboards/admission-officer.php', this)">
+              <div class="role-icon-box icon-rose">
+                <i class="bi bi-person-lines-fill"></i>
+              </div>
+              <div class="role-card-info">
+                <h6>Admissions</h6>
+                <small>Leads & Merits</small>
+              </div>
+              <i class="bi bi-arrow-right-short fork-indicator"></i>
+            </div>
+
+            <!-- Librarian -->
+            <div class="role-btn-card" data-cat="academic" data-role="librarian" onclick="selectRole('librarian', 'library@edusys.com', 'dashboards/librarian.php', this)">
+              <div class="role-icon-box icon-purple">
+                <i class="bi bi-book-half"></i>
+              </div>
+              <div class="role-card-info">
+                <h6>Librarian</h6>
+                <small>Barcode & Books</small>
+              </div>
+              <i class="bi bi-arrow-right-short fork-indicator"></i>
+            </div>
+
+            <!-- HR Manager -->
+            <div class="role-btn-card" data-cat="finance" data-role="hr_manager" onclick="selectRole('hr_manager', 'hr@edusys.com', 'dashboards/hr-manager.php', this)">
+              <div class="role-icon-box icon-emerald">
+                <i class="bi bi-people-fill"></i>
+              </div>
+              <div class="role-card-info">
+                <h6>HR Manager</h6>
+                <small>Staff & Payroll</small>
+              </div>
+              <i class="bi bi-arrow-right-short fork-indicator"></i>
             </div>
 
           </div>
         </div>
 
         <!-- FORM SIGN IN -->
-        <form id="loginForm" onsubmit="handleLoginSubmit(event)" novalidate>
+        <form id="loginForm" method="POST" action="<?php echo base_url('login.php'); ?>" onsubmit="handleLoginSubmit(event)">
           
+          <input type="hidden" name="role_id" id="selectedRoleId" value="super_admin">
+          <input type="hidden" id="selectedTargetUrl" value="<?php echo base_url('dashboards/admin.php'); ?>">
+
+          <!-- Fork Destination Pill -->
+          <div class="fork-destination-banner">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-diagram-3-fill text-info font-size-15"></i>
+              <span class="font-size-12 text-white">Forking into: <strong id="bannerTargetName" class="text-info">Super Admin Dashboard</strong></span>
+            </div>
+            <span class="badge bg-primary text-white font-size-11" id="bannerTargetRole">Admin</span>
+          </div>
+
           <!-- Email / ID Input -->
           <div class="custom-input-group">
-            <label for="loginEmail">Institutional Email or Staff ID <span class="text-danger">*</span></label>
+            <label for="loginEmail">Institutional Email or Staff/Pupil ID <span class="text-danger">*</span></label>
             <div class="input-wrapper">
-              <input type="email" class="custom-input" id="loginEmail" required value="admin@edusys.com" placeholder="name@edusys.com">
+              <input type="email" class="custom-input" name="email" id="loginEmail" required value="admin@edusys.com" placeholder="name@edusys.com">
               <i class="bi bi-envelope-fill input-icon-left"></i>
             </div>
-            <div class="invalid-feedback text-danger font-size-12 mt-1">Please enter a valid email address.</div>
           </div>
 
           <!-- Password Input -->
@@ -647,13 +860,12 @@ require_once __DIR__ . '/includes/config.php';
               </a>
             </div>
             <div class="input-wrapper">
-              <input type="password" class="custom-input" id="loginPassword" required value="password123" placeholder="••••••••">
+              <input type="password" class="custom-input" name="password" id="loginPassword" required value="password123" placeholder="••••••••">
               <i class="bi bi-lock-fill input-icon-left"></i>
               <button type="button" class="toggle-pass-btn" id="togglePasswordBtn" title="Toggle password visibility">
                 <i class="bi bi-eye"></i>
               </button>
             </div>
-            <div class="invalid-feedback text-danger font-size-12 mt-1">Password is required.</div>
           </div>
 
           <!-- Helper strip -->
@@ -665,16 +877,14 @@ require_once __DIR__ . '/includes/config.php';
               </label>
             </div>
             <span class="badge bg-secondary bg-opacity-25 text-info border border-secondary border-opacity-25 font-size-11">
-              <i class="bi bi-check-circle me-1"></i>Any demo password works
+              <i class="bi bi-shield-check me-1"></i>Any demo password accepted
             </span>
           </div>
-
-          <input type="hidden" id="selectedTargetUrl" value="<?php echo base_url('dashboards/admin.php'); ?>">
 
           <!-- Submit CTA Button -->
           <button type="submit" class="btn-login-cta" id="btnLoginSubmit">
             <span class="btn-content d-flex align-items-center gap-2">
-              <span>Enter Institutional Portal</span>
+              <span id="btnCtaText">Launch Super Admin Portal</span>
               <i class="bi bi-arrow-right-short font-size-20"></i>
             </span>
             <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
@@ -703,6 +913,9 @@ require_once __DIR__ . '/includes/config.php';
   <script src="<?php echo base_url('assets/js/mock-data.js'); ?>"></script>
   <script src="<?php echo base_url('assets/js/app.js'); ?>"></script>
   <script>
+    const roleMetadata = <?php echo json_encode($role_previews); ?>;
+    const baseUrl = '<?php echo base_url(); ?>';
+
     // Filter demo roles by category chips
     function filterRoles(category, btn) {
       document.querySelectorAll('.category-chip-btn').forEach(b => b.classList.remove('active'));
@@ -718,14 +931,36 @@ require_once __DIR__ . '/includes/config.php';
       });
     }
 
-    // Role selection & autofill with clean URL
-    function selectRole(email, path, el) {
+    // Role selection & autofill with clean URL & dynamic left preview
+    function selectRole(roleId, email, path, el) {
       document.querySelectorAll('.role-btn-card').forEach(c => c.classList.remove('active'));
       el.classList.add('active');
+
+      document.getElementById('selectedRoleId').value = roleId;
       document.getElementById('loginEmail').value = email;
+
       const cleanPath = path.replace(/\.php$/, '');
-      const baseUrl = '<?php echo base_url(); ?>';
-      document.getElementById('selectedTargetUrl').value = baseUrl.replace(/\/+$/, '') + '/' + cleanPath.replace(/^\/+/, '');
+      const fullTarget = baseUrl.replace(/\/+$/, '') + '/' + cleanPath.replace(/^\/+/, '');
+      document.getElementById('selectedTargetUrl').value = fullTarget;
+
+      // Update Preview & Banner
+      const meta = roleMetadata[roleId];
+      if (meta) {
+        document.getElementById('prevRoleName').innerText = meta.name;
+        document.getElementById('prevRoleBadge').innerText = meta.badge;
+        document.getElementById('prevRoleRoute').innerText = meta.destination;
+        document.getElementById('prevStat1Val').innerText = meta.stat1_val;
+        document.getElementById('prevStat1Label').innerText = meta.stat1_label;
+        document.getElementById('prevStat2Val').innerText = meta.stat2_val;
+        document.getElementById('prevStat2Label').innerText = meta.stat2_label;
+        document.getElementById('prevStat3Val').innerText = meta.stat3_val;
+        document.getElementById('prevStat3Label').innerText = meta.stat3_label;
+        document.getElementById('prevRoleFocus').innerText = meta.focus;
+
+        document.getElementById('bannerTargetName').innerText = meta.name + ' (' + meta.title + ')';
+        document.getElementById('bannerTargetRole').innerText = meta.badge;
+        document.getElementById('btnCtaText').innerText = 'Launch ' + meta.name + ' Portal';
+      }
     }
 
     // Toggle Password Visibility
@@ -736,24 +971,13 @@ require_once __DIR__ . '/includes/config.php';
       this.innerHTML = isPass ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
     });
 
-    // Form submission simulation
+    // Form submission simulation & redirect
     function handleLoginSubmit(e) {
-      e.preventDefault();
-      const form = document.getElementById('loginForm');
-      if (!form.checkValidity()) {
-        form.classList.add('was-validated');
-        return;
-      }
-
+      // Let the form submit naturally to login.php so session is stored in PHP
       const submitBtn = document.getElementById('btnLoginSubmit');
       submitBtn.disabled = true;
       submitBtn.querySelector('.btn-content').classList.add('d-none');
       submitBtn.querySelector('.spinner-border').classList.remove('d-none');
-
-      const targetUrl = document.getElementById('selectedTargetUrl').value;
-      setTimeout(() => {
-        window.location.href = targetUrl;
-      }, 450);
     }
   </script>
 </body>

@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - HR & Staff Operations Dashboard
+ * EDUSYS PRO - HR & Payroll Operations Dashboard
+ * Dedicated view for HR Lead: Anjali Saxena (Staff Directory, Attendance & Payroll)
  */
-$page_title = "HR & Staff Operations Dashboard";
-$page_desc = "Unified executive dashboard tailored for HR Lead (Anjali Saxena).";
+$page_title = "HR & Payroll Operations Dashboard";
+$page_desc = "Staff service registers, biometric punch logs, leave approvals, and payroll for Anjali Saxena.";
 $active_module = "dashboard";
 $active_submodule = "hr-manager.php";
 $depth = 1;
@@ -14,212 +15,131 @@ require_once __DIR__ . '/../includes/sidebar.php';
 require_once __DIR__ . '/../includes/topbar.php';
 ?>
 
-<!-- KPI Row -->
+<!-- HR Banner -->
+<div class="erp-card mb-4 bg-gradient text-dark border-primary border-opacity-25 shadow-xs" style="background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);">
+  <div class="erp-card-body p-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div class="d-flex align-items-center gap-3">
+        <div class="avatar-lg rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold font-size-24" style="width: 60px; height: 60px;">
+          HR
+        </div>
+        <div>
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <h4 class="fw-bold text-dark mb-0">Anjali Saxena</h4>
+            <span class="badge bg-primary text-white font-size-12 px-2.5 py-1 rounded-pill">HR & Payroll Manager</span>
+            <span class="badge bg-success text-white font-size-11">Biometric Sync OK</span>
+          </div>
+          <div class="font-size-13 text-muted">
+            <span>Staff ID: <strong class="text-dark font-mono">HR-2018-0021</strong></span>
+            <span class="mx-2">•</span>
+            <span>Total Staff Strength: <strong class="text-dark">122 Employees</strong></span>
+            <span class="mx-2">•</span>
+            <span>Payroll Cycle: <strong class="text-success">November 2024 Active</strong></span>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <a href="<?php echo base_url('modules/hr-payroll/leave-management.php'); ?>" class="btn btn-primary btn-sm fw-bold px-3 py-2 rounded-pill">
+          <i class="bi bi-calendar2-range me-1"></i> Leave Approvals
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KPI Row: Personalized for HR -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Students</h6>
-        <div class="kpi-value">1,878</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> +142 this year</div>
+        <h6>Total Staff Count</h6>
+        <div class="kpi-value">122</div>
+        <div class="kpi-trend positive"><i class="bi bi-people-fill"></i> 84 Faculty • 38 Non-Teaching</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-person-badge-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Fee Collected YTD</h6>
-        <div class="kpi-value">₹4.21 Cr</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 87% Recovery</div>
+        <h6>Present Today</h6>
+        <div class="kpi-value text-success">118 Staff</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Biometric 100% Punctual</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
+      <div class="kpi-icon"><i class="bi bi-fingerprint"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Attendance Today</h6>
-        <div class="kpi-value">95.4%</div>
-        <div class="kpi-trend positive"><i class="bi bi-person-check"></i> 1,792 Present</div>
+        <h6>Staff on Leave</h6>
+        <div class="kpi-value text-warning">4 Staff</div>
+        <div class="kpi-trend"><i class="bi bi-calendar-x"></i> 2 Medical • 2 Casual</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-calendar-check-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-person-x-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Staff on Duty</h6>
-        <div class="kpi-value">118 / 122</div>
-        <div class="kpi-trend positive"><i class="bi bi-person-workspace"></i> 4 on Leave</div>
+        <h6>Payroll Status</h6>
+        <div class="kpi-value text-info">Ready</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-all"></i> Nov 2024 Salary Slips</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-briefcase-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
     </div>
   </div>
 </div>
 
-<!-- Analytics Charts Row -->
-<div class="row g-4 mb-4">
-  <div class="col-lg-8">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-bar-chart-line text-primary"></i> Fee Collection vs Operational Expenses (2024-2025)</h5>
-        <span class="badge bg-light text-muted border font-size-12">Monthly (₹ Lakhs)</span>
-      </div>
-      <div class="erp-card-body" style="height: 320px;">
-        <canvas id="revenueCollectionChart"></canvas>
-      </div>
-    </div>
+<!-- Pending Leave Approvals Table -->
+<div class="erp-card mb-4">
+  <div class="erp-card-header">
+    <h5 class="erp-card-title"><i class="bi bi-calendar-check text-primary"></i> Pending Staff Leave Requests</h5>
+    <span class="badge bg-warning text-dark font-size-11">4 Pending Approvals</span>
   </div>
-
-  <div class="col-lg-4">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-pie-chart text-success"></i> CBSE Grade Distribution</h5>
-        <span class="badge bg-light text-muted border font-size-12">Class 10 Term 1</span>
-      </div>
-      <div class="erp-card-body d-flex align-items-center justify-content-center" style="height: 320px;">
-        <canvas id="performanceDonutChart"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row g-4 mb-4">
-  <div class="col-lg-6">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-activity text-info"></i> Weekly Attendance Percentage Trend</h5>
-        <span class="badge bg-success-subtle text-success">Avg: 95.1%</span>
-      </div>
-      <div class="erp-card-body" style="height: 280px;">
-        <canvas id="attendanceTrendChart"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-6">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-bar-chart text-warning"></i> Student Strength by Class Wings (Boys vs Girls)</h5>
-        <span class="badge bg-light text-muted border font-size-12">Total: 1,878</span>
-      </div>
-      <div class="erp-card-body" style="height: 280px;">
-        <canvas id="classStrengthChart"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Quick Shortcuts & Recent Actions -->
-<div class="row g-4">
-  <div class="col-lg-8">
-    <div class="erp-card mb-0">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-clock-history text-primary"></i> Recent Transactions & Fee Collections</h5>
-        <a href="<?php echo base_url('modules/fees/fee-collection.php'); ?>" class="fw-semibold font-size-13 text-primary text-decoration-none">Open Fee Counter &rarr;</a>
-      </div>
-      <div class="erp-table-responsive">
-        <table class="erp-table">
-          <thead>
-            <tr>
-              <th>Receipt #</th>
-              <th>Student Name</th>
-              <th>Class</th>
-              <th>Mode</th>
-              <th>Amount</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9182</td>
-              <td><strong>Aarav Sharma</strong></td>
-              <td>Class 10-A</td>
-              <td><span class="badge bg-light text-muted border">Razorpay Online</span></td>
-              <td class="fw-bold">₹28,500</td>
-              <td><span class="badge-status badge-paid">Success</span></td>
-            </tr>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9181</td>
-              <td><strong>Diya Patel</strong></td>
-              <td>Class 10-A</td>
-              <td><span class="badge bg-light text-muted border">Net Banking</span></td>
-              <td class="fw-bold">₹28,500</td>
-              <td><span class="badge-status badge-paid">Success</span></td>
-            </tr>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9180</td>
-              <td><strong>Meera Reddy</strong></td>
-              <td>Class 8-A</td>
-              <td><span class="badge bg-light text-muted border">UPI (Google Pay)</span></td>
-              <td class="fw-bold">₹24,200</td>
-              <td><span class="badge-status badge-paid">Success</span></td>
-            </tr>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9179</td>
-              <td><strong>Vihaan Singh</strong></td>
-              <td>Class 10-B</td>
-              <td><span class="badge bg-light text-muted border">HDFC Cheque</span></td>
-              <td class="fw-bold">₹15,000</td>
-              <td><span class="badge-status badge-partial">Partial</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-4">
-    <div class="erp-card mb-0">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-bell-fill text-warning"></i> Operational Notice Board</h5>
-        <a href="<?php echo base_url('modules/communication/notice-board.php'); ?>" class="fw-semibold font-size-13 text-primary text-decoration-none">View All &rarr;</a>
-      </div>
-      <div class="erp-card-body p-0">
-        <div class="list-group list-group-flush font-size-13">
-          <div class="list-group-item p-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="badge bg-danger-subtle text-danger font-size-11">Urgent CBSE</span>
-              <small class="text-muted">Today</small>
+  <div class="erp-table-responsive">
+    <table class="erp-table">
+      <thead>
+        <tr>
+          <th>Employee Name</th>
+          <th>Designation</th>
+          <th>Leave Type</th>
+          <th>Duration</th>
+          <th>Reason</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Meenakshi Sundaram</strong></td>
+          <td>TGT Chemistry</td>
+          <td><span class="badge bg-danger-subtle text-danger">Medical Leave</span></td>
+          <td>01 Nov - 02 Nov (2 Days)</td>
+          <td>Doctor appointment & medical tests</td>
+          <td>
+            <div class="d-flex gap-1">
+              <button class="btn btn-sm btn-success py-1 px-2 font-size-11 fw-bold">Approve</button>
+              <button class="btn btn-sm btn-outline-danger py-1 px-2 font-size-11">Reject</button>
             </div>
-            <strong class="d-block mb-1">CBSE LOC Verification Deadline</strong>
-            <p class="text-muted font-size-12 mb-0">Class 10 & 12 LOC candidate lists must be finalized by 5:00 PM.</p>
-          </div>
-
-          <div class="list-group-item p-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="badge bg-success-subtle text-success font-size-11">Transport</span>
-              <small class="text-muted">Yesterday</small>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Rohan Joshi</strong></td>
+          <td>TGT Mathematics</td>
+          <td><span class="badge bg-info-subtle text-info">Casual Leave</span></td>
+          <td>04 Nov (1 Day)</td>
+          <td>Family function out of station</td>
+          <td>
+            <div class="d-flex gap-1">
+              <button class="btn btn-sm btn-success py-1 px-2 font-size-11 fw-bold">Approve</button>
+              <button class="btn btn-sm btn-outline-danger py-1 px-2 font-size-11">Reject</button>
             </div>
-            <strong class="d-block mb-1">Route 4 Bus Route Shift</strong>
-            <p class="text-muted font-size-12 mb-0">Bus 04 morning pickup adjusted by 10 mins due to flyover construction.</p>
-          </div>
-
-          <div class="list-group-item p-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="badge bg-info-subtle text-info font-size-11">Academic</span>
-              <small class="text-muted">25 Oct</small>
-            </div>
-            <strong class="d-block mb-1">PTM Scheduling Open</strong>
-            <p class="text-muted font-size-12 mb-0">Quarter 2 Parent-Teacher consultations slots active for booking.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (window.EduCharts) {
-      EduCharts.revenueChart('revenueCollectionChart');
-      EduCharts.performanceChart('performanceDonutChart');
-      EduCharts.attendanceChart('attendanceTrendChart');
-      EduCharts.classStrengthChart('classStrengthChart');
-    }
-  });
-</script>
 
 <?php
 require_once __DIR__ . '/../includes/footer.php';

@@ -1,9 +1,10 @@
 <?php
 /**
  * EDUSYS PRO - Transport Fleet Dashboard
+ * Dedicated view for Logistics Head: H. Singh (Transport Manager)
  */
 $page_title = "Transport Fleet Dashboard";
-$page_desc = "Unified executive dashboard tailored for Transport Incharge (H. Singh).";
+$page_desc = "Real-time fleet tracking, student routing, and vehicle compliance for H. Singh.";
 $active_module = "dashboard";
 $active_submodule = "transport-manager.php";
 $depth = 1;
@@ -14,212 +15,133 @@ require_once __DIR__ . '/../includes/sidebar.php';
 require_once __DIR__ . '/../includes/topbar.php';
 ?>
 
-<!-- KPI Row -->
-<div class="row g-3 mb-4">
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-primary">
-      <div class="kpi-info">
-        <h6>Total Students</h6>
-        <div class="kpi-value">1,878</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> +142 this year</div>
+<!-- Transport Banner -->
+<div class="erp-card mb-4 bg-gradient text-dark border-info border-opacity-25 shadow-xs" style="background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);">
+  <div class="erp-card-body p-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div class="d-flex align-items-center gap-3">
+        <div class="avatar-lg rounded-circle bg-info text-white d-flex align-items-center justify-content-center fw-bold font-size-24" style="width: 60px; height: 60px;">
+          TM
+        </div>
+        <div>
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <h4 class="fw-bold text-dark mb-0">H. Singh</h4>
+            <span class="badge bg-info text-white font-size-12 px-2.5 py-1 rounded-pill">Transport Manager</span>
+            <span class="badge bg-success text-white font-size-11">14/14 Buses Live GPS</span>
+          </div>
+          <div class="font-size-13 text-muted">
+            <span>Staff ID: <strong class="text-dark font-mono">TRN-2017-0091</strong></span>
+            <span class="mx-2">•</span>
+            <span>Total Fleet: <strong class="text-dark">14 Buses (DL-1PC Series)</strong></span>
+            <span class="mx-2">•</span>
+            <span>Students Transported: <strong class="text-primary">680 Pupils Daily</strong></span>
+          </div>
+        </div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
+      <div class="d-flex align-items-center gap-2">
+        <a href="<?php echo base_url('modules/transport/gps-tracking.php'); ?>" class="btn btn-primary btn-sm fw-bold px-3 py-2 rounded-pill">
+          <i class="bi bi-geo-alt-fill me-1"></i> Live Fullscreen GPS Map
+        </a>
+      </div>
     </div>
   </div>
+</div>
+
+<!-- KPI Row: Personalized for Transport -->
+<div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Fee Collected YTD</h6>
-        <div class="kpi-value">₹4.21 Cr</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 87% Recovery</div>
+        <h6>Active Buses Online</h6>
+        <div class="kpi-value text-success">14 / 14</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 100% Fleet Online</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
+      <div class="kpi-icon"><i class="bi bi-bus-front-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
+    <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Attendance Today</h6>
-        <div class="kpi-value">95.4%</div>
-        <div class="kpi-trend positive"><i class="bi bi-person-check"></i> 1,792 Present</div>
+        <h6>Transport Pupils</h6>
+        <div class="kpi-value text-primary">680</div>
+        <div class="kpi-trend positive"><i class="bi bi-people-fill"></i> Across 14 Routes</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-calendar-check-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-person-check"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Staff on Duty</h6>
-        <div class="kpi-value">118 / 122</div>
-        <div class="kpi-trend positive"><i class="bi bi-person-workspace"></i> 4 on Leave</div>
+        <h6>Speed & Geofence</h6>
+        <div class="kpi-value text-info">0 Violations</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Speed Limit 40 km/h</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-briefcase-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-speedometer2"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Compliance / Service</h6>
+        <div class="kpi-value text-warning">1 Alert</div>
+        <div class="kpi-trend"><i class="bi bi-wrench"></i> Bus #04 Insurance (12 days)</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
     </div>
   </div>
 </div>
 
-<!-- Analytics Charts Row -->
-<div class="row g-4 mb-4">
-  <div class="col-lg-8">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-bar-chart-line text-primary"></i> Fee Collection vs Operational Expenses (2024-2025)</h5>
-        <span class="badge bg-light text-muted border font-size-12">Monthly (₹ Lakhs)</span>
-      </div>
-      <div class="erp-card-body" style="height: 320px;">
-        <canvas id="revenueCollectionChart"></canvas>
-      </div>
-    </div>
+<!-- Live Fleet Telemetry Table -->
+<div class="erp-card mb-4">
+  <div class="erp-card-header">
+    <h5 class="erp-card-title"><i class="bi bi-bus-front text-primary"></i> Live Fleet GPS Telemetry & Schedule</h5>
+    <span class="badge bg-success text-white font-size-11">Auto-refresh (5s)</span>
   </div>
-
-  <div class="col-lg-4">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-pie-chart text-success"></i> CBSE Grade Distribution</h5>
-        <span class="badge bg-light text-muted border font-size-12">Class 10 Term 1</span>
-      </div>
-      <div class="erp-card-body d-flex align-items-center justify-content-center" style="height: 320px;">
-        <canvas id="performanceDonutChart"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row g-4 mb-4">
-  <div class="col-lg-6">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-activity text-info"></i> Weekly Attendance Percentage Trend</h5>
-        <span class="badge bg-success-subtle text-success">Avg: 95.1%</span>
-      </div>
-      <div class="erp-card-body" style="height: 280px;">
-        <canvas id="attendanceTrendChart"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-6">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-bar-chart text-warning"></i> Student Strength by Class Wings (Boys vs Girls)</h5>
-        <span class="badge bg-light text-muted border font-size-12">Total: 1,878</span>
-      </div>
-      <div class="erp-card-body" style="height: 280px;">
-        <canvas id="classStrengthChart"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Quick Shortcuts & Recent Actions -->
-<div class="row g-4">
-  <div class="col-lg-8">
-    <div class="erp-card mb-0">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-clock-history text-primary"></i> Recent Transactions & Fee Collections</h5>
-        <a href="<?php echo base_url('modules/fees/fee-collection.php'); ?>" class="fw-semibold font-size-13 text-primary text-decoration-none">Open Fee Counter &rarr;</a>
-      </div>
-      <div class="erp-table-responsive">
-        <table class="erp-table">
-          <thead>
-            <tr>
-              <th>Receipt #</th>
-              <th>Student Name</th>
-              <th>Class</th>
-              <th>Mode</th>
-              <th>Amount</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9182</td>
-              <td><strong>Aarav Sharma</strong></td>
-              <td>Class 10-A</td>
-              <td><span class="badge bg-light text-muted border">Razorpay Online</span></td>
-              <td class="fw-bold">₹28,500</td>
-              <td><span class="badge-status badge-paid">Success</span></td>
-            </tr>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9181</td>
-              <td><strong>Diya Patel</strong></td>
-              <td>Class 10-A</td>
-              <td><span class="badge bg-light text-muted border">Net Banking</span></td>
-              <td class="fw-bold">₹28,500</td>
-              <td><span class="badge-status badge-paid">Success</span></td>
-            </tr>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9180</td>
-              <td><strong>Meera Reddy</strong></td>
-              <td>Class 8-A</td>
-              <td><span class="badge bg-light text-muted border">UPI (Google Pay)</span></td>
-              <td class="fw-bold">₹24,200</td>
-              <td><span class="badge-status badge-paid">Success</span></td>
-            </tr>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9179</td>
-              <td><strong>Vihaan Singh</strong></td>
-              <td>Class 10-B</td>
-              <td><span class="badge bg-light text-muted border">HDFC Cheque</span></td>
-              <td class="fw-bold">₹15,000</td>
-              <td><span class="badge-status badge-partial">Partial</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-4">
-    <div class="erp-card mb-0">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-bell-fill text-warning"></i> Operational Notice Board</h5>
-        <a href="<?php echo base_url('modules/communication/notice-board.php'); ?>" class="fw-semibold font-size-13 text-primary text-decoration-none">View All &rarr;</a>
-      </div>
-      <div class="erp-card-body p-0">
-        <div class="list-group list-group-flush font-size-13">
-          <div class="list-group-item p-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="badge bg-danger-subtle text-danger font-size-11">Urgent CBSE</span>
-              <small class="text-muted">Today</small>
-            </div>
-            <strong class="d-block mb-1">CBSE LOC Verification Deadline</strong>
-            <p class="text-muted font-size-12 mb-0">Class 10 & 12 LOC candidate lists must be finalized by 5:00 PM.</p>
-          </div>
-
-          <div class="list-group-item p-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="badge bg-success-subtle text-success font-size-11">Transport</span>
-              <small class="text-muted">Yesterday</small>
-            </div>
-            <strong class="d-block mb-1">Route 4 Bus Route Shift</strong>
-            <p class="text-muted font-size-12 mb-0">Bus 04 morning pickup adjusted by 10 mins due to flyover construction.</p>
-          </div>
-
-          <div class="list-group-item p-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="badge bg-info-subtle text-info font-size-11">Academic</span>
-              <small class="text-muted">25 Oct</small>
-            </div>
-            <strong class="d-block mb-1">PTM Scheduling Open</strong>
-            <p class="text-muted font-size-12 mb-0">Quarter 2 Parent-Teacher consultations slots active for booking.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="erp-table-responsive">
+    <table class="erp-table">
+      <thead>
+        <tr>
+          <th>Bus #</th>
+          <th>Route Name</th>
+          <th>Driver & Contact</th>
+          <th>Speed</th>
+          <th>Next Stop</th>
+          <th>ETA</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong class="text-primary font-mono font-size-13">Bus #12</strong> (DL-1PC-4819)</td>
+          <td>Sector 62 &rarr; Model Town &rarr; School</td>
+          <td>Ramesh Yadav (+91 98110 44219)</td>
+          <td><span class="badge bg-success">38 km/h</span></td>
+          <td>Model Town Metro Stn</td>
+          <td>08:15 AM (In 6 mins)</td>
+          <td><span class="badge bg-success-subtle text-success">On Schedule</span></td>
+        </tr>
+        <tr>
+          <td><strong class="text-primary font-mono font-size-13">Bus #07</strong> (DL-1PC-2210)</td>
+          <td>Civil Lines &rarr; Rohini Sec 14</td>
+          <td>Baljit Singh (+91 98711 00392)</td>
+          <td><span class="badge bg-success">42 km/h</span></td>
+          <td>Rohini West Gate</td>
+          <td>08:18 AM (In 9 mins)</td>
+          <td><span class="badge bg-success-subtle text-success">On Schedule</span></td>
+        </tr>
+        <tr>
+          <td><strong class="text-primary font-mono font-size-13">Bus #04</strong> (DL-1PC-8891)</td>
+          <td>Dwarka Sec 10 &rarr; Janakpuri</td>
+          <td>Mohan Lal (+91 99118 77210)</td>
+          <td><span class="badge bg-success">35 km/h</span></td>
+          <td>Janakpuri District Center</td>
+          <td>08:22 AM (In 13 mins)</td>
+          <td><span class="badge bg-success-subtle text-success">On Schedule</span></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (window.EduCharts) {
-      EduCharts.revenueChart('revenueCollectionChart');
-      EduCharts.performanceChart('performanceDonutChart');
-      EduCharts.attendanceChart('attendanceTrendChart');
-      EduCharts.classStrengthChart('classStrengthChart');
-    }
-  });
-</script>
 
 <?php
 require_once __DIR__ . '/../includes/footer.php';

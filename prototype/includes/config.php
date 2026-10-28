@@ -65,13 +65,53 @@ $demo_roles = [
     ['id' => 'parent', 'name' => 'Parent (Rajesh Sharma)', 'email' => 'parent@edusys.com', 'path' => 'dashboards/parent.php', 'avatar' => 'RS', 'role' => 'Parent']
 ];
 
+// Logout Handling
+if (isset($_GET['logout'])) {
+    unset($_SESSION['edusys_user']);
+}
+
+// User Switch Request (via ?switch_user=... or ?role=...)
+$requested_role_id = $_GET['switch_user'] ?? $_GET['role'] ?? null;
+if ($requested_role_id) {
+    foreach ($demo_roles as $r_item) {
+        if ($r_item['id'] === $requested_role_id || strtolower($r_item['email']) === strtolower($requested_role_id)) {
+            $_SESSION['edusys_user'] = $r_item;
+            break;
+        }
+    }
+}
+
+// Auto-sync active dashboard if directly accessed and no session is set or dashboard explicitly differs
+$script_name = $_SERVER['SCRIPT_NAME'] ?? '';
+$script_file = basename($script_name);
+
 // Current User resolution
-$current_user = $_SESSION['edusys_user'] ?? [
-    'name' => 'Super Admin',
-    'role' => 'Administrator',
-    'avatar' => 'SA',
-    'email' => 'admin@edusys.com'
-];
+if (isset($_SESSION['edusys_user'])) {
+    $current_user = $_SESSION['edusys_user'];
+    // If the visitor explicitly navigated to a different role dashboard, align the session persona with that dashboard
+    if (strpos($script_name, '/dashboards/') !== false) {
+        foreach ($demo_roles as $r_item) {
+            if (basename($r_item['path']) === $script_file && $current_user['path'] !== $r_item['path']) {
+                $current_user = $r_item;
+                $_SESSION['edusys_user'] = $r_item;
+                break;
+            }
+        }
+    }
+} else {
+    // Check if script corresponds to a known dashboard
+    $matched = null;
+    if (strpos($script_name, '/dashboards/') !== false) {
+        foreach ($demo_roles as $r_item) {
+            if (basename($r_item['path']) === $script_file) {
+                $matched = $r_item;
+                break;
+            }
+        }
+    }
+    $current_user = $matched ?? $demo_roles[0];
+    $_SESSION['edusys_user'] = $current_user;
+}
 
 // All 28 Module Definitions
 $modules_registry = [

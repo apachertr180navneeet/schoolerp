@@ -122,7 +122,7 @@ $active_sub = $active_submodule ?? '';
             <span class="user-role-badge-mini current-user-role"><?php echo htmlspecialchars($current_user['role']); ?></span>
           </div>
         </div>
-        <a href="<?php echo base_url('login.php'); ?>" class="btn btn-sm btn-outline-danger p-1 rounded-circle" title="Sign Out">
+        <a href="<?php echo base_url('login.php?logout=1'); ?>" class="btn btn-sm btn-outline-danger p-1 rounded-circle" title="Sign Out">
           <i class="bi bi-box-arrow-right"></i>
         </a>
       </div>

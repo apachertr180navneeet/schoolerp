@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Admission Officer Desk
+ * EDUSYS PRO - Admissions CRM Desk
+ * Dedicated view for Admissions Head: Rashmi Sen (Lead Funnel, Verification & Merit Lists)
  */
-$page_title = "Admission Officer Desk";
-$page_desc = "Unified executive dashboard tailored for Admission Head (Rashmi Sen).";
+$page_title = "Admissions CRM Desk";
+$page_desc = "Student enrollment lifecycle, inquiry funnels, and document verification for Rashmi Sen.";
 $active_module = "dashboard";
 $active_submodule = "admission-officer.php";
 $depth = 1;
@@ -14,212 +15,132 @@ require_once __DIR__ . '/../includes/sidebar.php';
 require_once __DIR__ . '/../includes/topbar.php';
 ?>
 
-<!-- KPI Row -->
+<!-- Admissions Header Banner -->
+<div class="erp-card mb-4 bg-gradient text-dark border-danger border-opacity-25 shadow-xs" style="background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);">
+  <div class="erp-card-body p-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div class="d-flex align-items-center gap-3">
+        <div class="avatar-lg rounded-circle bg-danger text-white d-flex align-items-center justify-content-center fw-bold font-size-24" style="width: 60px; height: 60px;">
+          AO
+        </div>
+        <div>
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <h4 class="fw-bold text-dark mb-0">Rashmi Sen</h4>
+            <span class="badge bg-danger text-white font-size-12 px-2.5 py-1 rounded-pill">Admissions Head</span>
+            <span class="badge bg-primary-subtle text-primary border border-primary border-opacity-25 font-size-11">Cycle 2025–26 Open</span>
+          </div>
+          <div class="font-size-13 text-muted">
+            <span>Staff ID: <strong class="text-dark font-mono">ADM-2019-0144</strong></span>
+            <span class="mx-2">•</span>
+            <span>Intake Target: <strong class="text-dark">120 Seats (Nursery to Class 11)</strong></span>
+            <span class="mx-2">•</span>
+            <span>Conversion Rate: <strong class="text-success">25% Confirmed</strong></span>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <a href="<?php echo base_url('modules/admissions/online-enquiry.php'); ?>" class="btn btn-danger btn-sm fw-bold px-3 py-2 rounded-pill">
+          <i class="bi bi-person-plus-fill me-1"></i> New Walk-In Inquiry
+        </a>
+        <a href="<?php echo base_url('modules/admissions/online-applications.php'); ?>" class="btn btn-outline-danger btn-sm fw-bold px-3 py-2 rounded-pill">
+          <i class="bi bi-file-earmark-check me-1"></i> Verification Queue
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KPI Row: Personalized for Admissions -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Students</h6>
-        <div class="kpi-value">1,878</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> +142 this year</div>
+        <h6>Inquiries Received</h6>
+        <div class="kpi-value">245</div>
+        <div class="kpi-trend positive"><i class="bi bi-graph-up-arrow"></i> +32 This Week</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
-      <div class="kpi-info">
-        <h6>Fee Collected YTD</h6>
-        <div class="kpi-value">₹4.21 Cr</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 87% Recovery</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
-      <div class="kpi-info">
-        <h6>Attendance Today</h6>
-        <div class="kpi-value">95.4%</div>
-        <div class="kpi-trend positive"><i class="bi bi-person-check"></i> 1,792 Present</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-calendar-check-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-chat-left-dots-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Staff on Duty</h6>
-        <div class="kpi-value">118 / 122</div>
-        <div class="kpi-trend positive"><i class="bi bi-person-workspace"></i> 4 on Leave</div>
+        <h6>Applications Submitted</h6>
+        <div class="kpi-value text-info">180</div>
+        <div class="kpi-trend positive"><i class="bi bi-file-earmark-text"></i> Forms Completed</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-briefcase-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-file-earmark-person-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Verified & Interviewed</h6>
+        <div class="kpi-value text-warning">94</div>
+        <div class="kpi-trend"><i class="bi bi-check2-all"></i> Docs Verified</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-success">
+      <div class="kpi-info">
+        <h6>Confirmed Enrolled</h6>
+        <div class="kpi-value text-success">45 / 120</div>
+        <div class="kpi-trend positive"><i class="bi bi-cash-stack"></i> Token Fee Collected</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-mortarboard-fill"></i></div>
     </div>
   </div>
 </div>
 
-<!-- Analytics Charts Row -->
-<div class="row g-4 mb-4">
-  <div class="col-lg-8">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-bar-chart-line text-primary"></i> Fee Collection vs Operational Expenses (2024-2025)</h5>
-        <span class="badge bg-light text-muted border font-size-12">Monthly (₹ Lakhs)</span>
-      </div>
-      <div class="erp-card-body" style="height: 320px;">
-        <canvas id="revenueCollectionChart"></canvas>
-      </div>
-    </div>
+<!-- Recent Applicant Verification Queue -->
+<div class="erp-card mb-4">
+  <div class="erp-card-header">
+    <h5 class="erp-card-title"><i class="bi bi-person-lines-fill text-danger"></i> Recent Admission Applicants (Verification Desk)</h5>
+    <span class="badge bg-danger text-white font-size-11">Session 2025–26</span>
   </div>
-
-  <div class="col-lg-4">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-pie-chart text-success"></i> CBSE Grade Distribution</h5>
-        <span class="badge bg-light text-muted border font-size-12">Class 10 Term 1</span>
-      </div>
-      <div class="erp-card-body d-flex align-items-center justify-content-center" style="height: 320px;">
-        <canvas id="performanceDonutChart"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row g-4 mb-4">
-  <div class="col-lg-6">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-activity text-info"></i> Weekly Attendance Percentage Trend</h5>
-        <span class="badge bg-success-subtle text-success">Avg: 95.1%</span>
-      </div>
-      <div class="erp-card-body" style="height: 280px;">
-        <canvas id="attendanceTrendChart"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-6">
-    <div class="erp-card h-100">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-bar-chart text-warning"></i> Student Strength by Class Wings (Boys vs Girls)</h5>
-        <span class="badge bg-light text-muted border font-size-12">Total: 1,878</span>
-      </div>
-      <div class="erp-card-body" style="height: 280px;">
-        <canvas id="classStrengthChart"></canvas>
-      </div>
-    </div>
+  <div class="erp-table-responsive">
+    <table class="erp-table">
+      <thead>
+        <tr>
+          <th>Application #</th>
+          <th>Applicant Name</th>
+          <th>Class Applied</th>
+          <th>Parent / Contact</th>
+          <th>Document Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="font-mono text-danger fw-bold">APP-2025-0142</span></td>
+          <td><strong>Aditi Mehra</strong></td>
+          <td><span class="badge bg-primary text-white">Class 1</span></td>
+          <td>Vikrant Mehra (+91 98110 55219)</td>
+          <td><span class="badge bg-success-subtle text-success border border-success border-opacity-25"><i class="bi bi-check-circle"></i> Birth Cert & Aadhaar OK</span></td>
+          <td><button class="btn btn-sm btn-success py-1 px-3 font-size-12 fw-bold">Issue Token</button></td>
+        </tr>
+        <tr>
+          <td><span class="font-mono text-danger fw-bold">APP-2025-0141</span></td>
+          <td><strong>Samar Pratap Singh</strong></td>
+          <td><span class="badge bg-info text-white">Class 6</span></td>
+          <td>Col. R. Singh (+91 99112 00129)</td>
+          <td><span class="badge bg-warning-subtle text-warning border border-warning border-opacity-25"><i class="bi bi-clock"></i> Previous TC Pending</span></td>
+          <td><button class="btn btn-sm btn-outline-warning text-dark py-1 px-3 font-size-12">Remind</button></td>
+        </tr>
+        <tr>
+          <td><span class="font-mono text-danger fw-bold">APP-2025-0140</span></td>
+          <td><strong>Anvi Deshmukh</strong></td>
+          <td><span class="badge bg-primary text-white">Class Nursery</span></td>
+          <td>Sanjay Deshmukh (+91 98711 88412)</td>
+          <td><span class="badge bg-success-subtle text-success border border-success border-opacity-25"><i class="bi bi-check-circle"></i> Complete Verified</span></td>
+          <td><button class="btn btn-sm btn-success py-1 px-3 font-size-12 fw-bold">Issue Token</button></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
-
-<!-- Quick Shortcuts & Recent Actions -->
-<div class="row g-4">
-  <div class="col-lg-8">
-    <div class="erp-card mb-0">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-clock-history text-primary"></i> Recent Transactions & Fee Collections</h5>
-        <a href="<?php echo base_url('modules/fees/fee-collection.php'); ?>" class="fw-semibold font-size-13 text-primary text-decoration-none">Open Fee Counter &rarr;</a>
-      </div>
-      <div class="erp-table-responsive">
-        <table class="erp-table">
-          <thead>
-            <tr>
-              <th>Receipt #</th>
-              <th>Student Name</th>
-              <th>Class</th>
-              <th>Mode</th>
-              <th>Amount</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9182</td>
-              <td><strong>Aarav Sharma</strong></td>
-              <td>Class 10-A</td>
-              <td><span class="badge bg-light text-muted border">Razorpay Online</span></td>
-              <td class="fw-bold">₹28,500</td>
-              <td><span class="badge-status badge-paid">Success</span></td>
-            </tr>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9181</td>
-              <td><strong>Diya Patel</strong></td>
-              <td>Class 10-A</td>
-              <td><span class="badge bg-light text-muted border">Net Banking</span></td>
-              <td class="fw-bold">₹28,500</td>
-              <td><span class="badge-status badge-paid">Success</span></td>
-            </tr>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9180</td>
-              <td><strong>Meera Reddy</strong></td>
-              <td>Class 8-A</td>
-              <td><span class="badge bg-light text-muted border">UPI (Google Pay)</span></td>
-              <td class="fw-bold">₹24,200</td>
-              <td><span class="badge-status badge-paid">Success</span></td>
-            </tr>
-            <tr>
-              <td class="font-mono text-primary fw-bold">REC-2024-9179</td>
-              <td><strong>Vihaan Singh</strong></td>
-              <td>Class 10-B</td>
-              <td><span class="badge bg-light text-muted border">HDFC Cheque</span></td>
-              <td class="fw-bold">₹15,000</td>
-              <td><span class="badge-status badge-partial">Partial</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-4">
-    <div class="erp-card mb-0">
-      <div class="erp-card-header">
-        <h5 class="erp-card-title"><i class="bi bi-bell-fill text-warning"></i> Operational Notice Board</h5>
-        <a href="<?php echo base_url('modules/communication/notice-board.php'); ?>" class="fw-semibold font-size-13 text-primary text-decoration-none">View All &rarr;</a>
-      </div>
-      <div class="erp-card-body p-0">
-        <div class="list-group list-group-flush font-size-13">
-          <div class="list-group-item p-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="badge bg-danger-subtle text-danger font-size-11">Urgent CBSE</span>
-              <small class="text-muted">Today</small>
-            </div>
-            <strong class="d-block mb-1">CBSE LOC Verification Deadline</strong>
-            <p class="text-muted font-size-12 mb-0">Class 10 & 12 LOC candidate lists must be finalized by 5:00 PM.</p>
-          </div>
-
-          <div class="list-group-item p-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="badge bg-success-subtle text-success font-size-11">Transport</span>
-              <small class="text-muted">Yesterday</small>
-            </div>
-            <strong class="d-block mb-1">Route 4 Bus Route Shift</strong>
-            <p class="text-muted font-size-12 mb-0">Bus 04 morning pickup adjusted by 10 mins due to flyover construction.</p>
-          </div>
-
-          <div class="list-group-item p-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="badge bg-info-subtle text-info font-size-11">Academic</span>
-              <small class="text-muted">25 Oct</small>
-            </div>
-            <strong class="d-block mb-1">PTM Scheduling Open</strong>
-            <p class="text-muted font-size-12 mb-0">Quarter 2 Parent-Teacher consultations slots active for booking.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (window.EduCharts) {
-      EduCharts.revenueChart('revenueCollectionChart');
-      EduCharts.performanceChart('performanceDonutChart');
-      EduCharts.attendanceChart('attendanceTrendChart');
-      EduCharts.classStrengthChart('classStrengthChart');
-    }
-  });
-</script>
 
 <?php
 require_once __DIR__ . '/../includes/footer.php';
