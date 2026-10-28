@@ -718,12 +718,14 @@ require_once __DIR__ . '/includes/config.php';
       });
     }
 
-    // Role selection & autofill
+    // Role selection & autofill with clean URL
     function selectRole(email, path, el) {
       document.querySelectorAll('.role-btn-card').forEach(c => c.classList.remove('active'));
       el.classList.add('active');
       document.getElementById('loginEmail').value = email;
-      document.getElementById('selectedTargetUrl').value = '<?php echo base_url(); ?>' + path;
+      const cleanPath = path.replace(/\.php$/, '');
+      const baseUrl = '<?php echo base_url(); ?>';
+      document.getElementById('selectedTargetUrl').value = baseUrl.replace(/\/+$/, '') + '/' + cleanPath.replace(/^\/+/, '');
     }
 
     // Toggle Password Visibility

@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /gsgwebsoft/schoolerp/
+
+# Direct root access to prototype/
+RewriteRule ^$ prototype/ [R=301,L]
+</IfModule>

@@ -13,10 +13,24 @@ if (!isset($depth)) {
 }
 $root_prefix = str_repeat('../', $depth);
 
+// Dynamic web base URL detection for prototype
+if (!empty($_SERVER['SCRIPT_NAME']) && preg_match('#^(.*?/prototype)(/|$)#i', $_SERVER['SCRIPT_NAME'], $matches)) {
+    $app_base_url = rtrim($matches[1], '/') . '/';
+} else {
+    $app_base_url = '/gsgwebsoft/schoolerp/prototype/';
+}
+
 function base_url($path = '') {
-    global $root_prefix;
+    global $app_base_url, $root_prefix;
     $path = ltrim($path, '/');
-    return $root_prefix . $path;
+    if ($path === '' || $path === 'index.php' || $path === 'index') {
+        return $app_base_url;
+    }
+    // Remove .php extension from page routes (keep for assets like .css, .js, .png, etc.)
+    if (substr($path, -4) === '.php') {
+        $path = substr($path, 0, -4);
+    }
+    return $app_base_url . $path;
 }
 
 // School Information
