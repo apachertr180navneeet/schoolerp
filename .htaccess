@@ -1,15 +1,7 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
-# 1. Localhost environment support (/gsgwebsoft/schoolerp/)
-RewriteCond %{REQUEST_URI} ^/gsgwebsoft/schoolerp/?$ [NC]
-RewriteRule ^$ /gsgwebsoft/schoolerp/prototype/ [R=301,L]
-
-# 2. Production server support (http://dspremierlogistics.co.uk/schoolerp/)
-RewriteCond %{REQUEST_URI} ^/schoolerp/?$ [NC]
-RewriteRule ^$ /schoolerp/prototype/ [R=301,L]
-
-# 3. Dynamic fallback for root access to prototype/
+# Direct root access to prototype/
 RewriteRule ^$ prototype/ [R=301,L]
 RewriteRule ^index(?:\.php)?$ prototype/ [R=301,L]
 </IfModule>

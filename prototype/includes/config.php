@@ -13,15 +13,18 @@ if (!isset($depth)) {
 }
 $root_prefix = str_repeat('../', $depth);
 
-// Dynamic web base URL detection for prototype (supports localhost and live server)
-if (!empty($_SERVER['SCRIPT_NAME']) && preg_match('#^(.*?/prototype)(/|$)#i', $_SERVER['SCRIPT_NAME'], $matches)) {
+// Dynamic web base URL detection (supports localhost, live production server, and custom domains)
+if (!empty($_SERVER['SCRIPT_NAME']) && preg_match('#^(.*?/gsgwebsoft/schoolerp)(/|$)#i', $_SERVER['SCRIPT_NAME'], $matches)) {
     $app_base_url = rtrim($matches[1], '/') . '/';
 } elseif (!empty($_SERVER['SCRIPT_NAME']) && preg_match('#^(.*?/schoolerp)(/|$)#i', $_SERVER['SCRIPT_NAME'], $matches)) {
-    $app_base_url = rtrim($matches[1], '/') . '/prototype/';
+    $app_base_url = rtrim($matches[1], '/') . '/';
 } elseif (!empty($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'dspremierlogistics.co.uk') !== false) {
-    $app_base_url = '/schoolerp/prototype/';
+    $app_base_url = '/schoolerp/';
+} elseif (!empty($_SERVER['SCRIPT_NAME']) && dirname($_SERVER['SCRIPT_NAME']) !== '.') {
+    $script_dir = dirname($_SERVER['SCRIPT_NAME']);
+    $app_base_url = ($script_dir === '/' || $script_dir === '\\') ? '/' : rtrim(str_replace('\\', '/', $script_dir), '/') . '/';
 } else {
-    $app_base_url = '/gsgwebsoft/schoolerp/prototype/';
+    $app_base_url = '/gsgwebsoft/schoolerp/';
 }
 
 function base_url($path = '') {

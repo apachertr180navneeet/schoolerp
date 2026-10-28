@@ -468,7 +468,7 @@ window.EduApp = (function () {
 
       selectedIdx = 0; // Default first item selected for instant Enter
       topbarResults.innerHTML = matches.slice(0, 10).map((item, idx) => {
-        const targetPath = isPhp ? item.path.replace(/\.html/g, '.php') : item.path;
+        const targetPath = item.path.replace(/\.html/g, '');
         return `
           <a href="${prefix}${targetPath}" class="search-result-item ${idx === 0 ? 'selected' : ''}" data-idx="${idx}">
             <i class="bi ${item.icon}"></i>
@@ -667,7 +667,7 @@ window.EduApp = (function () {
     const isPhp = window.location.pathname.endsWith('.php');
 
     resultsContainer.innerHTML = filtered.slice(0, 15).map(item => {
-      const targetPath = isPhp ? item.path.replace(/\.html/g, '.php') : item.path;
+      const targetPath = item.path.replace(/\.html/g, '');
       return `
       <a href="${prefix}${targetPath}" class="cmd-k-item">
         <i class="bi ${item.icon}"></i>

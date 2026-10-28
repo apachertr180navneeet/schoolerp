@@ -1,6 +1,3 @@
 <?php
-/**
- * Root Entry - Redirect to Prototype
- */
-header("Location: prototype/");
+header('Location: prototype/', true, 301);
 exit;
