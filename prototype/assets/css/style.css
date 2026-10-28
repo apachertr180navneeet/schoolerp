@@ -1561,6 +1561,28 @@ a:hover {
   border-radius: 4px;
 }
 
+/* Dynamic Table & LocalStorage Row Styles */
+.btn-xs {
+  font-size: 0.725rem;
+  padding: 0.15rem 0.5rem;
+  line-height: 1.4;
+}
+
+.table-row-new {
+  animation: tableRowFadeIn 0.4s ease-out;
+}
+
+@keyframes tableRowFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Print Styles */
 @media print {
   .erp-sidebar, .erp-header, .page-actions-group, .table-filter-bar, .erp-pagination-bar, .modal-footer, .btn, .breadcrumb-wrapper {
