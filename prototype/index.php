@@ -1369,9 +1369,9 @@ require_once __DIR__ . '/includes/config.php';
       </div>
 
       <div class="row g-3">
-        <?php foreach ($modules as $slug => $mod): ?>
+        <?php foreach ($modules_registry as $mod): ?>
           <div class="col-md-6 col-lg-3">
-            <a href="<?php echo base_url('modules/' . $slug . '/index.php'); ?>" class="card h-100 text-decoration-none border p-3 hover-lift shadow-xs bg-white">
+            <a href="<?php echo base_url('modules/' . $mod['key'] . '/' . ($mod['submodules'][0]['file'] ?? 'dashboard.php')); ?>" class="card h-100 text-decoration-none border p-3 hover-lift shadow-xs bg-white">
               <div class="d-flex align-items-center gap-3">
                 <div class="p-2 rounded-3 bg-primary-subtle text-primary font-size-22">
                   <i class="bi <?php echo $mod['icon']; ?>"></i>
@@ -1499,9 +1499,9 @@ require_once __DIR__ . '/includes/config.php';
         </div>
         <div class="modal-body p-4 bg-light">
           <div class="row g-3">
-            <?php foreach ($demo_users as $key => $usr): ?>
+            <?php foreach ($demo_roles as $usr): ?>
               <div class="col-md-6 col-lg-4">
-                <a href="<?php echo base_url($usr['redirect']); ?>" class="card h-100 p-3 text-decoration-none border shadow-xs hover-lift bg-white">
+                <a href="<?php echo base_url($usr['path']); ?>" class="card h-100 p-3 text-decoration-none border shadow-xs hover-lift bg-white">
                   <div class="d-flex align-items-center gap-3">
                     <div class="p-2 rounded-2 bg-primary-subtle text-primary font-size-20">
                       <i class="bi bi-person-check-fill"></i>
