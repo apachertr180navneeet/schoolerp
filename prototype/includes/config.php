@@ -13,9 +13,13 @@ if (!isset($depth)) {
 }
 $root_prefix = str_repeat('../', $depth);
 
-// Dynamic web base URL detection for prototype
+// Dynamic web base URL detection for prototype (supports localhost and live server)
 if (!empty($_SERVER['SCRIPT_NAME']) && preg_match('#^(.*?/prototype)(/|$)#i', $_SERVER['SCRIPT_NAME'], $matches)) {
     $app_base_url = rtrim($matches[1], '/') . '/';
+} elseif (!empty($_SERVER['SCRIPT_NAME']) && preg_match('#^(.*?/schoolerp)(/|$)#i', $_SERVER['SCRIPT_NAME'], $matches)) {
+    $app_base_url = rtrim($matches[1], '/') . '/prototype/';
+} elseif (!empty($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'dspremierlogistics.co.uk') !== false) {
+    $app_base_url = '/schoolerp/prototype/';
 } else {
     $app_base_url = '/gsgwebsoft/schoolerp/prototype/';
 }
