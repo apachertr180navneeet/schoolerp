@@ -370,8 +370,9 @@ window.EduApp = (function () {
   function logout(rootPrefix = '') {
     localStorage.removeItem(AUTH_KEY);
     toast("Logged out successfully", "info");
+    const isPhp = window.location.pathname.endsWith('.php');
     setTimeout(() => {
-      window.location.href = rootPrefix + 'login.html';
+      window.location.href = rootPrefix + (isPhp ? 'login.php' : 'login.html');
     }, 400);
   }
 
@@ -512,13 +513,18 @@ window.EduApp = (function () {
       return;
     }
 
-    resultsContainer.innerHTML = filtered.slice(0, 15).map(item => `
-      <a href="${prefix}${item.path}" class="cmd-k-item">
+    const isPhp = window.location.pathname.endsWith('.php');
+
+    resultsContainer.innerHTML = filtered.slice(0, 15).map(item => {
+      const targetPath = isPhp ? item.path.replace(/\.html/g, '.php') : item.path;
+      return `
+      <a href="${prefix}${targetPath}" class="cmd-k-item">
         <i class="bi ${item.icon}"></i>
         <span class="fw-semibold">${item.title}</span>
         <span class="item-module">${item.category}</span>
       </a>
-    `).join('');
+    `;
+    }).join('');
   }
 
   // Initialize once DOM is ready
