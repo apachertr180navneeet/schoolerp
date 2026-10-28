@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - School Trips & Excursions
+ * EDUSYS PRO - SCHOOL TRIPS & EXCURSIONS
+ * Dedicated operational interface & records management for School Trips & Excursions
  */
 $page_title = "School Trips & Excursions";
-$page_desc = "Dedicated operational interface & records management for School Trips & Excursions";
+$page_desc = "Educational excursions, historical tours, science camps, parent consent tracking, and bus convoy safety";
 $active_module = "events-ptm";
 $active_submodule = "trips.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/events-ptm/calendar.php'); ?>">Events & PTM</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/events-ptm/calendar.php'); ?>" class="btn btn-light border" title="Interactive Master Calendar">
+      <i class="bi bi-calendar3 me-1"></i> Calendar
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Records</h6>
-        <div class="kpi-value">1,248 Items</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
+        <h6>Active Trips</h6>
+        <div class="kpi-value">8 Excursions</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Curriculum-Linked Tours</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
-      <div class="kpi-info">
-        <h6>Verified & Active</h6>
-        <div class="kpi-value">1,190 Entries</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
-      <div class="kpi-info">
-        <h6>Under Scrutiny</h6>
-        <div class="kpi-value">58 Pending</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-bus-front-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Audit Compliant</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+        <h6>Students Traveling</h6>
+        <div class="kpi-value">340 Students</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Safety Protocols Verified</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-backpack-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-success">
+      <div class="kpi-info">
+        <h6>Parent Consents</h6>
+        <div class="kpi-value">98.6% Signed</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Digital Consent via Portal</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-file-earmark-check-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>GPS Tracked Buses</h6>
+        <div class="kpi-value">12 Buses</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Live CCTV & Speed Governed</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-geo-alt-fill"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,21 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search school trips & excursions by code, title, category...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search trip code, destination, escort lead...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Categories</option>
-      <option >Primary Wing</option>
-      <option >Middle Wing</option>
-      <option >Secondary Wing</option>
-      <option >Senior Secondary Wing</option>
-      <option >General Administration</option>
+    <select class="form-select" style="max-width: 220px;">
+      <option selected>All Destinations</option>
+      <option >Local Delhi-NCR Day Trips</option>
+      <option >Outstation Heritage (Agra/Jaipur)</option>
+      <option >Eco-Adventure Camps</option>
+      <option >Science & Space Exploration</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Booked & Confirmed</option>
+      <option >Consent Phase</option>
+      <option >In Transit</option>
+      <option >Trip Completed</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +124,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Record Code</th>
-        <th>School Trips & Excursions Title</th>
-        <th>Operational Scope</th>
-        <th>Assigned Incharge</th>
-        <th>Reference / Contact</th>
-        <th>Last Updated</th>
-        <th>Session</th>
+        <th>Trip Code</th>
+        <th>Trip Destination & Theme</th>
+        <th>Eligible Grades</th>
+        <th>Student Count</th>
+        <th>Per-Student Fee</th>
+        <th>Lead Faculty Escort</th>
+        <th>Departure Date</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,17 +138,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">TRP-2024-08</td>
         <td>
-          <div class="fw-semibold text-dark">School Trips & Excursions Standard Master #01</div>
-          <small class="text-muted font-size-11">High Priority Institutional Record</small>
+          <div class="fw-semibold text-dark">National Science Centre & Planetarium</div>
+          <small class="text-muted font-size-11">Interactive Space & Robotics Exhibition</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Middle (Classes 6-8)</span></td>
+        <td><small class="text-dark">95 Students</small></td>
+        <td><small class="text-muted font-mono font-size-12">₹850 (All Inclusive)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Mr. Kunal Bansal (Science Lead)</span></td>
+        <td><small class="text-muted">18 Nov 2024</small></td>
+        <td><span class="badge-status badge-active">Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +159,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
+        <td class="fw-bold text-primary font-mono font-size-13">TRP-2024-07</td>
         <td>
-          <div class="fw-semibold text-dark">School Trips & Excursions Policy Schedule #02</div>
-          <small class="text-muted font-size-11">Curriculum Implementation</small>
+          <div class="fw-semibold text-dark">Heritage Trail: Taj Mahal & Fatehpur Sikri</div>
+          <small class="text-muted font-size-11">Mughal Architecture & History Fieldwork</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Secondary (Classes 9-10)</span></td>
+        <td><small class="text-dark">85 Students</small></td>
+        <td><small class="text-muted font-mono font-size-12">₹2,400 (AC Coach + Meals)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Dr. K. L. Sharma (History HOD)</span></td>
+        <td><small class="text-muted">06 Dec 2024</small></td>
+        <td><span class="badge-status badge-active">Consent Phase</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +180,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">TRP-2024-06</td>
         <td>
-          <div class="fw-semibold text-dark">School Trips & Excursions Register Protocol #03</div>
-          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+          <div class="fw-semibold text-dark">Jim Corbett Wildlife Ecology Camp</div>
+          <small class="text-muted font-size-11">Flora, Fauna & Conservation Field Study</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Senior Sec (Biology Batch)</span></td>
+        <td><small class="text-dark">42 Students</small></td>
+        <td><small class="text-muted font-mono font-size-12">₹6,800 (3D / 2N Resort)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Dr. Sunita Kapoor (HOD Bio)</span></td>
+        <td><small class="text-muted">12 Dec 2024</small></td>
+        <td><span class="badge-status badge-active">Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +201,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">TRP-2024-05</td>
         <td>
-          <div class="fw-semibold text-dark">School Trips & Excursions Operation Log #04</div>
-          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+          <div class="fw-semibold text-dark">National Rail Museum & Heritage Steam Ride</div>
+          <small class="text-muted font-size-11">Engineering History & Locomotive Study</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
-        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Primary (Classes 3-5)</span></td>
+        <td><small class="text-dark">110 Students</small></td>
+        <td><small class="text-muted font-mono font-size-12">₹650 (Coach + Snacks)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Mrs. Shalini Verma</span></td>
+        <td><small class="text-muted">25 Nov 2024</small></td>
+        <td><span class="badge-status badge-active">Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +222,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">TRP-2024-04</td>
         <td>
-          <div class="fw-semibold text-dark">School Trips & Excursions Activity Benchmark #05</div>
-          <small class="text-muted font-size-11">Student Welfare Guideline</small>
+          <div class="fw-semibold text-dark">Aravalli Biodiversity Nature Walk</div>
+          <small class="text-muted font-size-11">Botanical Survey & Bird Watching Camp</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Middle (Classes 6-7)</span></td>
+        <td><small class="text-dark">60 Students</small></td>
+        <td><small class="text-muted font-mono font-size-12">₹450 (Packed Breakfast)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Mr. Deepak Rawat</span></td>
+        <td><small class="text-muted">20 Nov 2024</small></td>
+        <td><span class="badge-status badge-active">Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +243,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
+        <td class="fw-bold text-primary font-mono font-size-13">TRP-2024-03</td>
         <td>
-          <div class="fw-semibold text-dark">School Trips & Excursions Digital Catalog #06</div>
-          <small class="text-muted font-size-11">IT System Resource</small>
+          <div class="fw-semibold text-dark">NASA Kennedy Space Center Tour (Florida)</div>
+          <small class="text-muted font-size-11">International Astronaut Training Experience</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Senior Sec (Selected Batch)</span></td>
+        <td><small class="text-dark">18 Students</small></td>
+        <td><small class="text-muted font-mono font-size-12">₹2,85,000 (Visa & Airfare)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Dean Academics</span></td>
+        <td><small class="text-muted">15 Jan 2025</small></td>
+        <td><span class="badge-status badge-pending">Visa Processing</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +264,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
+        <td class="fw-bold text-primary font-mono font-size-13">TRP-2024-02</td>
         <td>
-          <div class="fw-semibold text-dark">School Trips & Excursions Governance Audit #07</div>
-          <small class="text-muted font-size-11">SMC Resolution Archive</small>
+          <div class="fw-semibold text-dark">Sultanpur National Bird Sanctuary</div>
+          <small class="text-muted font-size-11">Migratory Birds Photography Expedition</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Secondary (Classes 8-10)</span></td>
+        <td><small class="text-dark">45 Students</small></td>
+        <td><small class="text-muted font-mono font-size-12">₹750 (Travel + Lunch)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Mr. Pradeep Joshi</span></td>
+        <td><small class="text-muted">08 Dec 2024</small></td>
+        <td><span class="badge-status badge-active">Consent Phase</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +285,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
+        <td class="fw-bold text-primary font-mono font-size-13">TRP-2024-01</td>
         <td>
-          <div class="fw-semibold text-dark">School Trips & Excursions Session Directive #08</div>
-          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+          <div class="fw-semibold text-dark">National Crafts Museum & Pottery Workshop</div>
+          <small class="text-muted font-size-11">Traditional Indian Artisans Masterclass</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Primary (Classes 1-2)</span></td>
+        <td><small class="text-dark">80 Students</small></td>
+        <td><small class="text-muted font-mono font-size-12">₹500 (Materials Inc)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Mrs. Reena Sengupta</span></td>
+        <td><small class="text-muted">28 Nov 2024</small></td>
+        <td><span class="badge-status badge-active">Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +309,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

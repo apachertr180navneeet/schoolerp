@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Admission Reports
+ * EDUSYS PRO - ADMISSION REPORTS
+ * Dedicated operational interface & records management for Admission Reports
  */
 $page_title = "Admission Reports";
-$page_desc = "Dedicated operational interface & records management for Admission Reports";
+$page_desc = "Statutory board intake summaries, demographic statistics, revenue audits, and conversion analytics";
 $active_module = "admissions";
 $active_submodule = "admission-reports.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/admissions/dashboard.php'); ?>">Admission Management</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/admissions/dashboard.php'); ?>" class="btn btn-light border" title="Back to Admissions Command Center">
+      <i class="bi bi-speedometer2 me-1"></i> Dashboard
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Applications</h6>
-        <div class="kpi-value">842 Applicants</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> +18% vs last year</div>
+        <h6>Standard Reports</h6>
+        <div class="kpi-value">14 Formats</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> CBSE & SMC Standard</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-person-plus-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-info">
-      <div class="kpi-info">
-        <h6>Enquiries This Month</h6>
-        <div class="kpi-value">215 Leads</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 78% Followed up</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-telephone-inbound-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-file-earmark-bar-graph-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Merit Shortlisted</h6>
-        <div class="kpi-value">320 Candidates</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Grade A Approved</div>
+        <h6>Board LOC Ready</h6>
+        <div class="kpi-value">100% Synced</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> OASIS & UDISE+ Format</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-info">
+      <div class="kpi-info">
+        <h6>Gender Balance Ratio</h6>
+        <div class="kpi-value">52 : 48</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Balanced Boys vs Girls</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-gender-ambiguous"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Seats Confirmed</h6>
-        <div class="kpi-value">184 / 220</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> 83.6% Seats Filled</div>
+        <h6>Export Capabilities</h6>
+        <div class="kpi-value">PDF & CSV</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Instant Data Download</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-check-circle-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-download"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,21 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search applicant name, application #, parent...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search report code, title, frequency...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Admission Stages</option>
-      <option >Enquiry Registered</option>
-      <option >Document Scrutiny</option>
-      <option >Interview Scheduled</option>
-      <option >Merit Approved</option>
-      <option >Fee Paid / Enrolled</option>
+    <select class="form-select" style="max-width: 220px;">
+      <option selected>All Reporting Categories</option>
+      <option >Intake & Capacity Utilisation</option>
+      <option >Fee Collection & Outstanding Audit</option>
+      <option >Board Registration & Statutory</option>
+      <option >Marketing Channel Performance</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Generated & Current</option>
+      <option >Scheduled Weekly</option>
+      <option >Monthly Reconciled</option>
+      <option >Annual Archive</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,31 +124,52 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Application / Ref #</th>
-        <th>Candidate Full Name</th>
-        <th>Grade Applied</th>
-        <th>Parent / Guardian</th>
-        <th>Contact Number</th>
-        <th>Lead Source</th>
-        <th>Date Submitted</th>
-        <th>Status</th>
+        <th>Report Code</th>
+        <th>Report Title & Description</th>
+        <th>Reporting Scope</th>
+        <th>Data Granularity</th>
+        <th>Generated By</th>
+        <th>Records Covered</th>
+        <th>Last Generated</th>
+        <th>Action</th>
         <th class="text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0841</td>
+        <td class="fw-bold text-primary font-mono font-size-13">REP-ADM-001</td>
         <td>
-          <div class="fw-semibold text-dark">Advik Agarwal</div>
-          <small class="text-muted font-size-11">Class 1 - Nursery</small>
+          <div class="fw-semibold text-dark">Annual Intake & Seat Capacity Audit</div>
+          <small class="text-muted font-size-11">Wing-wise target vs actual admissions</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Pre-Primary Wing</span></td>
-        <td><small class="text-dark">Sanjay Agarwal</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98112 44556</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Website Portal</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Institutional All Wings</span></td>
+        <td><small class="text-dark">Session 2025-26</small></td>
+        <td><small class="text-muted font-mono font-size-12">Dean Admissions</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">1,248 Records</span></td>
+        <td><small class="text-muted">Today (08:00 AM)</small></td>
+        <td><span class="badge-status badge-active">Live Synced</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Admission Reports')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">REP-ADM-002</td>
+        <td>
+          <div class="fw-semibold text-dark">CBSE Statutory Registration Roll (LOC)</div>
+          <small class="text-muted font-size-11">OASIS and UDISE+ student manifest</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Classes 9 & 11 Batches</span></td>
+        <td><small class="text-dark">Statutory CBSE</small></td>
+        <td><small class="text-muted font-mono font-size-12">Registrar Office</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">184 Enrolled</span></td>
         <td><small class="text-muted">28 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Enrolled</span></td>
+        <td><span class="badge-status badge-active">Verified</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +180,38 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0840</td>
+        <td class="fw-bold text-primary font-mono font-size-13">REP-ADM-003</td>
         <td>
-          <div class="fw-semibold text-dark">Saanvi Reddy</div>
-          <small class="text-muted font-size-11">Class 6 - Middle</small>
+          <div class="fw-semibold text-dark">Admission Fee Collection Reconciliation</div>
+          <small class="text-muted font-size-11">Breakup of admission, tuition & caution</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Dr. K. S. Reddy</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98223 55667</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Referral / Sibling</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Finance & Accounts</span></td>
+        <td><small class="text-dark">Financial Audit</small></td>
+        <td><small class="text-muted font-mono font-size-12">Chief Accountant</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">₹46.20 Lakhs</span></td>
+        <td><small class="text-muted">28 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Reconciled</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Admission Reports')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">REP-ADM-004</td>
+        <td>
+          <div class="fw-semibold text-dark">Marketing Channel Attribution & ROI</div>
+          <small class="text-muted font-size-11">Cost per lead & conversion by channel</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Digital Marketing</span></td>
+        <td><small class="text-dark">Channel Yield</small></td>
+        <td><small class="text-muted font-mono font-size-12">Media Lead</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">8 Sources</span></td>
         <td><small class="text-muted">27 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Merit Approved</span></td>
+        <td><span class="badge-status badge-active">Generated</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +222,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0839</td>
+        <td class="fw-bold text-primary font-mono font-size-13">REP-ADM-005</td>
         <td>
-          <div class="fw-semibold text-dark">Reyansh Joshi</div>
-          <small class="text-muted font-size-11">Class 11 - Science (PCM)</small>
+          <div class="fw-semibold text-dark">Parent Demographic & Geographic Analysis</div>
+          <small class="text-muted font-size-11">Pin-code & transport route feasibility</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Mahesh Joshi</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98334 66778</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Walk-in Counter</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Transport & Planning</span></td>
+        <td><small class="text-dark">GIS Mapping</small></td>
+        <td><small class="text-muted font-mono font-size-12">Transport Supervisor</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">842 Applicants</span></td>
         <td><small class="text-muted">26 Oct 2024</small></td>
-        <td><span class="badge-status badge-pending">Entrance Test</span></td>
+        <td><span class="badge-status badge-active">Generated</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +243,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0838</td>
+        <td class="fw-bold text-primary font-mono font-size-13">REP-ADM-006</td>
         <td>
-          <div class="fw-semibold text-dark">Prisha Nair</div>
-          <small class="text-muted font-size-11">Class 11 - Commerce</small>
+          <div class="fw-semibold text-dark">Gender Parity & Social Quota Statement</div>
+          <small class="text-muted font-size-11">Boys/Girls and EWS/DG quota compliance</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Gopalan Nair</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98445 77889</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Digital Campaign</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Compliance Desk</span></td>
+        <td><small class="text-dark">RTE & Equal Opportunity</small></td>
+        <td><small class="text-muted font-mono font-size-12">HR & Legal</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">184 Students</span></td>
         <td><small class="text-muted">25 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Fee Paid</span></td>
+        <td><span class="badge-status badge-active">Verified</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,38 +264,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0837</td>
+        <td class="fw-bold text-primary font-mono font-size-13">REP-ADM-007</td>
         <td>
-          <div class="fw-semibold text-dark">Arya Deshmukh</div>
-          <small class="text-muted font-size-11">Class 9 - Secondary</small>
+          <div class="fw-semibold text-dark">Sibling & Alumni Discount Ledger</div>
+          <small class="text-muted font-size-11">Concession impact on gross fee pool</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Sunil Deshmukh</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98556 88990</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Open House</span></td>
-        <td><small class="text-muted">25 Oct 2024</small></td>
-        <td><span class="badge-status badge-pending">Scrutiny</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Admission Reports')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0836</td>
-        <td>
-          <div class="fw-semibold text-dark">Kabir Mehta</div>
-          <small class="text-muted font-size-11">Class 3 - Primary</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Rakesh Mehta</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98667 99001</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Website Portal</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Finance Desk</span></td>
+        <td><small class="text-dark">Discount Audit</small></td>
+        <td><small class="text-muted font-mono font-size-12">Chief Accountant</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">28 Concessions</span></td>
         <td><small class="text-muted">24 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Interviewed</span></td>
+        <td><span class="badge-status badge-active">Reconciled</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,38 +285,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0835</td>
+        <td class="fw-bold text-primary font-mono font-size-13">REP-ADM-008</td>
         <td>
-          <div class="fw-semibold text-dark">Zara Khan</div>
-          <small class="text-muted font-size-11">Class 11 - Humanities</small>
+          <div class="fw-semibold text-dark">Withdrawal & Cancellation Trend Analysis</div>
+          <small class="text-muted font-size-11">Historical churn rates and reasons</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Tariq Khan</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98778 11223</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Transfer / Relocation</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Senior Management</span></td>
+        <td><small class="text-dark">Multi-Year Trend</small></td>
+        <td><small class="text-muted font-mono font-size-12">Principal Office</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">12 Cases</span></td>
         <td><small class="text-muted">23 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Merit Approved</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Admission Reports')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0834</td>
-        <td>
-          <div class="fw-semibold text-dark">Ayaan Sen</div>
-          <small class="text-muted font-size-11">Class 1 - Prep</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Pre-Primary Wing</span></td>
-        <td><small class="text-dark">Debashis Sen</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98889 22334</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Alumni Parent</span></td>
-        <td><small class="text-muted">22 Oct 2024</small></td>
-        <td><span class="badge-status badge-inactive">Waiting List</span></td>
+        <td><span class="badge-status badge-active">Generated</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +309,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Cultural Programs
+ * EDUSYS PRO - CULTURAL PROGRAMS
+ * Dedicated operational interface & records management for Cultural Programs
  */
 $page_title = "Cultural Programs";
-$page_desc = "Dedicated operational interface & records management for Cultural Programs";
+$page_desc = "Performing arts festivals, classical music recitals, inter-school debates, Model UN, and fine arts pageants";
 $active_module = "events-ptm";
 $active_submodule = "cultural-programs.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/events-ptm/calendar.php'); ?>">Events & PTM</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/events-ptm/calendar.php'); ?>" class="btn btn-light border" title="Interactive Master Calendar">
+      <i class="bi bi-calendar3 me-1"></i> Calendar
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-primary">
+    <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Total Records</h6>
-        <div class="kpi-value">1,248 Items</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
+        <h6>Cultural Trophies</h6>
+        <div class="kpi-value">18 Won</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Inter-School Circuit</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-trophy"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
+    <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Verified & Active</h6>
-        <div class="kpi-value">1,190 Entries</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
+        <h6>Troupe Members</h6>
+        <div class="kpi-value">195 Artists</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Dance, Choir, Drama, Band</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-palette-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Under Scrutiny</h6>
-        <div class="kpi-value">58 Pending</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
+        <h6>Auditions Open</h6>
+        <div class="kpi-value">12 Roles</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Winter Play Casting</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-mic-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Audit Compliant</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+        <h6>Next Festival</h6>
+        <div class="kpi-value">DPGA MUN 2024</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> 14 Dec 2024 (300 Delegates)</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-globe"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,22 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search cultural programs by code, title, category...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search cultural program, venue, mentor teacher...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Categories</option>
-      <option >Primary Wing</option>
-      <option >Middle Wing</option>
-      <option >Secondary Wing</option>
-      <option >Senior Secondary Wing</option>
-      <option >General Administration</option>
+    <select class="form-select" style="max-width: 220px;">
+      <option selected>All Cultural Activities</option>
+      <option >Inter-School Debates & MUN</option>
+      <option >Vocal & Instrumental Music</option>
+      <option >Classical & Contemporary Dance</option>
+      <option >Dramatics & Street Theater</option>
+      <option >Fine Arts & Sculpture</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Confirmed Date</option>
+      <option >Casting Auditions</option>
+      <option >Registrations Open</option>
+      <option >Completed</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +125,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Record Code</th>
-        <th>Cultural Programs Title</th>
-        <th>Operational Scope</th>
-        <th>Assigned Incharge</th>
-        <th>Reference / Contact</th>
-        <th>Last Updated</th>
-        <th>Session</th>
+        <th>Program Code</th>
+        <th>Cultural Program Title</th>
+        <th>Art Discipline</th>
+        <th>Audience / Grades</th>
+        <th>Venue</th>
+        <th>Faculty Director</th>
+        <th>Program Date</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,17 +139,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUL-2024-01</td>
         <td>
-          <div class="fw-semibold text-dark">Cultural Programs Standard Master #01</div>
-          <small class="text-muted font-size-11">High Priority Institutional Record</small>
+          <div class="fw-semibold text-dark">DPGA Model United Nations (MUN 2024)</div>
+          <small class="text-muted font-size-11">Theme: Global Climate & Economic Resilience</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Model UN Debate</span></td>
+        <td><small class="text-dark">Secondary & Sr Sec (300 Delegates)</small></td>
+        <td><small class="text-muted font-mono font-size-12">School Auditorium & Labs</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Mrs. Meenakshi Soni</span></td>
+        <td><small class="text-muted">14 Dec 2024</small></td>
+        <td><span class="badge-status badge-active">Registrations Open</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +160,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUL-2024-02</td>
         <td>
-          <div class="fw-semibold text-dark">Cultural Programs Policy Schedule #02</div>
-          <small class="text-muted font-size-11">Curriculum Implementation</small>
+          <div class="fw-semibold text-dark">Inter-House Classical Dance Competition</div>
+          <small class="text-muted font-size-11">Kathak, Bharatnatyam & Kuchipudi</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Classical Dance</span></td>
+        <td><small class="text-dark">Classes 6 to 12</small></td>
+        <td><small class="text-muted font-mono font-size-12">Junior Amphitheater</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Guru Malini Iyer</span></td>
+        <td><small class="text-muted">02 Dec 2024</small></td>
+        <td><span class="badge-status badge-active">Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +181,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUL-2024-03</td>
         <td>
-          <div class="fw-semibold text-dark">Cultural Programs Register Protocol #03</div>
-          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+          <div class="fw-semibold text-dark">Inter-School Western Rock Band Battle</div>
+          <small class="text-muted font-size-11">Annual Rockfest 'Rhythm 2024'</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Western Music</span></td>
+        <td><small class="text-dark">Senior Secondary (12 Schools)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Open Air Quadrangle</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Mr. Victor D'Souza</span></td>
+        <td><small class="text-muted">28 Dec 2024</small></td>
+        <td><span class="badge-status badge-active">Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +202,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUL-2024-04</td>
         <td>
-          <div class="fw-semibold text-dark">Cultural Programs Operation Log #04</div>
-          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+          <div class="fw-semibold text-dark">Street Play: 'Cyber Hygiene & Mental Health'</div>
+          <small class="text-muted font-size-11">Nukkad Natak for Community Awareness</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
-        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Street Theater</span></td>
+        <td><small class="text-dark">Class 9 & 10 Troupe</small></td>
+        <td><small class="text-muted font-mono font-size-12">Local Community Center</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Mr. Pradeep Joshi</span></td>
+        <td><small class="text-muted">05 Dec 2024</small></td>
+        <td><span class="badge-status badge-active">In Practice</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +223,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUL-2024-05</td>
         <td>
-          <div class="fw-semibold text-dark">Cultural Programs Activity Benchmark #05</div>
-          <small class="text-muted font-size-11">Student Welfare Guideline</small>
+          <div class="fw-semibold text-dark">Annual Fine Arts & Sculpture Exhibition</div>
+          <small class="text-muted font-size-11">Theme: 'Colors of India - Past & Future'</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Fine Arts</span></td>
+        <td><small class="text-dark">Classes 1 to 12 (400 Artworks)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Central Art Gallery</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Mr. A. K. Sundaram</span></td>
+        <td><small class="text-muted">10 Dec 2024</small></td>
+        <td><span class="badge-status badge-active">Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +244,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUL-2024-06</td>
         <td>
-          <div class="fw-semibold text-dark">Cultural Programs Digital Catalog #06</div>
-          <small class="text-muted font-size-11">IT System Resource</small>
+          <div class="fw-semibold text-dark">Hindi Kavyanjali (Poetry Recitation)</div>
+          <small class="text-muted font-size-11">Self-Composed Patriotic & Social Verses</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Literary Hindi</span></td>
+        <td><small class="text-dark">Middle & Secondary Wings</small></td>
+        <td><small class="text-muted font-mono font-size-12">Seminar Room 102</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Dr. K. L. Sharma</span></td>
+        <td><small class="text-muted">26 Nov 2024</small></td>
+        <td><span class="badge-status badge-active">Auditions Open</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +265,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUL-2024-07</td>
         <td>
-          <div class="fw-semibold text-dark">Cultural Programs Governance Audit #07</div>
-          <small class="text-muted font-size-11">SMC Resolution Archive</small>
+          <div class="fw-semibold text-dark">Christmas Carol Celebration & Candlelight</div>
+          <small class="text-muted font-size-11">Traditional 80-Voice Choir Ensemble</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Vocal Choir</span></td>
+        <td><small class="text-dark">Pre-Primary & Primary Wings</small></td>
+        <td><small class="text-muted font-mono font-size-12">Main School Hall</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Mrs. Shalini Verma</span></td>
+        <td><small class="text-muted">24 Dec 2024</small></td>
+        <td><span class="badge-status badge-active">Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +286,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUL-2024-08</td>
         <td>
-          <div class="fw-semibold text-dark">Cultural Programs Session Directive #08</div>
-          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+          <div class="fw-semibold text-dark">Inter-House Spell Bee & Word Power</div>
+          <small class="text-muted font-size-11">Oxford English Master Spelling Tournament</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Literary English</span></td>
+        <td><small class="text-dark">Primary Wing (Classes 3-5)</small></td>
+        <td><small class="text-muted font-mono font-size-12">AV Room 2</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Mrs. Reena Sengupta</span></td>
+        <td><small class="text-muted">03 Dec 2024</small></td>
+        <td><span class="badge-status badge-active">Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +310,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

@@ -20,12 +20,15 @@ const PROTECTED_FILES = [
   'prototype/modules/administration/sections.php',
   'prototype/modules/administration/streams.php',
   'prototype/modules/administration/departments.php',
-  'prototype/modules/administration/subjects.php'
+  'prototype/modules/administration/subjects.php',
+  'prototype/modules/admissions/dashboard.php'
 ];
 
 // Helper: Normalize relative path for checking protected files
 function isProtected(filePath) {
   const norm = filePath.replace(/\\/g, '/');
+  if (norm.includes('prototype/modules/admissions/')) return true;
+  if (norm.includes('prototype/modules/events-ptm/')) return true;
   return PROTECTED_FILES.some(p => norm.endsWith(p));
 }
 

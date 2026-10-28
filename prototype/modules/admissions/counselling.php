@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Admission Counselling
+ * EDUSYS PRO - ADMISSION COUNSELLING
+ * Dedicated operational interface & records management for Admission Counselling
  */
 $page_title = "Admission Counselling";
-$page_desc = "Dedicated operational interface & records management for Admission Counselling";
+$page_desc = "Academic pathway consultations, CBSE stream selection advice, and parental transition guidance";
 $active_module = "admissions";
 $active_submodule = "counselling.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/admissions/dashboard.php'); ?>">Admission Management</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/admissions/dashboard.php'); ?>" class="btn btn-light border" title="Back to Admissions Command Center">
+      <i class="bi bi-speedometer2 me-1"></i> Dashboard
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Applications</h6>
-        <div class="kpi-value">842 Applicants</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> +18% vs last year</div>
+        <h6>Sessions Logged</h6>
+        <div class="kpi-value">218 Consultations</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Led by Senior Faculty</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-person-plus-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-chat-heart-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Enquiries This Month</h6>
-        <div class="kpi-value">215 Leads</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 78% Followed up</div>
+        <h6>Senior Stream Select</h6>
+        <div class="kpi-value">110 Students</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> PCM / PCB / Commerce</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-telephone-inbound-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-diagram-3-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Merit Shortlisted</h6>
-        <div class="kpi-value">320 Candidates</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Grade A Approved</div>
+        <h6>Counsellors on Duty</h6>
+        <div class="kpi-value">5 Psychologists</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Child Development Certified</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-person-badge-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Seats Confirmed</h6>
-        <div class="kpi-value">184 / 220</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> 83.6% Seats Filled</div>
+        <h6>Recommendation Score</h6>
+        <div class="kpi-value">96.4%</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Clear Pathway Identified</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-check-circle-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-check2-circle"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,21 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search applicant name, application #, parent...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search counselling ID, candidate, lead counsellor...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Admission Stages</option>
-      <option >Enquiry Registered</option>
-      <option >Document Scrutiny</option>
-      <option >Interview Scheduled</option>
-      <option >Merit Approved</option>
-      <option >Fee Paid / Enrolled</option>
+    <select class="form-select" style="max-width: 220px;">
+      <option selected>All Focus Areas</option>
+      <option >Senior Secondary Stream Guidance</option>
+      <option >Early Years School Readiness</option>
+      <option >Curriculum Shift (ICSE to CBSE)</option>
+      <option >Special Learning Needs (SEN)</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Recommended & Clear</option>
+      <option >Secondary Assessment Req</option>
+      <option >Alternative Stream Advised</option>
+      <option >Follow-up Scheduled</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,31 +124,31 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Application / Ref #</th>
+        <th>Session ID</th>
         <th>Candidate Full Name</th>
-        <th>Grade Applied</th>
-        <th>Parent / Guardian</th>
-        <th>Contact Number</th>
-        <th>Lead Source</th>
-        <th>Date Submitted</th>
-        <th>Status</th>
+        <th>Target Grade / Stream</th>
+        <th>Lead Counsellor</th>
+        <th>Diagnostic Profile</th>
+        <th>Parent Interaction Summary</th>
+        <th>Session Date</th>
+        <th>Verdict</th>
         <th class="text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0841</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CNS-2025-0218</td>
         <td>
           <div class="fw-semibold text-dark">Advik Agarwal</div>
           <small class="text-muted font-size-11">Class 1 - Nursery</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Pre-Primary Wing</span></td>
-        <td><small class="text-dark">Sanjay Agarwal</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98112 44556</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Website Portal</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Early Childhood</span></td>
+        <td><small class="text-dark">Dr. Sunita Kapoor</small></td>
+        <td><small class="text-muted font-mono font-size-12">High Social Readiness</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Parents aligned with interactive play methodology</span></td>
         <td><small class="text-muted">28 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Enrolled</span></td>
+        <td><span class="badge-status badge-active">Recommended</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +159,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0840</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CNS-2025-0217</td>
         <td>
           <div class="fw-semibold text-dark">Saanvi Reddy</div>
           <small class="text-muted font-size-11">Class 6 - Middle</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Dr. K. S. Reddy</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98223 55667</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Referral / Sibling</span></td>
+        <td><small class="text-dark">Mrs. Shalini Verma</small></td>
+        <td><small class="text-muted font-mono font-size-12">Strong Math & Science Affinity</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Smooth transition planned from ICSE board syllabus</span></td>
         <td><small class="text-muted">27 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Merit Approved</span></td>
+        <td><span class="badge-status badge-active">Recommended</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +180,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0839</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CNS-2025-0216</td>
         <td>
           <div class="fw-semibold text-dark">Reyansh Joshi</div>
           <small class="text-muted font-size-11">Class 11 - Science (PCM)</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Mahesh Joshi</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98334 66778</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Walk-in Counter</span></td>
+        <td><small class="text-dark">Dean Academics</small></td>
+        <td><small class="text-muted font-mono font-size-12">JEE Aptitude 92nd Percentile</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Advised Computer Science as 5th elective subject</span></td>
         <td><small class="text-muted">26 Oct 2024</small></td>
-        <td><span class="badge-status badge-pending">Entrance Test</span></td>
+        <td><span class="badge-status badge-active">Stream Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +201,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0838</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CNS-2025-0215</td>
         <td>
           <div class="fw-semibold text-dark">Prisha Nair</div>
           <small class="text-muted font-size-11">Class 11 - Commerce</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Gopalan Nair</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98445 77889</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Digital Campaign</span></td>
+        <td><small class="text-dark">HOD Commerce</small></td>
+        <td><small class="text-muted font-mono font-size-12">Strong Analytical Aptitude</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Recommended Applied Mathematics with Economics</span></td>
         <td><small class="text-muted">25 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Fee Paid</span></td>
+        <td><span class="badge-status badge-active">Stream Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +222,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0837</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CNS-2025-0214</td>
         <td>
           <div class="fw-semibold text-dark">Arya Deshmukh</div>
           <small class="text-muted font-size-11">Class 9 - Secondary</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Sunil Deshmukh</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98556 88990</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Open House</span></td>
+        <td><small class="text-dark">Mrs. Shalini Verma</small></td>
+        <td><small class="text-muted font-mono font-size-12">All-Round Academic Balance</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Father in Army, fast-track academic integration</span></td>
         <td><small class="text-muted">25 Oct 2024</small></td>
-        <td><span class="badge-status badge-pending">Scrutiny</span></td>
+        <td><span class="badge-status badge-active">Recommended</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +243,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0836</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CNS-2025-0213</td>
         <td>
           <div class="fw-semibold text-dark">Kabir Mehta</div>
           <small class="text-muted font-size-11">Class 3 - Primary</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Rakesh Mehta</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98667 99001</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Website Portal</span></td>
+        <td><small class="text-dark">Dr. Sunita Kapoor</small></td>
+        <td><small class="text-muted font-mono font-size-12">Curious, Strong Linguistic Skills</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Suggested French as 3rd Language option</span></td>
         <td><small class="text-muted">24 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Interviewed</span></td>
+        <td><span class="badge-status badge-active">Recommended</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +264,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0835</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CNS-2025-0212</td>
         <td>
           <div class="fw-semibold text-dark">Zara Khan</div>
           <small class="text-muted font-size-11">Class 11 - Humanities</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Tariq Khan</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98778 11223</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Transfer / Relocation</span></td>
+        <td><small class="text-dark">HOD Humanities</small></td>
+        <td><small class="text-muted font-mono font-size-12">Passionate about Law & Politics</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Confirmed Psychology, Political Science, Economics</span></td>
         <td><small class="text-muted">23 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Merit Approved</span></td>
+        <td><span class="badge-status badge-active">Stream Confirmed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +285,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0834</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CNS-2025-0211</td>
         <td>
           <div class="fw-semibold text-dark">Ayaan Sen</div>
           <small class="text-muted font-size-11">Class 1 - Prep</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Pre-Primary Wing</span></td>
-        <td><small class="text-dark">Debashis Sen</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98889 22334</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Alumni Parent</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Early Childhood</span></td>
+        <td><small class="text-dark">Dr. Sunita Kapoor</small></td>
+        <td><small class="text-muted font-mono font-size-12">High Motor Skill Development</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Child comfortable in group activities and sports</span></td>
         <td><small class="text-muted">22 Oct 2024</small></td>
-        <td><span class="badge-status badge-inactive">Waiting List</span></td>
+        <td><span class="badge-status badge-active">Recommended</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +309,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

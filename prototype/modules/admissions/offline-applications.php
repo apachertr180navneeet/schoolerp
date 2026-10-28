@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Offline Applications
+ * EDUSYS PRO - OFFLINE APPLICATIONS
+ * Dedicated operational interface & records management for Offline Applications
  */
 $page_title = "Offline Applications";
-$page_desc = "Dedicated operational interface & records management for Offline Applications";
+$page_desc = "Paper registration forms submitted at the campus reception, counter fee receipts, and manual entry logs";
 $active_module = "admissions";
 $active_submodule = "offline-applications.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/admissions/dashboard.php'); ?>">Admission Management</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/admissions/dashboard.php'); ?>" class="btn btn-light border" title="Back to Admissions Command Center">
+      <i class="bi bi-speedometer2 me-1"></i> Dashboard
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Applications</h6>
-        <div class="kpi-value">842 Applicants</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> +18% vs last year</div>
+        <h6>Counter Forms Sold</h6>
+        <div class="kpi-value">180 Kits</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> ₹1,250 / Brochure</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-person-plus-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-journal-bookmark-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Enquiries This Month</h6>
-        <div class="kpi-value">215 Leads</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 78% Followed up</div>
+        <h6>Forms Received</h6>
+        <div class="kpi-value">158 Physical</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 87.7% Return Rate</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-telephone-inbound-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-inboxes-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Merit Shortlisted</h6>
-        <div class="kpi-value">320 Candidates</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Grade A Approved</div>
+        <h6>Digitized Today</h6>
+        <div class="kpi-value">24 Forms</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Scanned & Verified</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-qr-code-scan"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Seats Confirmed</h6>
-        <div class="kpi-value">184 / 220</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> 83.6% Seats Filled</div>
+        <h6>Pending Data Entry</h6>
+        <div class="kpi-value">6 Forms</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Counter Scrutiny Desk</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-check-circle-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-keyboard-fill"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,21 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search applicant name, application #, parent...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search counter slip #, student name, receiving clerk...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Admission Stages</option>
-      <option >Enquiry Registered</option>
-      <option >Document Scrutiny</option>
-      <option >Interview Scheduled</option>
-      <option >Merit Approved</option>
-      <option >Fee Paid / Enrolled</option>
+    <select class="form-select" style="max-width: 220px;">
+      <option selected>All Payment Modes</option>
+      <option >Cash Payment</option>
+      <option >POS Card Swipe</option>
+      <option >UPI QR Code</option>
+      <option >Demand Draft</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Digitized & Verified</option>
+      <option >Data Entry Pending</option>
+      <option >Documents Incomplete</option>
+      <option >Archived</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +124,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Application / Ref #</th>
+        <th>Receipt Slip #</th>
         <th>Candidate Full Name</th>
         <th>Grade Applied</th>
         <th>Parent / Guardian</th>
-        <th>Contact Number</th>
-        <th>Lead Source</th>
-        <th>Date Submitted</th>
+        <th>Counter Officer</th>
+        <th>Payment Mode</th>
+        <th>Received Date</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,38 +138,80 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0841</td>
+        <td class="fw-bold text-primary font-mono font-size-13">OFF-2025-0158</td>
         <td>
-          <div class="fw-semibold text-dark">Advik Agarwal</div>
+          <div class="fw-semibold text-dark">Raghav Malhotra</div>
+          <small class="text-muted font-size-11">Class 2 - Primary</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
+        <td><small class="text-dark">Anil Malhotra (+91 98114 33221)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Ritu Sharma (Counter 1)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">UPI QR (₹1,250)</span></td>
+        <td><small class="text-muted">28 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Digitized</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Offline Applications')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">OFF-2025-0157</td>
+        <td>
+          <div class="fw-semibold text-dark">Suhani Bhatnagar</div>
+          <small class="text-muted font-size-11">Class 11 - PCB</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
+        <td><small class="text-dark">Dr. V. K. Bhatnagar</small></td>
+        <td><small class="text-muted font-mono font-size-12">Amit Verma (Counter 2)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">POS Card Swipe</span></td>
+        <td><small class="text-muted">28 Oct 2024</small></td>
+        <td><span class="badge-status badge-pending">Data Entry</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Offline Applications')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">OFF-2025-0156</td>
+        <td>
+          <div class="fw-semibold text-dark">Shaurya Pratap Singh</div>
+          <small class="text-muted font-size-11">Class 7 - Middle</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
+        <td><small class="text-dark">Col. D. S. Pratap</small></td>
+        <td><small class="text-muted font-mono font-size-12">Ritu Sharma (Counter 1)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Cash (₹1,250)</span></td>
+        <td><small class="text-muted">27 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Digitized</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Offline Applications')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">OFF-2025-0155</td>
+        <td>
+          <div class="fw-semibold text-dark">Dia Mukherjee</div>
           <small class="text-muted font-size-11">Class 1 - Nursery</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Pre-Primary Wing</span></td>
-        <td><small class="text-dark">Sanjay Agarwal</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98112 44556</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Website Portal</span></td>
-        <td><small class="text-muted">28 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Enrolled</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Offline Applications')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0840</td>
-        <td>
-          <div class="fw-semibold text-dark">Saanvi Reddy</div>
-          <small class="text-muted font-size-11">Class 6 - Middle</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Dr. K. S. Reddy</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98223 55667</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Referral / Sibling</span></td>
+        <td><small class="text-dark">Pranab Mukherjee</small></td>
+        <td><small class="text-muted font-mono font-size-12">Ritu Sharma (Counter 1)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">UPI QR (₹1,250)</span></td>
         <td><small class="text-muted">27 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Merit Approved</span></td>
+        <td><span class="badge-status badge-active">Digitized</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,38 +222,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0839</td>
+        <td class="fw-bold text-primary font-mono font-size-13">OFF-2025-0154</td>
         <td>
-          <div class="fw-semibold text-dark">Reyansh Joshi</div>
-          <small class="text-muted font-size-11">Class 11 - Science (PCM)</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Mahesh Joshi</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98334 66778</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Walk-in Counter</span></td>
-        <td><small class="text-muted">26 Oct 2024</small></td>
-        <td><span class="badge-status badge-pending">Entrance Test</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Offline Applications')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0838</td>
-        <td>
-          <div class="fw-semibold text-dark">Prisha Nair</div>
+          <div class="fw-semibold text-dark">Vivaan Saxena</div>
           <small class="text-muted font-size-11">Class 11 - Commerce</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Gopalan Nair</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98445 77889</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Digital Campaign</span></td>
-        <td><small class="text-muted">25 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Fee Paid</span></td>
+        <td><small class="text-dark">Rajesh Saxena</small></td>
+        <td><small class="text-muted font-mono font-size-12">Amit Verma (Counter 2)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Demand Draft</span></td>
+        <td><small class="text-muted">26 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Digitized</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,38 +243,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0837</td>
+        <td class="fw-bold text-primary font-mono font-size-13">OFF-2025-0153</td>
         <td>
-          <div class="fw-semibold text-dark">Arya Deshmukh</div>
-          <small class="text-muted font-size-11">Class 9 - Secondary</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Sunil Deshmukh</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98556 88990</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Open House</span></td>
-        <td><small class="text-muted">25 Oct 2024</small></td>
-        <td><span class="badge-status badge-pending">Scrutiny</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Offline Applications')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0836</td>
-        <td>
-          <div class="fw-semibold text-dark">Kabir Mehta</div>
-          <small class="text-muted font-size-11">Class 3 - Primary</small>
+          <div class="fw-semibold text-dark">Gauri Shankar</div>
+          <small class="text-muted font-size-11">Class 5 - Primary</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Rakesh Mehta</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98667 99001</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Website Portal</span></td>
-        <td><small class="text-muted">24 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Interviewed</span></td>
+        <td><small class="text-dark">N. Shankar</small></td>
+        <td><small class="text-muted font-mono font-size-12">Ritu Sharma (Counter 1)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Cash (₹1,250)</span></td>
+        <td><small class="text-muted">26 Oct 2024</small></td>
+        <td><span class="badge-status badge-pending">Data Entry</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +264,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0835</td>
+        <td class="fw-bold text-primary font-mono font-size-13">OFF-2025-0152</td>
         <td>
-          <div class="fw-semibold text-dark">Zara Khan</div>
-          <small class="text-muted font-size-11">Class 11 - Humanities</small>
+          <div class="fw-semibold text-dark">Arnav Khurana</div>
+          <small class="text-muted font-size-11">Class 10 - Secondary</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Tariq Khan</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98778 11223</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Transfer / Relocation</span></td>
-        <td><small class="text-muted">23 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Merit Approved</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
+        <td><small class="text-dark">Harish Khurana</small></td>
+        <td><small class="text-muted font-mono font-size-12">Amit Verma (Counter 2)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">POS Card Swipe</span></td>
+        <td><small class="text-muted">25 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Digitized</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +285,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ADM-2025-0834</td>
+        <td class="fw-bold text-primary font-mono font-size-13">OFF-2025-0151</td>
         <td>
-          <div class="fw-semibold text-dark">Ayaan Sen</div>
+          <div class="fw-semibold text-dark">Tara Ahluwalia</div>
           <small class="text-muted font-size-11">Class 1 - Prep</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Pre-Primary Wing</span></td>
-        <td><small class="text-dark">Debashis Sen</small></td>
-        <td><small class="text-muted font-mono font-size-12">+91 98889 22334</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Alumni Parent</span></td>
-        <td><small class="text-muted">22 Oct 2024</small></td>
-        <td><span class="badge-status badge-inactive">Waiting List</span></td>
+        <td><small class="text-dark">Jaspreet Ahluwalia</small></td>
+        <td><small class="text-muted font-mono font-size-12">Ritu Sharma (Counter 1)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">UPI QR (₹1,250)</span></td>
+        <td><small class="text-muted">25 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Digitized</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +309,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

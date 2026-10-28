@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Annual Sports Day
+ * EDUSYS PRO - ANNUAL SPORTS DAY
+ * Dedicated operational interface & records management for Annual Sports Day
  */
 $page_title = "Annual Sports Day";
-$page_desc = "Dedicated operational interface & records management for Annual Sports Day";
+$page_desc = "Inter-house athletic meets, track and field championships, medal tallies, and sports ground schedules";
 $active_module = "events-ptm";
 $active_submodule = "sports-day.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/events-ptm/calendar.php'); ?>">Events & PTM</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/events-ptm/calendar.php'); ?>" class="btn btn-light border" title="Interactive Master Calendar">
+      <i class="bi bi-calendar3 me-1"></i> Calendar
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-primary">
-      <div class="kpi-info">
-        <h6>Total Records</h6>
-        <div class="kpi-value">1,248 Items</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Verified & Active</h6>
-        <div class="kpi-value">1,190 Entries</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
+        <h6>Athletes Competing</h6>
+        <div class="kpi-value">520 Athletes</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 4 Student Houses</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-trophy-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Under Scrutiny</h6>
-        <div class="kpi-value">58 Pending</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
+        <h6>Total Medals</h6>
+        <div class="kpi-value">84 Medals</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Gold, Silver, Bronze</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-primary">
+      <div class="kpi-info">
+        <h6>House Leader</h6>
+        <div class="kpi-value">Tagore House</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 340 Total Points (Leader)</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-flag-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Audit Compliant</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+        <h6>Chief Guest</h6>
+        <div class="kpi-value">Olympic Boxer</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Commonwealth Gold Medalist</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-person-check-fill"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,22 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search annual sports day by code, title, category...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search event name, athlete, house, category...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Categories</option>
-      <option >Primary Wing</option>
-      <option >Middle Wing</option>
-      <option >Secondary Wing</option>
-      <option >Senior Secondary Wing</option>
-      <option >General Administration</option>
+    <select class="form-select" style="max-width: 220px;">
+      <option selected>All Athletic Disciplines</option>
+      <option >Track Sprints (100m, 200m, 400m)</option>
+      <option >Relay Races (4x100m)</option>
+      <option >Field Events (Long Jump, Shot Put)</option>
+      <option >March Past & Drill</option>
+      <option >Fun Races (Tug of War)</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Heats Completed</option>
+      <option >Finals Scheduled</option>
+      <option >Medal Ceremony</option>
+      <option >Results Declared</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +125,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Record Code</th>
-        <th>Annual Sports Day Title</th>
-        <th>Operational Scope</th>
-        <th>Assigned Incharge</th>
-        <th>Reference / Contact</th>
-        <th>Last Updated</th>
-        <th>Session</th>
+        <th>Event ID</th>
+        <th>Sports Event Title</th>
+        <th>Division / Wing</th>
+        <th>Gold Medal Winner</th>
+        <th>Winning House</th>
+        <th>Timing / Record</th>
+        <th>Schedule Slot</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,38 +139,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SPT-2024-101</td>
         <td>
-          <div class="fw-semibold text-dark">Annual Sports Day Standard Master #01</div>
-          <small class="text-muted font-size-11">High Priority Institutional Record</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Annual Sports Day')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
-        <td>
-          <div class="fw-semibold text-dark">Annual Sports Day Policy Schedule #02</div>
-          <small class="text-muted font-size-11">Curriculum Implementation</small>
+          <div class="fw-semibold text-dark">Boys 100m Senior Sprint Final</div>
+          <small class="text-muted font-size-11">Under-19 Championship Race</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><small class="text-dark">Rohan Gupta (Cl 12-A)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Ashoka House (Red)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">11.24 Seconds (Record)</span></td>
+        <td><small class="text-muted">22 Nov (10:15 AM)</small></td>
+        <td><span class="badge-status badge-active">Final Scheduled</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +160,80 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SPT-2024-102</td>
         <td>
-          <div class="fw-semibold text-dark">Annual Sports Day Register Protocol #03</div>
-          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+          <div class="fw-semibold text-dark">Girls 100m Senior Sprint Final</div>
+          <small class="text-muted font-size-11">Under-19 Championship Race</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
+        <td><small class="text-dark">Diya Patel (Cl 12-B)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Tagore House (Blue)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">12.80 Seconds</span></td>
+        <td><small class="text-muted">22 Nov (10:30 AM)</small></td>
+        <td><span class="badge-status badge-active">Final Scheduled</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Annual Sports Day')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">SPT-2024-103</td>
+        <td>
+          <div class="fw-semibold text-dark">Inter-House 4x100m Mixed Relay</div>
+          <small class="text-muted font-size-11">4 Runners Per House</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Secondary & Sr Sec</span></td>
+        <td><small class="text-dark">Tagore House Relay Team</small></td>
+        <td><small class="text-muted font-mono font-size-12">Tagore House (Blue)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">48.12 Seconds</span></td>
+        <td><small class="text-muted">22 Nov (11:45 AM)</small></td>
+        <td><span class="badge-status badge-active">Final Scheduled</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Annual Sports Day')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">SPT-2024-104</td>
+        <td>
+          <div class="fw-semibold text-dark">Boys Shot Put Senior Championship</div>
+          <small class="text-muted font-size-11">5.45 kg Official Shot</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
+        <td><small class="text-dark">Harpreet Singh (Cl 12-A)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Shivaji House (Yellow)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">12.45 Meters</span></td>
+        <td><small class="text-muted">22 Nov (09:45 AM)</small></td>
+        <td><span class="badge-status badge-active">Final Scheduled</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Annual Sports Day')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">SPT-2024-105</td>
+        <td>
+          <div class="fw-semibold text-dark">Girls Long Jump Championship</div>
+          <small class="text-muted font-size-11">Under-16 Category</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><small class="text-dark">Ananya Iyer (Cl 10-B)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Raman House (Green)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">4.85 Meters</span></td>
+        <td><small class="text-muted">22 Nov (09:15 AM)</small></td>
+        <td><span class="badge-status badge-active">Final Scheduled</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +244,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SPT-2024-106</td>
         <td>
-          <div class="fw-semibold text-dark">Annual Sports Day Operation Log #04</div>
-          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+          <div class="fw-semibold text-dark">Annual March Past Competition</div>
+          <small class="text-muted font-size-11">Cadets, Bands & House Contingents</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
-        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">All 4 Houses</span></td>
+        <td><small class="text-dark">Best Contingent Trophy</small></td>
+        <td><small class="text-muted font-mono font-size-12">Ashoka House (Red)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Judged on Synchronization</span></td>
+        <td><small class="text-muted">22 Nov (08:45 AM)</small></td>
+        <td><span class="badge-status badge-active">Opening Act</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,80 +265,38 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SPT-2024-107</td>
         <td>
-          <div class="fw-semibold text-dark">Annual Sports Day Activity Benchmark #05</div>
-          <small class="text-muted font-size-11">Student Welfare Guideline</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Annual Sports Day')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
-        <td>
-          <div class="fw-semibold text-dark">Annual Sports Day Digital Catalog #06</div>
-          <small class="text-muted font-size-11">IT System Resource</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Annual Sports Day')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
-        <td>
-          <div class="fw-semibold text-dark">Annual Sports Day Governance Audit #07</div>
-          <small class="text-muted font-size-11">SMC Resolution Archive</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Annual Sports Day')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
-        <td>
-          <div class="fw-semibold text-dark">Annual Sports Day Session Directive #08</div>
-          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+          <div class="fw-semibold text-dark">Primary Fun Relay: Obstacle Race</div>
+          <small class="text-muted font-size-11">Classes 3 to 5 Fun Events</small>
         </td>
         <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><small class="text-dark">Kabir Mehta & Team</small></td>
+        <td><small class="text-muted font-mono font-size-12">Shivaji House (Yellow)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Completed in 52 Secs</span></td>
+        <td><small class="text-muted">22 Nov (11:15 AM)</small></td>
+        <td><span class="badge-status badge-active">Final Scheduled</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Annual Sports Day')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">SPT-2024-108</td>
+        <td>
+          <div class="fw-semibold text-dark">Faculty vs Parents Tug of War</div>
+          <small class="text-muted font-size-11">Annual Exhibition Match</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Staff & Parents</span></td>
+        <td><small class="text-dark">Trophy of Fellowship</small></td>
+        <td><small class="text-muted font-mono font-size-12">Parents Association</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Best of 3 Pulls</span></td>
+        <td><small class="text-muted">22 Nov (01:15 PM)</small></td>
+        <td><span class="badge-status badge-active">Grand Finale</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +310,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>
