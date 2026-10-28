@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Student Dashboard
+ * EDUSYS PRO - STUDENT INFORMATION SYSTEM (SIS) DASHBOARD
+ * Command center for institutional student enrollment, wing distribution, and compliance
  */
 $page_title = "Student Dashboard";
-$page_desc = "Dedicated operational interface & records management for Student Dashboard";
+$page_desc = "Central executive oversight for 2,840 enrolled scholars, demographics, and statutory CBSE compliance";
 $active_module = "students";
 $active_submodule = "dashboard.php";
 $depth = 2;
@@ -19,8 +20,8 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
-      <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/students/dashboard.php'); ?>">Student Information System</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Student Dashboard</li>
     </ol>
   </nav>
 </div>
@@ -28,22 +29,18 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-speedometer2 text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
-    <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
-      <i class="bi bi-printer me-1"></i> Print
-    </button>
-    <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', 'dashboard_export.csv')" title="Export Table as CSV">
-      <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
-    </button>
-    <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
-    </button>
+    <a href="<?php echo base_url('modules/students/student-directory.php'); ?>" class="btn btn-light border">
+      <i class="bi bi-people me-1"></i> Directory
+    </a>
+    <a href="<?php echo base_url('modules/students/add-student.php'); ?>" class="btn btn-primary fw-bold">
+      <i class="bi bi-person-plus-fill me-1"></i> Add Student
+    </a>
   </div>
 </div>
-
 
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
@@ -51,7 +48,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
         <h6>Total Enrolled</h6>
-        <div class="kpi-value">2,840 Students</div>
+        <div class="kpi-value">2,840</div>
         <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Roster Synced</div>
       </div>
       <div class="kpi-icon"><i class="bi bi-backpack-fill"></i></div>
@@ -62,17 +59,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       <div class="kpi-info">
         <h6>Boys vs Girls</h6>
         <div class="kpi-value">1,480 / 1,360</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Balanced 52:48 Ratio</div>
+        <div class="kpi-trend positive"><i class="bi bi-gender-ambiguous"></i> 52:48 Healthy Ratio</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-gender-ambiguous"></i></div>
+      <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>APAAR IDs Linked</h6>
-        <div class="kpi-value">2,822 / 2,840</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 99.4% MoE Validated</div>
+        <h6>APAAR One-Nation-ID</h6>
+        <div class="kpi-value">99.4%</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 2,822 of 2,840 Linked</div>
       </div>
       <div class="kpi-icon"><i class="bi bi-fingerprint"></i></div>
     </div>
@@ -80,232 +77,176 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>CBSE LOC Registered</h6>
-        <div class="kpi-value">420 Board Batches</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Class 10 & 12 Verified</div>
+        <h6>Present Today</h6>
+        <div class="kpi-value">96.2%</div>
+        <div class="kpi-trend positive"><i class="bi bi-calendar-check"></i> 2,732 in Attendance</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-person-check-fill"></i></div>
     </div>
   </div>
 </div>
 
-<!-- Domain Table Filter Bar -->
-<div class="table-filter-bar mb-3">
-  <div class="table-filter-left">
-    <div class="table-search-input">
-      <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search student by name, admission #, roll no, APAAR ID...">
+<!-- Wing Distribution & Quick Overview -->
+<div class="row g-4 mb-4">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm p-4 h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-pie-chart text-primary me-2"></i>Institutional Wing Capacity & Enrollment</h5>
+        <span class="badge bg-light text-primary border">Session 2024-2025</span>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 font-size-13">
+          <thead class="table-light">
+            <tr>
+              <th>School Wing</th>
+              <th>Classes</th>
+              <th>Sections</th>
+              <th>Enrolled</th>
+              <th>Capacity</th>
+              <th>Occupancy %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-circle-fill text-primary me-2 font-size-10"></i>Pre-Primary Wing</td>
+              <td>Nursery, KG, Prep</td>
+              <td>12 Sections</td>
+              <td>340</td>
+              <td>360 Seats</td>
+              <td><span class="badge bg-success-subtle text-success">94.4% Full</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-circle-fill text-success me-2 font-size-10"></i>Primary Wing</td>
+              <td>Classes 1 to 5</td>
+              <td>20 Sections</td>
+              <td>820</td>
+              <td>800 Seats</td>
+              <td><span class="badge bg-danger-subtle text-danger">102.5% (Full)</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-circle-fill text-info me-2 font-size-10"></i>Middle Wing</td>
+              <td>Classes 6 to 8</td>
+              <td>16 Sections</td>
+              <td>680</td>
+              <td>680 Seats</td>
+              <td><span class="badge bg-success-subtle text-success">100% Optimum</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-circle-fill text-warning me-2 font-size-10"></i>Secondary Wing</td>
+              <td>Classes 9 & 10</td>
+              <td>14 Sections</td>
+              <td>560</td>
+              <td>560 Seats</td>
+              <td><span class="badge bg-success-subtle text-success">100% Optimum</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-circle-fill text-purple me-2 font-size-10" style="color: #6f42c1;"></i>Senior Secondary</td>
+              <td>Classes 11 & 12 (PCM/PCB/Comm/Hum)</td>
+              <td>10 Sections</td>
+              <td>440</td>
+              <td>450 Seats</td>
+              <td><span class="badge bg-info-subtle text-info">97.7% Full</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Academic Grades</option>
-      <option >Class 12 - Senior Sec</option>
-      <option >Class 11 - Senior Sec</option>
-      <option >Class 10 - Secondary</option>
-      <option >Class 9 - Secondary</option>
-      <option >Classes 6–8 - Middle</option>
-      <option >Classes 1–5 - Primary</option>
-    </select>
-    <select class="form-select" style="max-width: 150px;">
-      <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
-    </select>
   </div>
-  <div class="table-filter-right">
-    <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> verified records</span>
+
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm p-4 h-100">
+      <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-shield-check text-success me-2"></i>Statutory Compliance</h5>
+      <ul class="list-group list-group-flush font-size-13">
+        <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+          <div>
+            <strong>CBSE LOC (Class 10 & 12)</strong>
+            <div class="text-muted font-size-11">420 Board candidates registered</div>
+          </div>
+          <span class="badge bg-success"><i class="bi bi-check-lg"></i> Synced</span>
+        </li>
+        <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+          <div>
+            <strong>UDISE+ Government Portal</strong>
+            <div class="text-muted font-size-11">Student National Code (PEN)</div>
+          </div>
+          <span class="badge bg-success"><i class="bi bi-check-lg"></i> 100% Filed</span>
+        </li>
+        <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+          <div>
+            <strong>APAAR / DigiLocker Registry</strong>
+            <div class="text-muted font-size-11">Ministry of Education e-KYC</div>
+          </div>
+          <span class="badge bg-primary">99.4% Valid</span>
+        </li>
+        <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+          <div>
+            <strong>RTE 25% EWS/DG Quota</strong>
+            <div class="text-muted font-size-11">710 Free seats validated</div>
+          </div>
+          <span class="badge bg-success"><i class="bi bi-check-lg"></i> Compliant</span>
+        </li>
+      </ul>
+      <div class="mt-auto pt-3">
+        <a href="<?php echo base_url('modules/students/documents.php'); ?>" class="btn btn-outline-primary btn-sm w-100">
+          <i class="bi bi-folder-check me-1"></i> Open Documents Locker
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Domain Data Table -->
-<div class="erp-table-responsive mb-0">
-  <table class="erp-table" id="mainDataTable">
-    <thead>
-      <tr>
-        <th>Scholar / Adm #</th>
-        <th>Student Full Name</th>
-        <th>Grade & Section</th>
-        <th>Roll No</th>
-        <th>Father / Guardian</th>
-        <th>Emergency Contact</th>
-        <th>APAAR / Aadhaar UID</th>
-        <th>Status</th>
-        <th class="text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8491</td>
-        <td>
-          <div class="fw-semibold text-dark">Aarav Sharma</div>
-          <small class="text-muted font-size-11">Class 10 - Section A</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Sec A</span></td>
-        <td><small class="text-dark">01</small></td>
-        <td><small class="text-muted font-mono font-size-12">Rajesh Sharma</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98112 34567</span></td>
-        <td><small class="text-muted">APAAR-8941-0294</small></td>
-        <td><span class="badge-status badge-active">Active / Paid</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Student Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8492</td>
-        <td>
-          <div class="fw-semibold text-dark">Diya Patel</div>
-          <small class="text-muted font-size-11">Class 10 - Section A</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Sec A</span></td>
-        <td><small class="text-dark">02</small></td>
-        <td><small class="text-muted font-mono font-size-12">Bhavin Patel</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98223 45678</span></td>
-        <td><small class="text-muted">APAAR-8941-0295</small></td>
-        <td><span class="badge-status badge-active">Active / Paid</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Student Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8493</td>
-        <td>
-          <div class="fw-semibold text-dark">Vihaan Singh</div>
-          <small class="text-muted font-size-11">Class 10 - Section B</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Sec B</span></td>
-        <td><small class="text-dark">01</small></td>
-        <td><small class="text-muted font-mono font-size-12">Manpreet Singh</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98334 56789</span></td>
-        <td><small class="text-muted">APAAR-8941-0296</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Student Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8494</td>
-        <td>
-          <div class="fw-semibold text-dark">Ananya Iyer</div>
-          <small class="text-muted font-size-11">Class 10 - Section B</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Sec B</span></td>
-        <td><small class="text-dark">02</small></td>
-        <td><small class="text-muted font-mono font-size-12">R. Venkatesh Iyer</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98445 67890</span></td>
-        <td><small class="text-muted">APAAR-8941-0297</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Student Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8495</td>
-        <td>
-          <div class="fw-semibold text-dark">Rohan Gupta</div>
-          <small class="text-muted font-size-11">Class 12 - PCM</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Sec A</span></td>
-        <td><small class="text-dark">14</small></td>
-        <td><small class="text-muted font-mono font-size-12">Sanjay Gupta</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98556 78901</span></td>
-        <td><small class="text-muted">APAAR-8941-0298</small></td>
-        <td><span class="badge-status badge-active">Active / LOC</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Student Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8496</td>
-        <td>
-          <div class="fw-semibold text-dark">Ishaan Verma</div>
-          <small class="text-muted font-size-11">Class 12 - PCB</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Sec B</span></td>
-        <td><small class="text-dark">08</small></td>
-        <td><small class="text-muted font-mono font-size-12">Dr. Alok Verma</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98667 89012</span></td>
-        <td><small class="text-muted">APAAR-8941-0299</small></td>
-        <td><span class="badge-status badge-active">Active / LOC</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Student Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8497</td>
-        <td>
-          <div class="fw-semibold text-dark">Meera Reddy</div>
-          <small class="text-muted font-size-11">Class 8 - Section A</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 8 - Sec A</span></td>
-        <td><small class="text-dark">11</small></td>
-        <td><small class="text-muted font-mono font-size-12">K. S. Reddy</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98778 90123</span></td>
-        <td><small class="text-muted">APAAR-8941-0300</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Student Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8498</td>
-        <td>
-          <div class="fw-semibold text-dark">Kabir Sengupta</div>
-          <small class="text-muted font-size-11">Class 9 - Section C</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 9 - Sec C</span></td>
-        <td><small class="text-dark">06</small></td>
-        <td><small class="text-muted font-mono font-size-12">Debashis Sengupta</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98889 01234</span></td>
-        <td><small class="text-muted">APAAR-8941-0301</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Student Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-    </tbody>
-  </table>
+<!-- House Distribution Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="p-3 bg-white rounded-3 border-start border-4 border-danger shadow-sm">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <small class="text-muted fw-bold">AGNI HOUSE</small>
+          <h4 class="fw-bold mb-0 text-dark">712 Scholars</h4>
+        </div>
+        <div class="fs-3 text-danger"><i class="bi bi-fire"></i></div>
+      </div>
+      <small class="text-muted">Captain: Rohan Gupta (12-PCM)</small>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="p-3 bg-white rounded-3 border-start border-4 border-success shadow-sm">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <small class="text-muted fw-bold">PRITHVI HOUSE</small>
+          <h4 class="fw-bold mb-0 text-dark">708 Scholars</h4>
+        </div>
+        <div class="fs-3 text-success"><i class="bi bi-globe-americas"></i></div>
+      </div>
+      <small class="text-muted">Captain: Diya Patel (10-A)</small>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="p-3 bg-white rounded-3 border-start border-4 border-info shadow-sm">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <small class="text-muted fw-bold">VAYU HOUSE</small>
+          <h4 class="fw-bold mb-0 text-dark">715 Scholars</h4>
+        </div>
+        <div class="fs-3 text-info"><i class="bi bi-wind"></i></div>
+      </div>
+      <small class="text-muted">Captain: Ananya Iyer (10-B)</small>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="p-3 bg-white rounded-3 border-start border-4 border-primary shadow-sm">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <small class="text-muted fw-bold">AKASH HOUSE</small>
+          <h4 class="fw-bold mb-0 text-dark">705 Scholars</h4>
+        </div>
+        <div class="fs-3 text-primary"><i class="bi bi-cloud-sun"></i></div>
+      </div>
+      <small class="text-muted">Captain: Vihaan Singh (10-B)</small>
+    </div>
+  </div>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

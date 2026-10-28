@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Add Student (Multi-Step)
+ * EDUSYS PRO - ADD STUDENT MULTI-STEP WIZARD
+ * Comprehensive student onboarding form complying with CBSE OASIS & UDISE+ standards
  */
 $page_title = "Add Student (Multi-Step)";
-$page_desc = "Dedicated operational interface & records management for Add Student (Multi-Step)";
+$page_desc = "Standardized multi-step scholar onboarding wizard with Aadhaar, APAAR ID, and document locker upload";
 $active_module = "students";
 $active_submodule = "add-student.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/students/dashboard.php'); ?>">Student Information System</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -28,284 +29,282 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-person-plus-fill text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
-    <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
-      <i class="bi bi-printer me-1"></i> Print
-    </button>
-    <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', 'add-student_export.csv')" title="Export Table as CSV">
-      <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
-    </button>
-    <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
+    <a href="<?php echo base_url('modules/students/student-directory.php'); ?>" class="btn btn-light border">
+      <i class="bi bi-arrow-left me-1"></i> Student Directory
+    </a>
+    <button class="btn btn-primary fw-bold" onclick="alert('Student Profile Saved as Draft!')">
+      <i class="bi bi-save me-1"></i> Save Draft
     </button>
   </div>
 </div>
 
+<!-- Multi-Step Form Card -->
+<div class="card border-0 shadow-sm p-4 mb-4">
+  <!-- Stepper Tabs Header -->
+  <ul class="nav nav-pills nav-fill mb-4 p-2 bg-light rounded-3" id="studentWizardTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active fw-bold py-2 font-size-13" id="step1-tab" data-bs-toggle="pill" data-bs-target="#step1" type="button" role="tab">
+        <i class="bi bi-person me-1"></i> 1. General & Identity
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link fw-bold py-2 font-size-13" id="step2-tab" data-bs-toggle="pill" data-bs-target="#step2" type="button" role="tab">
+        <i class="bi bi-people me-1"></i> 2. Parents & Guardians
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link fw-bold py-2 font-size-13" id="step3-tab" data-bs-toggle="pill" data-bs-target="#step3" type="button" role="tab">
+        <i class="bi bi-building me-1"></i> 3. Academic & Previous TC
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link fw-bold py-2 font-size-13" id="step4-tab" data-bs-toggle="pill" data-bs-target="#step4" type="button" role="tab">
+        <i class="bi bi-folder-check me-1"></i> 4. Health & Documents
+      </button>
+    </li>
+  </ul>
 
-<!-- Domain KPI Row -->
-<div class="row g-3 mb-4">
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-primary">
-      <div class="kpi-info">
-        <h6>Total Enrolled</h6>
-        <div class="kpi-value">2,840 Students</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Roster Synced</div>
+  <!-- Tab Contents -->
+  <form id="addStudentMultiStepForm" onsubmit="event.preventDefault(); alert('Student Enrolled Successfully with Scholar #ADM-2024-009!'); window.location.href='student-directory.php';">
+    <div class="tab-content" id="studentWizardTabContent">
+      
+      <!-- STEP 1: General & Identity -->
+      <div class="tab-pane fade show active" id="step1" role="tabpanel">
+        <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-person-vcard text-primary me-2"></i>Scholastic & Demographic Information</h6>
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label font-size-12 fw-bold text-muted">Admission # <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" value="ADM-2024-009" readonly>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label font-size-12 fw-bold text-muted">First Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Enter first name" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label font-size-12 fw-bold text-muted">Last Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Enter last name" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label font-size-12 fw-bold text-muted">Date of Birth <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label font-size-12 fw-bold text-muted">Gender <span class="text-danger">*</span></label>
+            <select class="form-select" required>
+              <option value="">Select Gender</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label font-size-12 fw-bold text-muted">Blood Group</label>
+            <select class="form-select">
+              <option>A+ Positive</option>
+              <option>A- Negative</option>
+              <option>B+ Positive</option>
+              <option>B- Negative</option>
+              <option>O+ Positive</option>
+              <option>O- Negative</option>
+              <option>AB+ Positive</option>
+              <option>AB- Negative</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label font-size-12 fw-bold text-muted">Social Category (CBSE)</label>
+            <select class="form-select">
+              <option>General</option>
+              <option>OBC (Other Backward Class)</option>
+              <option>SC (Scheduled Caste)</option>
+              <option>ST (Scheduled Tribe)</option>
+              <option>EWS / DG Quota</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label font-size-12 fw-bold text-muted">Aadhaar Card UID</label>
+            <input type="text" class="form-control" placeholder="12-digit UIDAI number">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">APAAR ID (One Nation One ID)</label>
+            <input type="text" class="form-control" placeholder="e.g. 8499 1048 2910">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">Target Grade <span class="text-danger">*</span></label>
+            <select class="form-select" required>
+              <option>Class 10 - Secondary</option>
+              <option>Class 11 - Science (PCM)</option>
+              <option>Class 11 - Commerce</option>
+              <option>Class 6 - Middle Wing</option>
+              <option>Class 1 - Primary Wing</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">Allocated Section</label>
+            <select class="form-select">
+              <option>Section A</option>
+              <option>Section B</option>
+              <option>Section C</option>
+            </select>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end mt-4">
+          <button type="button" class="btn btn-primary px-4 fw-bold" onclick="document.getElementById('step2-tab').click();">
+            Next: Parents Details <i class="bi bi-arrow-right ms-1"></i>
+          </button>
+        </div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-backpack-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-info">
-      <div class="kpi-info">
-        <h6>Boys vs Girls</h6>
-        <div class="kpi-value">1,480 / 1,360</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Balanced 52:48 Ratio</div>
+
+      <!-- STEP 2: Parents & Guardians -->
+      <div class="tab-pane fade" id="step2" role="tabpanel">
+        <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-people text-primary me-2"></i>Parent & Guardian Details</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label font-size-12 fw-bold text-muted">Father's Full Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Enter father full name">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label font-size-12 fw-bold text-muted">Father's Occupation</label>
+            <input type="text" class="form-control" placeholder="Profession / Organization">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label font-size-12 fw-bold text-muted">Mother's Full Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Enter mother full name">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label font-size-12 fw-bold text-muted">Mother's Occupation</label>
+            <input type="text" class="form-control" placeholder="Profession / Organization">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">Primary Contact Mobile <span class="text-danger">*</span></label>
+            <input type="tel" class="form-control" placeholder="+91 98XXX XXXXX">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">Parent Email Address</label>
+            <input type="email" class="form-control" placeholder="parent@domain.com">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">Annual Household Income</label>
+            <select class="form-select">
+              <option>Above ₹15 Lakhs</option>
+              <option>₹8 - ₹15 Lakhs</option>
+              <option>₹5 - ₹8 Lakhs</option>
+              <option>Below ₹5 Lakhs</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label font-size-12 fw-bold text-muted">Residential Postal Address <span class="text-danger">*</span></label>
+            <textarea class="form-control" rows="2" placeholder="House #, Street, Locality, City, State, Pin Code"></textarea>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" class="btn btn-light border" onclick="document.getElementById('step1-tab').click();">
+            <i class="bi bi-arrow-left me-1"></i> Back to Step 1
+          </button>
+          <button type="button" class="btn btn-primary px-4 fw-bold" onclick="document.getElementById('step3-tab').click();">
+            Next: Academic & Previous TC <i class="bi bi-arrow-right ms-1"></i>
+          </button>
+        </div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-gender-ambiguous"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
-      <div class="kpi-info">
-        <h6>APAAR IDs Linked</h6>
-        <div class="kpi-value">2,822 / 2,840</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 99.4% MoE Validated</div>
+
+      <!-- STEP 3: Academic & Previous TC -->
+      <div class="tab-pane fade" id="step3" role="tabpanel">
+        <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-building text-primary me-2"></i>Prior School & Academic Transcript</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label font-size-12 fw-bold text-muted">Previous School Name</label>
+            <input type="text" class="form-control" placeholder="e.g. Delhi Public School">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label font-size-12 fw-bold text-muted">Affiliation Board</label>
+            <select class="form-select">
+              <option>CBSE (Central Board)</option>
+              <option>ICSE / ISC Board</option>
+              <option>State Education Board</option>
+              <option>IB / Cambridge International</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label font-size-12 fw-bold text-muted">Last Grade Passed</label>
+            <input type="text" class="form-control" placeholder="e.g. Class 9 Passed">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">Transfer Certificate (TC) Serial #</label>
+            <input type="text" class="form-control" placeholder="e.g. TC-DPS-9481">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">TC Date of Issue</label>
+            <input type="date" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">TC Counter-Signed Status</label>
+            <select class="form-select">
+              <option>Yes, Counter-signed by Education Officer</option>
+              <option>Pending Counter-signature (30-day window)</option>
+              <option>N/A (Direct Entry / Nursery)</option>
+            </select>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" class="btn btn-light border" onclick="document.getElementById('step2-tab').click();">
+            <i class="bi bi-arrow-left me-1"></i> Back to Step 2
+          </button>
+          <button type="button" class="btn btn-primary px-4 fw-bold" onclick="document.getElementById('step4-tab').click();">
+            Next: Health & Documents <i class="bi bi-arrow-right ms-1"></i>
+          </button>
+        </div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-fingerprint"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
-      <div class="kpi-info">
-        <h6>CBSE LOC Registered</h6>
-        <div class="kpi-value">420 Board Batches</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Class 10 & 12 Verified</div>
+
+      <!-- STEP 4: Health & Documents -->
+      <div class="tab-pane fade" id="step4" role="tabpanel">
+        <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-folder-check text-primary me-2"></i>Medical Alerts & Document Uploads</h6>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">Emergency Hotline Contact</label>
+            <input type="tel" class="form-control" placeholder="+91 98XXX XXXXX">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">Preferred Hospital / Clinic</label>
+            <input type="text" class="form-control" placeholder="e.g. Manipal Hospital">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label font-size-12 fw-bold text-muted">Medical Alerts / Allergies</label>
+            <input type="text" class="form-control" placeholder="e.g. Asthma Inhaler, Peanut Allergy">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label font-size-12 fw-bold text-muted">Upload Birth Certificate (PDF/JPG)</label>
+            <input type="file" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label font-size-12 fw-bold text-muted">Upload Transfer Certificate (TC)</label>
+            <input type="file" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label font-size-12 fw-bold text-muted">Upload Aadhaar Card / ID Proof</label>
+            <input type="file" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label font-size-12 fw-bold text-muted">Upload Passport Photograph</label>
+            <input type="file" class="form-control">
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" class="btn btn-light border" onclick="document.getElementById('step3-tab').click();">
+            <i class="bi bi-arrow-left me-1"></i> Back to Step 3
+          </button>
+          <button type="submit" class="btn btn-success px-5 fw-bold shadow-sm">
+            <i class="bi bi-check-circle-fill me-1"></i> Complete Enrollment
+          </button>
+        </div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+
     </div>
-  </div>
+  </form>
 </div>
 
-<!-- Domain Table Filter Bar -->
-<div class="table-filter-bar mb-3">
-  <div class="table-filter-left">
-    <div class="table-search-input">
-      <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search student by name, admission #, roll no, APAAR ID...">
-    </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Academic Grades</option>
-      <option >Class 12 - Senior Sec</option>
-      <option >Class 11 - Senior Sec</option>
-      <option >Class 10 - Secondary</option>
-      <option >Class 9 - Secondary</option>
-      <option >Classes 6–8 - Middle</option>
-      <option >Classes 1–5 - Primary</option>
-    </select>
-    <select class="form-select" style="max-width: 150px;">
-      <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
-    </select>
-  </div>
-  <div class="table-filter-right">
-    <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> verified records</span>
-  </div>
-</div>
-
-<!-- Domain Data Table -->
-<div class="erp-table-responsive mb-0">
-  <table class="erp-table" id="mainDataTable">
-    <thead>
-      <tr>
-        <th>Scholar / Adm #</th>
-        <th>Student Full Name</th>
-        <th>Grade & Section</th>
-        <th>Roll No</th>
-        <th>Father / Guardian</th>
-        <th>Emergency Contact</th>
-        <th>APAAR / Aadhaar UID</th>
-        <th>Status</th>
-        <th class="text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8491</td>
-        <td>
-          <div class="fw-semibold text-dark">Aarav Sharma</div>
-          <small class="text-muted font-size-11">Class 10 - Section A</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Sec A</span></td>
-        <td><small class="text-dark">01</small></td>
-        <td><small class="text-muted font-mono font-size-12">Rajesh Sharma</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98112 34567</span></td>
-        <td><small class="text-muted">APAAR-8941-0294</small></td>
-        <td><span class="badge-status badge-active">Active / Paid</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Add Student (Multi-Step)')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8492</td>
-        <td>
-          <div class="fw-semibold text-dark">Diya Patel</div>
-          <small class="text-muted font-size-11">Class 10 - Section A</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Sec A</span></td>
-        <td><small class="text-dark">02</small></td>
-        <td><small class="text-muted font-mono font-size-12">Bhavin Patel</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98223 45678</span></td>
-        <td><small class="text-muted">APAAR-8941-0295</small></td>
-        <td><span class="badge-status badge-active">Active / Paid</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Add Student (Multi-Step)')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8493</td>
-        <td>
-          <div class="fw-semibold text-dark">Vihaan Singh</div>
-          <small class="text-muted font-size-11">Class 10 - Section B</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Sec B</span></td>
-        <td><small class="text-dark">01</small></td>
-        <td><small class="text-muted font-mono font-size-12">Manpreet Singh</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98334 56789</span></td>
-        <td><small class="text-muted">APAAR-8941-0296</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Add Student (Multi-Step)')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8494</td>
-        <td>
-          <div class="fw-semibold text-dark">Ananya Iyer</div>
-          <small class="text-muted font-size-11">Class 10 - Section B</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Sec B</span></td>
-        <td><small class="text-dark">02</small></td>
-        <td><small class="text-muted font-mono font-size-12">R. Venkatesh Iyer</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98445 67890</span></td>
-        <td><small class="text-muted">APAAR-8941-0297</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Add Student (Multi-Step)')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8495</td>
-        <td>
-          <div class="fw-semibold text-dark">Rohan Gupta</div>
-          <small class="text-muted font-size-11">Class 12 - PCM</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Sec A</span></td>
-        <td><small class="text-dark">14</small></td>
-        <td><small class="text-muted font-mono font-size-12">Sanjay Gupta</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98556 78901</span></td>
-        <td><small class="text-muted">APAAR-8941-0298</small></td>
-        <td><span class="badge-status badge-active">Active / LOC</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Add Student (Multi-Step)')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8496</td>
-        <td>
-          <div class="fw-semibold text-dark">Ishaan Verma</div>
-          <small class="text-muted font-size-11">Class 12 - PCB</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Sec B</span></td>
-        <td><small class="text-dark">08</small></td>
-        <td><small class="text-muted font-mono font-size-12">Dr. Alok Verma</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98667 89012</span></td>
-        <td><small class="text-muted">APAAR-8941-0299</small></td>
-        <td><span class="badge-status badge-active">Active / LOC</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Add Student (Multi-Step)')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8497</td>
-        <td>
-          <div class="fw-semibold text-dark">Meera Reddy</div>
-          <small class="text-muted font-size-11">Class 8 - Section A</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 8 - Sec A</span></td>
-        <td><small class="text-dark">11</small></td>
-        <td><small class="text-muted font-mono font-size-12">K. S. Reddy</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98778 90123</span></td>
-        <td><small class="text-muted">APAAR-8941-0300</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Add Student (Multi-Step)')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8498</td>
-        <td>
-          <div class="fw-semibold text-dark">Kabir Sengupta</div>
-          <small class="text-muted font-size-11">Class 9 - Section C</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 9 - Sec C</span></td>
-        <td><small class="text-dark">06</small></td>
-        <td><small class="text-muted font-mono font-size-12">Debashis Sengupta</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">+91 98889 01234</span></td>
-        <td><small class="text-muted">APAAR-8941-0301</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Add Student (Multi-Step)')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-    </tbody>
-  </table>
-</div>
-
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>
