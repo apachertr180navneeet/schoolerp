@@ -1274,3 +1274,4 @@ for (const mod of submodules) {
 }
 
 console.log(`\nSuccessfully generated ${submodules.length + 1} bespoke Examination & Results submodules.`);
+

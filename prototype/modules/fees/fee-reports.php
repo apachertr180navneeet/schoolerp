@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Comprehensive Fee Reports
+ * EDUSYS PRO - COMPREHENSIVE FEE REPORTS
+ * Dedicated operational interface & fee transactions for Comprehensive Fee Reports
  */
 $page_title = "Comprehensive Fee Reports";
-$page_desc = "Head-wise collection, outstanding and concession exports";
+$page_desc = "Comprehensive accounting dossiers, auditor certification ledgers, class collection rankings, and CSV/PDF tools";
 $active_module = "fees";
 $active_submodule = "fee-reports.php";
 $depth = 2;
@@ -14,349 +15,331 @@ require_once __DIR__ . '/../../includes/sidebar.php';
 require_once __DIR__ . '/../../includes/topbar.php';
 ?>
 
+<!-- Breadcrumb Navigation -->
+<div class="breadcrumb-wrapper mb-3">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0 font-size-13">
+      <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/fees/dashboard.php'); ?>">Fees Management</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
+    </ol>
+  </nav>
+</div>
+
 <!-- Page Header Box -->
-<div class="page-header-box">
+<div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-check2-circle text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-file-earmark-bar-graph-fill text-primary me-2"></i><?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
-  <div class="page-actions-group">
+  <div class="page-actions-group d-flex flex-wrap gap-2">
+    
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
     <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', 'fee-reports_export.csv')" title="Export Table as CSV">
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
+    <button class="btn btn-primary fw-bold" onclick="EduTables.print()">
+      <i class="bi bi-file-earmark-pdf me-1"></i> Print / Save PDF
     </button>
   </div>
 </div>
 
+<!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-primary">
-          <div class="kpi-info">
-            <h6>Total Entries</h6>
-            <div class="kpi-value">1,482</div>
-            <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Synced</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
-        </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-primary">
+      <div class="kpi-info">
+        <h6>Audited Statements</h6>
+        <div class="kpi-value">24 Formats</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle-fill"></i> C.A. & DFRC Approved</div>
       </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-success">
-          <div class="kpi-info">
-            <h6>Active / Verified</h6>
-            <div class="kpi-value">1,390</div>
-            <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 94% Approved</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-warning">
-          <div class="kpi-info">
-            <h6>Pending Review</h6>
-            <div class="kpi-value">68</div>
-            <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> In Workflow</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-hourglass-split"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-info">
-          <div class="kpi-info">
-            <h6>Board Compliant</h6>
-            <div class="kpi-value">100%</div>
-            <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE Validated</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
-        </div>
-      </div>
+      <div class="kpi-icon"><i class="bi bi-file-earmark-check"></i></div>
     </div>
-  
-    
-    
-    <div class="table-filter-bar">
-      <div class="table-filter-left">
-        <div class="table-search-input">
-          <i class="bi bi-search"></i>
-          <input type="text" class="form-control" id="tableSearchInput" placeholder="Search by name, code, reference ID, category...">
-        </div>
-        <select class="form-select" style="max-width: 170px;">
-          <option selected>All Classes</option>
-          <option>Class 10-A</option>
-          <option>Class 10-B</option>
-          <option>Class 12-A (PCM)</option>
-          <option>Class 12-B (PCB)</option>
-          <option>Class 12-C (Comm)</option>
-        </select>
-        <select class="form-select" style="max-width: 150px;">
-          <option selected>All Status</option>
-          <option>Active / Paid</option>
-          <option>Pending</option>
-          <option>Approved</option>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-success">
+      <div class="kpi-info">
+        <h6>Annual Demand YTD</h6>
+        <div class="kpi-value">₹ 6.85 Crores</div>
+        <div class="kpi-trend neutral"><i class="bi bi-info-circle-fill"></i> Total Enrollment Billed</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Collected YTD</h6>
+        <div class="kpi-value">₹ 5.42 Crores</div>
+        <div class="kpi-trend positive"><i class="bi bi-graph-up-arrow"></i> 79.1% Recovered</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-info">
+      <div class="kpi-info">
+        <h6>Export Formats</h6>
+        <div class="kpi-value">Excel / PDF / CSV</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> High Resolution</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-file-earmark-spreadsheet"></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Table Container -->
+<div class="table-container mb-4">
+  <div class="table-header">
+    <div class="table-title">
+      <i class="bi bi-file-earmark-bar-graph-fill text-primary me-2"></i> Comprehensive Fee Reports Ledger
+    </div>
+    <div class="table-actions">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" id="tableSearchInput" class="form-control" placeholder="Search comprehensive fee reports..." onkeyup="EduTables.search('#mainDataTable', this.value)">
+      </div>
+      <div class="filter-dropdown">
+        <select class="form-select form-select-sm" onchange="EduTables.filter('#mainDataTable', this.value)">
+          <option value="">All Records</option>
+          <option value="Active">Active</option>
+          <option value="Paid">Paid</option>
+          <option value="Pending">Pending</option>
+          <option value="Overdue">Overdue</option>
         </select>
       </div>
-
-      <div class="table-filter-right">
-        <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> records</span>
-      </div>
     </div>
-  
-    
-    <div class="erp-table-responsive mb-0">
-      <table class="erp-table" id="mainDataTable">
-        <thead>
-          
-      <tr>
-        <th class="sortable">Receipt / Inv #</th>
-        <th class="sortable">Student & Class</th>
-        <th>Parent / Guardian</th>
-        <th class="sortable">Fee Category</th>
-        <th class="sortable text-end">Amount (₹)</th>
-        <th>Payment Mode</th>
-        <th>Date</th>
-        <th>Status</th>
-        <th class="text-center">Actions</th>
-      </tr>
-    
-        </thead>
-        <tbody>
-          
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-9182</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">AS</div>
-            <div>
-              <div class="table-user-name">Aarav Sharma</div>
-              <div class="table-user-sub">Class 10-A</div>
-            </div>
-          </div>
-        </td>
-        <td><small class="text-muted">Rajesh Sharma (+91 98112 34567)</small></td>
-        <td><span class="font-size-13">Term 2 Tuition + Transport</span></td>
-        <td class="text-end fw-bold font-size-14 text-dark dark-text-white">₹28,500</td>
-        <td><span class="badge bg-light text-muted border font-size-12">Razorpay (Online)</span></td>
-        <td><small class="text-muted">27 Oct 2024</small></td>
-        <td><span class="badge-status badge-paid">Paid</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Comprehensive Fee Reports')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-9181</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">DP</div>
-            <div>
-              <div class="table-user-name">Diya Patel</div>
-              <div class="table-user-sub">Class 10-A</div>
-            </div>
-          </div>
-        </td>
-        <td><small class="text-muted">Bhavin Patel (+91 98223 45678)</small></td>
-        <td><span class="font-size-13">Term 2 Tuition Fee</span></td>
-        <td class="text-end fw-bold font-size-14 text-dark dark-text-white">₹22,500</td>
-        <td><span class="badge bg-light text-muted border font-size-12">Net Banking</span></td>
-        <td><small class="text-muted">27 Oct 2024</small></td>
-        <td><span class="badge-status badge-paid">Paid</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Comprehensive Fee Reports')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-9180</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">MR</div>
-            <div>
-              <div class="table-user-name">Meera Reddy</div>
-              <div class="table-user-sub">Class 8-A</div>
-            </div>
-          </div>
-        </td>
-        <td><small class="text-muted">K. S. Reddy (+91 98778 90123)</small></td>
-        <td><span class="font-size-13">Quarter 3 Fee + Lab</span></td>
-        <td class="text-end fw-bold font-size-14 text-dark dark-text-white">₹24,200</td>
-        <td><span class="badge bg-light text-muted border font-size-12">UPI (Google Pay)</span></td>
-        <td><small class="text-muted">26 Oct 2024</small></td>
-        <td><span class="badge-status badge-paid">Paid</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Comprehensive Fee Reports')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-9179</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">VS</div>
-            <div>
-              <div class="table-user-name">Vihaan Singh</div>
-              <div class="table-user-sub">Class 10-B</div>
-            </div>
-          </div>
-        </td>
-        <td><small class="text-muted">Manpreet Singh (+91 98334 56789)</small></td>
-        <td><span class="font-size-13">Annual Installment 2</span></td>
-        <td class="text-end fw-bold font-size-14 text-dark dark-text-white">₹15,000</td>
-        <td><span class="badge bg-light text-muted border font-size-12">HDFC Cheque #491201</span></td>
-        <td><small class="text-muted">25 Oct 2024</small></td>
-        <td><span class="badge-status badge-partial">Partial</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Comprehensive Fee Reports')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-9178</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">KS</div>
-            <div>
-              <div class="table-user-name">Kabir Sengupta</div>
-              <div class="table-user-sub">Class 9-C</div>
-            </div>
-          </div>
-        </td>
-        <td><small class="text-muted">Debashis Sengupta (+91 98889 01234)</small></td>
-        <td><span class="font-size-13">Tuition + Computer Fee</span></td>
-        <td class="text-end fw-bold font-size-14 text-dark dark-text-white">₹26,000</td>
-        <td><span class="badge bg-light text-muted border font-size-12">Cash Counter</span></td>
-        <td><small class="text-muted">25 Oct 2024</small></td>
-        <td><span class="badge-status badge-paid">Paid</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Comprehensive Fee Reports')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-9177</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">RG</div>
-            <div>
-              <div class="table-user-name">Rohan Gupta</div>
-              <div class="table-user-sub">Class 12-A</div>
-            </div>
-          </div>
-        </td>
-        <td><small class="text-muted">Sanjay Gupta (+91 98556 78901)</small></td>
-        <td><span class="font-size-13">CBSE Board Exam Dues</span></td>
-        <td class="text-end fw-bold font-size-14 text-dark dark-text-white">₹4,500</td>
-        <td><span class="badge bg-light text-muted border font-size-12">Counter UPI</span></td>
-        <td><small class="text-muted">24 Oct 2024</small></td>
-        <td><span class="badge-status badge-unpaid">Due</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Comprehensive Fee Reports')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-9176</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">AI</div>
-            <div>
-              <div class="table-user-name">Ananya Iyer</div>
-              <div class="table-user-sub">Class 10-B</div>
-            </div>
-          </div>
-        </td>
-        <td><small class="text-muted">R. Venkatesh Iyer (+91 98445 67890)</small></td>
-        <td><span class="font-size-13">Quarter 3 Tuition</span></td>
-        <td class="text-end fw-bold font-size-14 text-dark dark-text-white">₹22,500</td>
-        <td><span class="badge bg-light text-muted border font-size-12">PayTM Gateway</span></td>
-        <td><small class="text-muted">24 Oct 2024</small></td>
-        <td><span class="badge-status badge-paid">Paid</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Comprehensive Fee Reports')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-9175</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">IV</div>
-            <div>
-              <div class="table-user-name">Ishaan Verma</div>
-              <div class="table-user-sub">Class 12-B</div>
-            </div>
-          </div>
-        </td>
-        <td><small class="text-muted">Dr. Alok Verma (+91 98667 89012)</small></td>
-        <td><span class="font-size-13">Hostel & Mess Quarter 3</span></td>
-        <td class="text-end fw-bold font-size-14 text-dark dark-text-white">₹38,000</td>
-        <td><span class="badge bg-light text-muted border font-size-12">NEFT Bank Transfer</span></td>
-        <td><small class="text-muted">23 Oct 2024</small></td>
-        <td><span class="badge-status badge-paid">Paid</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Comprehensive Fee Reports')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-        </tbody>
-      </table>
-    </div>
+  </div>
 
-    <!-- Pagination -->
-    <div class="erp-pagination-bar">
-      <div class="pagination-info">
-        Showing 1 to 8 of 1,482 entries
-      </div>
-      <ul class="pagination-custom">
+  <div class="table-responsive">
+    <table class="table erp-table table-hover" id="mainDataTable">
+      <thead>
+        <tr>
+          <th>Report Code</th>
+          <th>Report Description</th>
+          <th>Applicable Authority</th>
+          <th>Last Generated</th>
+          <th>Generated By</th>
+          <th>Format</th>
+          <th>Action</th>
+          <th class="text-center" style="width: 120px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><span class="badge bg-dark">FEE-REP-01</span></td>
+          <td><strong>Class-wise Outstanding & Aging Analysis Roster</strong></td>
+          <td>School Management Board</td>
+          <td>28-Oct-2026</td>
+          <td>Finance Controller</td>
+          <td>PDF / Official Ledger</td>
+          <td><button class="btn btn-xs btn-outline-primary"><i class="bi bi-download me-1"></i>Download</button></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Summary"><i class="bi bi-eye"></i></button>
+            <button class="action-btn text-primary" onclick="EduTables.exportCSV('#mainDataTable', 'fee-reports_download.csv')" title="Download Statement"><i class="bi bi-download"></i></button>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge bg-dark">FEE-REP-02</span></td>
+          <td><strong>Annual Head-wise Demand vs Collection Reconciliation</strong></td>
+          <td>Chartered Accountant Audit</td>
+          <td>28-Oct-2026</td>
+          <td>Finance Controller</td>
+          <td>Excel Spreadsheet</td>
+          <td><button class="btn btn-xs btn-outline-success"><i class="bi bi-file-earmark-excel me-1"></i>Export</button></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Summary"><i class="bi bi-eye"></i></button>
+            <button class="action-btn text-primary" onclick="EduTables.exportCSV('#mainDataTable', 'fee-reports_download.csv')" title="Download Statement"><i class="bi bi-download"></i></button>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge bg-dark">FEE-REP-03</span></td>
+          <td><strong>Fee Concession & Scholarship Audit Roster (EWS/RTE/Staff)</strong></td>
+          <td>State Fee Regulatory Comm</td>
+          <td>26-Oct-2026</td>
+          <td>Principal Office</td>
+          <td>PDF Document</td>
+          <td><button class="btn btn-xs btn-outline-primary"><i class="bi bi-download me-1"></i>Download</button></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Summary"><i class="bi bi-eye"></i></button>
+            <button class="action-btn text-primary" onclick="EduTables.exportCSV('#mainDataTable', 'fee-reports_download.csv')" title="Download Statement"><i class="bi bi-download"></i></button>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge bg-dark">FEE-REP-04</span></td>
+          <td><strong>Bank Deposit Challan & Payment Gateway Settlement Register</strong></td>
+          <td>Internal Accounts Audit</td>
+          <td>27-Oct-2026</td>
+          <td>Cashier Counter 1</td>
+          <td>PDF Document</td>
+          <td><button class="btn btn-xs btn-outline-primary"><i class="bi bi-download me-1"></i>Download</button></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Summary"><i class="bi bi-eye"></i></button>
+            <button class="action-btn text-primary" onclick="EduTables.exportCSV('#mainDataTable', 'fee-reports_download.csv')" title="Download Statement"><i class="bi bi-download"></i></button>
+          </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-footer">
+    <div class="table-info font-size-13 text-muted">
+      Showing 1 to 4 of 4 entries (Academic Financial Year 2026-27)
+    </div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination pagination-sm mb-0">
         <li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a></li>
         <li class="page-item active"><a class="page-link" href="#">1</a></li>
         <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">...</a></li>
-        <li class="page-item"><a class="page-link" href="#">185</a></li>
         <li class="page-item"><a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a></li>
       </ul>
+    </nav>
+  </div>
+</div>
+
+<!-- Modal: Add New Record -->
+<div class="modal fade" id="addNewRecordModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-earmark-bar-graph-fill text-primary me-2"></i>Create Record</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="event.preventDefault(); alert('Fee entry saved successfully to finance ledger!'); bootstrap.Modal.getInstance(document.getElementById('addNewRecordModal')).hide();">
+          <div class="row g-3">
+            
+            <div class="col-md-6">
+              <label class="form-label fw-semibold font-size-13">Fee Category / Type</label>
+              
+              <select class="form-select form-select-sm">
+                <option>Regular Tuition Fee</option><option>Transport Fee Slab</option><option>Admission / Registration</option><option>Hostel & Boarding</option><option>Examination & Lab Fee</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold font-size-13">Class / Target Group</label>
+              
+              <select class="form-select form-select-sm">
+                <option>All Classes (Composite)</option><option>Class X (Secondary)</option><option>Class XII (Senior Secondary)</option><option>Primary Wing (I-V)</option><option>Pre-Primary / KG</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold font-size-13">Fee Head Name / Title</label>
+              
+              <input type="text" class="form-control form-control-sm" placeholder="e.g. Quarterly Composite Tuition Fee">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold font-size-13">Applicable Amount (₹)</label>
+              
+              <input type="number" class="form-control form-control-sm" placeholder="e.g. 18500">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold font-size-13">Due Date / Frequency</label>
+              
+              <select class="form-select form-select-sm">
+                <option>10th of every Month</option><option>Quarterly (10 Apr, 10 Jul, 10 Oct, 10 Jan)</option><option>Annual (One-Time at Admission)</option><option>Half-Yearly</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer px-0 pb-0 pt-3 mt-3 border-top">
+            <button type="button" class="btn btn-sm btn-light border" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-sm btn-primary fw-bold"><i class="bi bi-check2 me-1"></i> Save to Ledger</button>
+          </div>
+        </form>
+      </div>
     </div>
-  
-  
+  </div>
+</div>
 
-      
+<!-- Modal: Tool Modal (if applicable) -->
+<div class="modal fade" id="actionToolModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-earmark-bar-graph-fill text-primary me-2"></i>Run Financial Batch Tool</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info py-2 font-size-13">
+          <i class="bi bi-info-circle-fill me-1"></i> Running this operation will calculate demand, generate fee schedules, or issue alerts according to school accounts rules.
+        </div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label font-size-13 fw-semibold">Billing Cycle / Quarter</label>
+            <select class="form-select form-select-sm">
+              <option>Quarter 3 (Oct - Dec 2026)</option>
+              <option>Quarter 4 (Jan - Mar 2027)</option>
+              <option>Annual Advance Demand</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label font-size-13 fw-semibold">Target Student Cohort</label>
+            <select class="form-select form-select-sm">
+              <option>All Enrolled Students (1,420)</option>
+              <option>Defaulters Only (>15 Days Overdue)</option>
+              <option>Transport Opted Students Only</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer px-0 pb-0 pt-3 mt-3 border-top">
+          <button type="button" class="btn btn-sm btn-light border" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-sm btn-primary fw-bold" onclick="alert('Batch process executed successfully!'); bootstrap.Modal.getInstance(document.getElementById('actionToolModal')).hide();"><i class="bi bi-lightning-charge me-1"></i> Execute Process</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<?php
-require_once __DIR__ . '/../../includes/footer.php';
-?>
+<!-- Modal: View Record Summary -->
+<div class="modal fade" id="viewRecordModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-receipt text-primary me-2"></i>Transaction Dossier</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body font-size-13">
+        <div class="p-3 bg-light rounded mb-3 border">
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Account Head:</span>
+            <span class="fw-bold text-primary">Comprehensive Fee Reports</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Financial Year:</span>
+            <span class="fw-semibold">2026-2027</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Bank Reconciliation:</span>
+            <span class="badge bg-success-subtle text-success border"><i class="bi bi-check2-circle me-1"></i>Reconciled</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span class="text-muted">Audit Verification:</span>
+            <span class="text-muted small">C.A. Audited & Tax Compliant</span>
+          </div>
+        </div>
+        <p class="text-muted small mb-0"><i class="bi bi-lock-fill me-1"></i> Digitally logged with encrypted transaction checksum.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-primary" onclick="window.print()"><i class="bi bi-printer me-1"></i> Print Receipt</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
