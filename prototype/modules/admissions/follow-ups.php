@@ -29,13 +29,10 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-headset text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
-    <a href="<?php echo base_url('modules/admissions/dashboard.php'); ?>" class="btn btn-light border" title="Back to Admissions Command Center">
-      <i class="bi bi-speedometer2 me-1"></i> Dashboard
-    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -43,7 +40,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
     <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
+      <i class="bi bi-calendar-plus me-1"></i> Schedule Follow-up
     </button>
   </div>
 </div>
@@ -139,16 +136,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">FLW-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">FOL-2025-0412</td>
         <td>
           <div class="fw-semibold text-dark">Aarav Singhania</div>
-          <small class="text-muted font-size-11">Vikram Singhania (Father)</small>
+          <small class="text-muted font-size-11">Pre-Primary Wing</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Pre-Primary Wing</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Class 1 - Nursery</span></td>
         <td><small class="text-dark">Mrs. Shalini Verma</small></td>
-        <td><small class="text-muted font-mono font-size-12">Phone Call</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Impressed by STEM lab & transport route</span></td>
-        <td><small class="text-muted">Today (2:30 PM)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Phone Call (10 mins)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Parent very eager for Nursery; invited for campus visit tomorrow 11 AM</span></td>
+        <td><small class="text-muted">29 Oct 2024</small></td>
         <td><span class="badge-status badge-active">Visit Booked</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -160,17 +157,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">FLW-8492</td>
+        <td class="fw-bold text-primary font-mono font-size-13">FOL-2025-0411</td>
         <td>
           <div class="fw-semibold text-dark">Meera Krishnan</div>
-          <small class="text-muted font-size-11">Dr. R. Krishnan</small>
+          <small class="text-muted font-size-11">Middle Wing</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Class 6 - Middle</span></td>
         <td><small class="text-dark">Mr. Deepak Rawat</small></td>
-        <td><small class="text-muted font-mono font-size-12">WhatsApp</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Requested fee structure for Class 6 & 8</span></td>
-        <td><small class="text-muted">Tomorrow (11 AM)</small></td>
-        <td><span class="badge-status badge-active">Interested</span></td>
+        <td><small class="text-muted font-mono font-size-12">WhatsApp Chat</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Shared fee structure and ICSE to CBSE transition guide; positive feedback</span></td>
+        <td><small class="text-muted">30 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Form Sent</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -181,17 +178,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">FLW-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">FOL-2025-0410</td>
         <td>
           <div class="fw-semibold text-dark">Devansh Bhardwaj</div>
-          <small class="text-muted font-size-11">Alok Bhardwaj</small>
+          <small class="text-muted font-size-11">Senior Secondary</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Class 11 - Science (PCM)</span></td>
         <td><small class="text-dark">Dr. Sunita Kapoor</small></td>
-        <td><small class="text-muted font-mono font-size-12">In-Person</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Discussed JEE coaching tie-up in school</span></td>
-        <td><small class="text-muted">31 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Form Purchased</span></td>
+        <td><small class="text-muted font-mono font-size-12">In-Person Session</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Father discussed IIT-JEE coaching tie-up and integrated lab facilities</span></td>
+        <td><small class="text-muted">29 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Enrolled</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -202,16 +199,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">FLW-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">FOL-2025-0409</td>
         <td>
           <div class="fw-semibold text-dark">Ananya Deshpande</div>
-          <small class="text-muted font-size-11">Sameer Deshpande</small>
+          <small class="text-muted font-size-11">Secondary Wing</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Class 9 - Secondary</span></td>
         <td><small class="text-dark">Mrs. Shalini Verma</small></td>
-        <td><small class="text-muted font-mono font-size-12">Phone Call</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Father traveling, callback requested next week</span></td>
-        <td><small class="text-muted">04 Nov 2024</small></td>
+        <td><small class="text-muted font-mono font-size-12">Phone Call (6 mins)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Parent requested callback after 5 PM due to office meetings</span></td>
+        <td><small class="text-muted">31 Oct 2024</small></td>
         <td><span class="badge-status badge-pending">Callback Req</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -223,17 +220,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">FLW-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">FOL-2025-0408</td>
         <td>
           <div class="fw-semibold text-dark">Tanvi Choudhary</div>
-          <small class="text-muted font-size-11">Raman Choudhary</small>
+          <small class="text-muted font-size-11">Senior Secondary</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Class 11 - Commerce</span></td>
         <td><small class="text-dark">Mr. Deepak Rawat</small></td>
-        <td><small class="text-muted font-mono font-size-12">Email</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Prospectus link accessed, awaiting form fee</span></td>
-        <td><small class="text-muted">Today (4:00 PM)</small></td>
-        <td><span class="badge-status badge-active">Interested</span></td>
+        <td><small class="text-muted font-mono font-size-12">Phone Call (8 mins)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Application purchased online #ONL-2025-0681; entrance test scheduled</span></td>
+        <td><small class="text-muted">Completed</small></td>
+        <td><span class="badge-status badge-active">Converted</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -244,17 +241,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">FLW-8496</td>
+        <td class="fw-bold text-primary font-mono font-size-13">FOL-2025-0407</td>
         <td>
           <div class="fw-semibold text-dark">Ishaan Mukherjee</div>
-          <small class="text-muted font-size-11">Subhash Mukherjee</small>
+          <small class="text-muted font-size-11">Primary Wing</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Class 4 - Primary</span></td>
         <td><small class="text-dark">Mrs. Shalini Verma</small></td>
-        <td><small class="text-muted font-mono font-size-12">Phone Call</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Looking for day-boarding options only</span></td>
+        <td><small class="text-muted font-mono font-size-12">WhatsApp Broadcast</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Sent digital prospectus; parent opened message; follow up on Saturday</span></td>
         <td><small class="text-muted">02 Nov 2024</small></td>
-        <td><span class="badge-status badge-pending">Exploring</span></td>
+        <td><span class="badge-status badge-pending">Awaiting Reply</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -265,16 +262,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">FLW-8497</td>
+        <td class="fw-bold text-primary font-mono font-size-13">FOL-2025-0406</td>
         <td>
           <div class="fw-semibold text-dark">Riyaan Kapoor</div>
-          <small class="text-muted font-size-11">Kunal Kapoor</small>
+          <small class="text-muted font-size-11">Pre-Primary Wing</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Pre-Primary Wing</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Class 1 - Prep</span></td>
         <td><small class="text-dark">Dr. Sunita Kapoor</small></td>
-        <td><small class="text-muted font-mono font-size-12">Phone Call</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Confirmed interview slot for Thursday</span></td>
-        <td><small class="text-muted">31 Oct 2024</small></td>
+        <td><small class="text-muted font-mono font-size-12">Phone Call (12 mins)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Discussed transport bus route for Dwarka Sector 12; confirmed feasible</span></td>
+        <td><small class="text-muted">30 Oct 2024</small></td>
         <td><span class="badge-status badge-active">Visit Booked</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -286,17 +283,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">FLW-8498</td>
+        <td class="fw-bold text-primary font-mono font-size-13">FOL-2025-0405</td>
         <td>
           <div class="fw-semibold text-dark">Navya Pillai</div>
-          <small class="text-muted font-size-11">Suresh Pillai</small>
+          <small class="text-muted font-size-11">Senior Secondary</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Class 11 - Humanities</span></td>
         <td><small class="text-dark">Mr. Deepak Rawat</small></td>
-        <td><small class="text-muted font-mono font-size-12">WhatsApp</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">CBSE Humanities subject basket shared</span></td>
-        <td><small class="text-muted">01 Nov 2024</small></td>
-        <td><span class="badge-status badge-active">Form Purchased</span></td>
+        <td><small class="text-muted font-mono font-size-12">In-Person Session</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Student interested in Psychology and Fine Arts; syllabus explained</span></td>
+        <td><small class="text-muted">02 Nov 2024</small></td>
+        <td><span class="badge-status badge-active">Hot Lead</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>

@@ -13,6 +13,9 @@ const submodulesData = {
   // 1. enquiries.php
   'enquiries.php': {
     title: 'Admission Enquiries',
+    icon: 'bi-telephone-inbound-fill',
+    actionBtnText: 'Record New Enquiry',
+    actionBtnIcon: 'bi-plus-lg',
     desc: 'Prospective student enquiry registry, lead scoring, and counselor allocation desk',
     kpi1: { title: "Total Enquiries", val: "1,248 Leads", trend: "+24% YoY Growth", icon: "bi-telephone-inbound-fill", color: "kpi-primary" },
     kpi2: { title: "Hot / Warm Leads", val: "482 Active", trend: "High Conversion Intent", icon: "bi-fire", color: "kpi-warning" },
@@ -38,6 +41,9 @@ const submodulesData = {
   // 2. follow-ups.php
   'follow-ups.php': {
     title: 'Enquiry Follow-ups',
+    icon: 'bi-headset',
+    actionBtnText: 'Schedule Follow-up',
+    actionBtnIcon: 'bi-calendar-plus',
     desc: 'Telephonic, WhatsApp, and in-person counselor interaction tracking and dispositions',
     kpi1: { title: "Calls Scheduled", val: "64 Pending", trend: "Today's Worklist", icon: "bi-telephone-outbound-fill", color: "kpi-primary" },
     kpi2: { title: "Calls Logged Today", val: "38 Completed", trend: "Avg Duration 5m 40s", icon: "bi-headset", color: "kpi-info" },
@@ -49,54 +55,60 @@ const submodulesData = {
     statusFilterOptions: ["All Dispositions", "Interested & Form Sent", "Callback Requested", "Campus Visit Booked", "Fee Structure Shared", "Not Interested"],
     headers: ["Follow-up ID", "Prospective Student", "Applied Grade", "Assigned Counselor", "Channel", "Counselor Remarks", "Callback Date", "Disposition"],
     rows: [
-      { c1: "FLW-8491", c2: "Aarav Singhania", sub: "Vikram Singhania (Father)", c3: "Pre-Primary Wing", c4: "Mrs. Shalini Verma", c5: "Phone Call", c6: "Impressed by STEM lab & transport route", c7: "Today (2:30 PM)", badge: "badge-active", status: "Visit Booked" },
-      { c1: "FLW-8492", c2: "Meera Krishnan", sub: "Dr. R. Krishnan", c3: "Middle Wing", c4: "Mr. Deepak Rawat", c5: "WhatsApp", c6: "Requested fee structure for Class 6 & 8", c7: "Tomorrow (11 AM)", badge: "badge-active", status: "Interested" },
-      { c1: "FLW-8493", c2: "Devansh Bhardwaj", sub: "Alok Bhardwaj", c3: "Senior Secondary", c4: "Dr. Sunita Kapoor", c5: "In-Person", c6: "Discussed JEE coaching tie-up in school", c7: "31 Oct 2024", badge: "badge-active", status: "Form Purchased" },
-      { c1: "FLW-8494", c2: "Ananya Deshpande", sub: "Sameer Deshpande", c3: "Secondary Wing", c4: "Mrs. Shalini Verma", c5: "Phone Call", c6: "Father traveling, callback requested next week", c7: "04 Nov 2024", badge: "badge-pending", status: "Callback Req" },
-      { c1: "FLW-8495", c2: "Tanvi Choudhary", sub: "Raman Choudhary", c3: "Senior Secondary", c4: "Mr. Deepak Rawat", c5: "Email", c6: "Prospectus link accessed, awaiting form fee", c7: "Today (4:00 PM)", badge: "badge-active", status: "Interested" },
-      { c1: "FLW-8496", c2: "Ishaan Mukherjee", sub: "Subhash Mukherjee", c3: "Primary Wing", c4: "Mrs. Shalini Verma", c5: "Phone Call", c6: "Looking for day-boarding options only", c7: "02 Nov 2024", badge: "badge-pending", status: "Exploring" },
-      { c1: "FLW-8497", c2: "Riyaan Kapoor", sub: "Kunal Kapoor", c3: "Pre-Primary Wing", c4: "Dr. Sunita Kapoor", c5: "Phone Call", c6: "Confirmed interview slot for Thursday", c7: "31 Oct 2024", badge: "badge-active", status: "Visit Booked" },
-      { c1: "FLW-8498", c2: "Navya Pillai", sub: "Suresh Pillai", c3: "Senior Secondary", c4: "Mr. Deepak Rawat", c5: "WhatsApp", c6: "CBSE Humanities subject basket shared", c7: "01 Nov 2024", badge: "badge-active", status: "Form Purchased" }
+      { c1: "FOL-2025-0412", c2: "Aarav Singhania", sub: "Pre-Primary Wing", c3: "Class 1 - Nursery", c4: "Mrs. Shalini Verma", c5: "Phone Call (10 mins)", c6: "Parent very eager for Nursery; invited for campus visit tomorrow 11 AM", c7: "29 Oct 2024", badge: "badge-active", status: "Visit Booked" },
+      { c1: "FOL-2025-0411", c2: "Meera Krishnan", sub: "Middle Wing", c3: "Class 6 - Middle", c4: "Mr. Deepak Rawat", c5: "WhatsApp Chat", c6: "Shared fee structure and ICSE to CBSE transition guide; positive feedback", c7: "30 Oct 2024", badge: "badge-active", status: "Form Sent" },
+      { c1: "FOL-2025-0410", c2: "Devansh Bhardwaj", sub: "Senior Secondary", c3: "Class 11 - Science (PCM)", c4: "Dr. Sunita Kapoor", c5: "In-Person Session", c6: "Father discussed IIT-JEE coaching tie-up and integrated lab facilities", c7: "29 Oct 2024", badge: "badge-active", status: "Enrolled" },
+      { c1: "FOL-2025-0409", c2: "Ananya Deshpande", sub: "Secondary Wing", c3: "Class 9 - Secondary", c4: "Mrs. Shalini Verma", c5: "Phone Call (6 mins)", c6: "Parent requested callback after 5 PM due to office meetings", c7: "31 Oct 2024", badge: "badge-pending", status: "Callback Req" },
+      { c1: "FOL-2025-0408", c2: "Tanvi Choudhary", sub: "Senior Secondary", c3: "Class 11 - Commerce", c4: "Mr. Deepak Rawat", c5: "Phone Call (8 mins)", c6: "Application purchased online #ONL-2025-0681; entrance test scheduled", c7: "Completed", badge: "badge-active", status: "Converted" },
+      { c1: "FOL-2025-0407", c2: "Ishaan Mukherjee", sub: "Primary Wing", c3: "Class 4 - Primary", c4: "Mrs. Shalini Verma", c5: "WhatsApp Broadcast", c6: "Sent digital prospectus; parent opened message; follow up on Saturday", c7: "02 Nov 2024", badge: "badge-pending", status: "Awaiting Reply" },
+      { c1: "FOL-2025-0406", c2: "Riyaan Kapoor", sub: "Pre-Primary Wing", c3: "Class 1 - Prep", c4: "Dr. Sunita Kapoor", c5: "Phone Call (12 mins)", c6: "Discussed transport bus route for Dwarka Sector 12; confirmed feasible", c7: "30 Oct 2024", badge: "badge-active", status: "Visit Booked" },
+      { c1: "FOL-2025-0405", c2: "Navya Pillai", sub: "Senior Secondary", c3: "Class 11 - Humanities", c4: "Mr. Deepak Rawat", c5: "In-Person Session", c6: "Student interested in Psychology and Fine Arts; syllabus explained", c7: "02 Nov 2024", badge: "badge-active", status: "Hot Lead" }
     ]
   },
 
   // 3. lead-sources.php
   'lead-sources.php': {
     title: 'Lead Sources',
-    desc: 'Admissions marketing channel attribution, digital ROI, and referral source metrics',
-    kpi1: { title: "Top Source", val: "Website (42%)", trend: "524 Qualified Leads", icon: "bi-globe2", color: "kpi-primary" },
-    kpi2: { title: "Referral Yield", val: "324 Leads", trend: "26% Word of Mouth", icon: "bi-people-fill", color: "kpi-success" },
-    kpi3: { title: "Walk-in Counters", val: "200 Enquiries", trend: "16% Front Desk Traffic", icon: "bi-building-fill", color: "kpi-info" },
-    kpi4: { title: "Marketing Spend", val: "₹1,85,000", trend: "Avg Cost/Lead ₹148", icon: "bi-pie-chart-fill", color: "kpi-warning" },
-    filterPlaceholder: "Search channel name, campaign ref, medium...",
-    filterOptions: ["All Source Categories", "Digital & Web Portal", "Parent & Alumni Referral", "Direct Walk-in", "Social Media Campaigns", "Print & Outdoor Ads"],
-    filterOptionName: "Channel Category",
-    statusFilterOptions: ["All Status", "High Performing", "Steady", "Optimizing", "Seasonal"],
-    headers: ["Source Code", "Channel Name", "Channel Category", "Assigned Lead Manager", "Leads Generated", "Conversion %", "Cost / Lead (₹)", "Status"],
+    icon: 'bi-diagram-3-fill',
+    actionBtnText: 'Add Lead Channel',
+    actionBtnIcon: 'bi-plus-lg',
+    desc: 'Multi-channel acquisition attribution: Website, Social Ads, Parent Referrals, Education Fairs, and Print Banners',
+    kpi1: { title: "Top Source", val: "Google Search (42%)", trend: "8.4% Conversion Rate", icon: "bi-google", color: "kpi-primary" },
+    kpi2: { title: "Parent Referrals", val: "284 Leads (23%)", trend: "Highest 78% Enroll Yield", icon: "bi-people-fill", color: "kpi-success" },
+    kpi3: { title: "Active Campaigns", val: "8 Live Channels", trend: "Autumn Intake 2025-26", icon: "bi-megaphone-fill", color: "kpi-info" },
+    kpi4: { title: "Cost Per Lead", val: "₹420 Avg", trend: "-18% Lower YoY", icon: "bi-currency-rupee", color: "kpi-warning" },
+    filterPlaceholder: "Search channel name, campaign ID, manager...",
+    filterOptions: ["All Source Types", "Digital Search & PPC", "Parent & Alumni Referrals", "Social Media (Instagram/FB)", "Education Expos & Walk-ins", "Outdoor Hoardings"],
+    filterOptionName: "Source Category",
+    statusFilterOptions: ["All Status", "Active Campaign", "Paused", "Seasonal", "Completed"],
+    headers: ["Channel Code", "Acquisition Channel", "Category", "Total Leads", "Applications", "Admissions Done", "Cost / Lead", "Performance"],
     rows: [
-      { c1: "SRC-WEB-01", c2: "Official Website Portal", sub: "Organic Search & Direct URL", c3: "Digital Portal", c4: "Digital Media Lead", c5: "524 Leads", c6: "48.2% Yield", c7: "₹0 (Organic)", badge: "badge-active", status: "High Performing" },
-      { c1: "SRC-REF-02", c2: "Parent & Alumni Network", sub: "Sibling & Family Referrals", c3: "Referral Program", c4: "Dean Admissions", c5: "324 Leads", c6: "72.4% Yield", c7: "₹0 (Referral)", badge: "badge-active", status: "High Performing" },
-      { c1: "SRC-WLK-03", c2: "Campus Front Desk Walk-ins", sub: "Physical In-Person Inquiries", c3: "Front Office", c4: "Head Receptionist", c5: "200 Leads", c6: "61.0% Yield", c7: "₹85 / Visitor", badge: "badge-active", status: "Steady" },
-      { c1: "SRC-SOC-04", c2: "Meta & Instagram Ads", sub: "Spring 2025 Intake Campaign", c3: "Digital Campaign", c4: "Growth Agency", c5: "137 Leads", c6: "34.5% Yield", c7: "₹420 / Lead", badge: "badge-pending", status: "Optimizing" },
-      { c1: "SRC-GGL-05", c2: "Google Ads (Search)", sub: "Best CBSE School Near Me", c3: "Paid Search", c4: "Growth Agency", c5: "85 Leads", c6: "41.2% Yield", c7: "₹650 / Lead", badge: "badge-active", status: "Steady" },
-      { c1: "SRC-PRT-06", c2: "Newspaper Inserts (TOI/HT)", sub: "Admission Open Display Ads", c3: "Print Media", c4: "PR Desk", c5: "45 Leads", c6: "28.0% Yield", c7: "₹890 / Lead", badge: "badge-inactive", status: "Seasonal" },
-      { c1: "SRC-FAR-07", c2: "Education World School Fair", sub: "Annual Exhibition Counter", c3: "Event / Expo", c4: "Admissions Team", c5: "32 Leads", c6: "38.5% Yield", c7: "₹1,200 / Lead", badge: "badge-pending", status: "Seasonal" },
-      { c1: "SRC-AGY-08", c2: "Corporate Tie-ups (IT Parks)", sub: "DLF Cybercity Special Quota", c3: "Corporate Outreach", c4: "Liaison Officer", c5: "28 Leads", c6: "68.0% Yield", c7: "₹150 / Lead", badge: "badge-active", status: "Steady" }
+      { c1: "SRC-GOOGLE", c2: "Google Organic & Ads (SEO/SEM)", sub: "Campaign: CBSE South Delhi", c3: "Digital Search", c4: "524 Leads", c5: "210 Forms", c6: "84 Enrolled", c7: "₹380", badge: "badge-active", status: "High Yield" },
+      { c1: "SRC-REFERRAL", c2: "Parent & Staff Word-of-Mouth", sub: "Sibling & Friend Circle", c3: "Referral Network", c4: "284 Leads", c5: "196 Forms", c6: "142 Enrolled", c7: "₹0 (Organic)", badge: "badge-active", status: "Top ROI (78%)" },
+      { c1: "SRC-INSTA", c2: "Instagram & Facebook Meta Ads", sub: "Video Tour of Campus", c3: "Social Media", c4: "186 Leads", c5: "62 Forms", c6: "24 Enrolled", c7: "₹520", badge: "badge-active", status: "Good Reach" },
+      { c1: "SRC-WALKIN", c2: "Direct Campus Walk-In Reception", sub: "Neighbourhood Families", c3: "Direct Footfall", c4: "112 Leads", c5: "88 Forms", c6: "45 Enrolled", c7: "₹0", badge: "badge-active", status: "High Intent" },
+      { c1: "SRC-EXPO", c2: "World Education Fair (Pragati Maidan)", sub: "Stall #B-24 Booth", c3: "Education Expo", c4: "74 Leads", c5: "38 Forms", c6: "16 Enrolled", c7: "₹890", badge: "badge-pending", status: "Moderate" },
+      { c1: "SRC-HOARDING", c2: "Metro Pillar Banners (Sector 12 & 14)", sub: "Outdoor Display 90 Days", c3: "Outdoor Print", c4: "42 Leads", c5: "18 Forms", c6: "8 Enrolled", c7: "₹1,240", badge: "badge-pending", status: "Brand Aware" },
+      { c1: "SRC-NEWSPAPER", c2: "Hindustan Times School Guide", sub: "Quarter Page Sunday Insert", c3: "Print Media", c4: "18 Leads", c5: "10 Forms", c6: "4 Enrolled", c7: "₹1,850", badge: "badge-pending", status: "High Cost" },
+      { c1: "SRC-ALUMNI", c2: "DPGA Alumni Association Portal", sub: "Second Generation Kids", c3: "Alumni Network", c4: "22 Leads", c5: "20 Forms", c6: "18 Enrolled", c7: "₹0", badge: "badge-active", status: "100% Converted" }
     ]
   },
 
   // 4. online-applications.php
   'online-applications.php': {
     title: 'Online Applications',
-    desc: 'Self-service parent portal registrations, payment gateway reconciliations, and e-form tracking',
-    kpi1: { title: "Online Submissions", val: "684 Applications", trend: "81.2% of Total Intake", icon: "bi-laptop-fill", color: "kpi-primary" },
-    kpi2: { title: "Form Fee Collected", val: "₹8,55,000", trend: "₹1,250 / Registration", icon: "bi-credit-card-2-front-fill", color: "kpi-success" },
-    kpi3: { title: "Doc Uploads Complete", val: "94.8%", trend: "Aadhaar & Birth Cert", icon: "bi-file-earmark-check-fill", color: "kpi-info" },
-    kpi4: { title: "Awaiting Scrutiny", val: "38 Forms", trend: "Avg Turnaround 1.2h", icon: "bi-hourglass-split", color: "kpi-warning" },
-    filterPlaceholder: "Search applicant, txn ref, parent email...",
-    filterOptions: ["All Grades", "Pre-Primary (Nursery/Prep)", "Primary Wing (Class 1-5)", "Middle Wing (Class 6-8)", "Secondary Wing (Class 9-10)", "Senior Secondary (11-12)"],
-    filterOptionName: "Grade / Wing",
-    statusFilterOptions: ["All Status", "Fee Paid & Submitted", "Document Scrutiny", "Shortlisted for Test", "Incomplete Draft"],
+    icon: 'bi-laptop',
+    actionBtnText: 'New Online Form',
+    actionBtnIcon: 'bi-plus-lg',
+    desc: 'Web portal registration forms, uploaded applicant documents, and online gateway fee payments',
+    kpi1: { title: "Portal Submissions", val: "684 Applications", trend: "Session 2025-2026", icon: "bi-globe", color: "kpi-primary" },
+    kpi2: { title: "Application Fee Paid", val: "₹8,55,000", trend: "₹1,250 / Registration", icon: "bi-check2-circle", color: "kpi-success" },
+    kpi3: { title: "Draft Incomplete", val: "86 Abandoned", trend: "Automated SMS Sent", icon: "bi-hourglass-split", color: "kpi-warning" },
+    kpi4: { title: "Scrutiny Cleared", val: "542 Approved", trend: "Moved to Verification", icon: "bi-patch-check-fill", color: "kpi-info" },
+    filterPlaceholder: "Search application #, applicant name, grade, mobile...",
+    filterOptions: ["All Target Grades", "Pre-Primary (Nursery - Prep)", "Primary Wing (Class 1 - 5)", "Middle Wing (Class 6 - 8)", "Secondary (Class 9 - 10)", "Senior Secondary (Class 11 - 12)"],
+    filterOptionName: "Academic Grade",
+    statusFilterOptions: ["All Status", "Fee Paid & Submitted", "Scrutiny Approved", "Documents Due", "Payment Pending", "Under Review"],
     headers: ["Portal App #", "Candidate Full Name", "Target Grade", "Parent Name & Mobile", "Payment Ref #", "Doc Uploads", "Submitted At", "Status"],
     rows: [
       { c1: "ONL-2025-0684", c2: "Advik Agarwal", sub: "Class 1 - Nursery", c3: "Pre-Primary Wing", c4: "Sanjay Agarwal (+91 98112 44556)", c5: "RZP-PAY-94812", c6: "4 of 4 Verified", c7: "28 Oct (09:45 AM)", badge: "badge-active", status: "Fee Paid" },
@@ -113,6 +125,9 @@ const submodulesData = {
   // 5. offline-applications.php
   'offline-applications.php': {
     title: 'Offline Applications',
+    icon: 'bi-file-earmark-person-fill',
+    actionBtnText: 'Enter Physical Form',
+    actionBtnIcon: 'bi-plus-lg',
     desc: 'Paper registration forms submitted at the campus reception, counter fee receipts, and manual entry logs',
     kpi1: { title: "Counter Forms Sold", val: "180 Kits", trend: "₹1,250 / Brochure", icon: "bi-journal-bookmark-fill", color: "kpi-primary" },
     kpi2: { title: "Forms Received", val: "158 Physical", trend: "87.7% Return Rate", icon: "bi-inboxes-fill", color: "kpi-info" },
@@ -138,6 +153,9 @@ const submodulesData = {
   // 6. application-review.php
   'application-review.php': {
     title: 'Application Review',
+    icon: 'bi-clipboard-check-fill',
+    actionBtnText: 'Review Dossier',
+    actionBtnIcon: 'bi-check2-all',
     desc: 'Admissions scrutiny committee evaluations, eligibility checks, and entrance test approvals',
     kpi1: { title: "Dossiers Reviewed", val: "842 Evaluated", trend: "100% Phase 1 Cleared", icon: "bi-check2-all", color: "kpi-primary" },
     kpi2: { title: "Approved for Test", val: "520 Candidates", trend: "61.7% Met Criteria", icon: "bi-pencil-square", color: "kpi-success" },
@@ -163,6 +181,9 @@ const submodulesData = {
   // 7. document-verification.php
   'document-verification.php': {
     title: 'Document Verification',
+    icon: 'bi-patch-check-fill',
+    actionBtnText: 'Verify New Dossier',
+    actionBtnIcon: 'bi-patch-check-fill',
     desc: 'Mandatory statutory CBSE compliance: Birth certificate, Aadhaar/APAAR ID, TC, and medical fitness records',
     kpi1: { title: "Verified Dossiers", val: "410 Complete", trend: "100% CBSE Statutory", icon: "bi-shield-check", color: "kpi-success" },
     kpi2: { title: "APAAR IDs Linked", val: "398 Students", trend: "MoE One Nation One ID", icon: "bi-fingerprint", color: "kpi-primary" },
@@ -188,6 +209,9 @@ const submodulesData = {
   // 8. admission-approval.php
   'admission-approval.php': {
     title: 'Admission Approval',
+    icon: 'bi-check2-circle',
+    actionBtnText: 'Grant Admission',
+    actionBtnIcon: 'bi-shield-check',
     desc: 'Principal sanction authority, Management Committee clearances, and formal admission confirmation orders',
     kpi1: { title: "Sanction Orders", val: "184 Confirmed", trend: "Principal Certified", icon: "bi-patch-check-fill", color: "kpi-success" },
     kpi2: { title: "Management Quota", val: "12 Seats", trend: "Trust Board Approved", icon: "bi-building-check", color: "kpi-info" },
@@ -213,6 +237,9 @@ const submodulesData = {
   // 9. merit-lists.php
   'merit-lists.php': {
     title: 'Merit Lists',
+    icon: 'bi-award-fill',
+    actionBtnText: 'Publish Merit List',
+    actionBtnIcon: 'bi-award-fill',
     desc: 'Entrance exam cutoffs, composite scoring rubrics, ranking sheets, and selection batch publications',
     kpi1: { title: "General Cutoff", val: "88.5% Score", trend: "Session Benchmark", icon: "bi-award-fill", color: "kpi-primary" },
     kpi2: { title: "Published Batches", val: "3 Lists", trend: "Round 1, 2 & Sibling", icon: "bi-clipboard2-check-fill", color: "kpi-info" },
@@ -238,6 +265,9 @@ const submodulesData = {
   // 10. waiting-lists.php
   'waiting-lists.php': {
     title: 'Waiting Lists',
+    icon: 'bi-hourglass-split',
+    actionBtnText: 'Add to Waitlist',
+    actionBtnIcon: 'bi-hourglass-top',
     desc: 'Reserve applicant roster, vacancy reallocation tracking, and movement notifications',
     kpi1: { title: "Waitlisted Students", val: "64 Candidates", trend: "Across All 5 Wings", icon: "bi-hourglass-top", color: "kpi-primary" },
     kpi2: { title: "Cleared to Merit", val: "18 Candidates", trend: "Round 1 Cancellations", icon: "bi-arrow-up-circle-fill", color: "kpi-success" },
@@ -263,6 +293,9 @@ const submodulesData = {
   // 11. prospectus-distribution.php
   'prospectus-distribution.php': {
     title: 'Prospectus Distribution',
+    icon: 'bi-book-half',
+    actionBtnText: 'Issue Prospectus',
+    actionBtnIcon: 'bi-journal-plus',
     desc: 'Information brochure sales, registration kit inventory, and counter cashier reconciliations',
     kpi1: { title: "Total Printed", val: "500 Kits", trend: "Deluxe Gloss Brochure", icon: "bi-book-half", color: "kpi-primary" },
     kpi2: { title: "Kits Distributed", val: "380 Issued", trend: "76% Stock Utilized", icon: "bi-cart-check-fill", color: "kpi-success" },
@@ -288,6 +321,9 @@ const submodulesData = {
   // 12. campus-visits.php
   'campus-visits.php': {
     title: 'Campus Visits',
+    icon: 'bi-geo-alt-fill',
+    actionBtnText: 'Book Campus Tour',
+    actionBtnIcon: 'bi-calendar2-week',
     desc: 'Guided parent tours, laboratory demonstrations, sports complex inspections, and visit feedback',
     kpi1: { title: "Tours Conducted", val: "142 Families", trend: "Spring Intake Season", icon: "bi-building-fill-check", color: "kpi-primary" },
     kpi2: { title: "Visitor Satisfaction", val: "4.9 / 5.0", trend: "98% Positive Feedback", icon: "bi-star-fill", color: "kpi-warning" },
@@ -313,6 +349,9 @@ const submodulesData = {
   // 13. counselling.php
   'counselling.php': {
     title: 'Admission Counselling',
+    icon: 'bi-chat-dots-fill',
+    actionBtnText: 'Book Counselling Slot',
+    actionBtnIcon: 'bi-person-lines-fill',
     desc: 'Academic pathway consultations, CBSE stream selection advice, and parental transition guidance',
     kpi1: { title: "Sessions Logged", val: "218 Consultations", trend: "Led by Senior Faculty", icon: "bi-chat-heart-fill", color: "kpi-primary" },
     kpi2: { title: "Senior Stream Select", val: "110 Students", trend: "PCM / PCB / Commerce", icon: "bi-diagram-3-fill", color: "kpi-info" },
@@ -338,6 +377,9 @@ const submodulesData = {
   // 14. admission-fees.php
   'admission-fees.php': {
     title: 'Admission Fees',
+    icon: 'bi-cash-coin',
+    actionBtnText: 'Collect Admission Fee',
+    actionBtnIcon: 'bi-credit-card',
     desc: 'Registration fee settlements, caution deposit receipts, composite tuition challans, and bank reconciliations',
     kpi1: { title: "Fees Realized", val: "₹46,20,000", trend: "184 Enrolled Students", icon: "bi-cash-stack", color: "kpi-success" },
     kpi2: { title: "Average Fee / Student", val: "₹25,100", trend: "Admission + Caution + Term 1", icon: "bi-calculator", color: "kpi-primary" },
@@ -363,6 +405,8 @@ const submodulesData = {
   // 15. admission-reports.php
   'admission-reports.php': {
     title: 'Admission Reports',
+    icon: 'bi-bar-chart-line-fill',
+    isReportPage: true,
     desc: 'Statutory board intake summaries, demographic statistics, revenue audits, and conversion analytics',
     kpi1: { title: "Standard Reports", val: "14 Formats", trend: "CBSE & SMC Standard", icon: "bi-file-earmark-bar-graph-fill", color: "kpi-primary" },
     kpi2: { title: "Board LOC Ready", val: "100% Synced", trend: "OASIS & UDISE+ Format", icon: "bi-shield-check", color: "kpi-success" },
@@ -372,7 +416,7 @@ const submodulesData = {
     filterOptions: ["All Reporting Categories", "Intake & Capacity Utilisation", "Fee Collection & Outstanding Audit", "Board Registration & Statutory", "Marketing Channel Performance"],
     filterOptionName: "Report Domain",
     statusFilterOptions: ["All Status", "Generated & Current", "Scheduled Weekly", "Monthly Reconciled", "Annual Archive"],
-    headers: ["Report Code", "Report Title & Description", "Reporting Scope", "Data Granularity", "Generated By", "Records Covered", "Last Generated", "Action"],
+    headers: ["Report Code", "Report Title & Description", "Reporting Scope", "Data Granularity", "Generated By", "Records Covered", "Last Generated", "Status"],
     rows: [
       { c1: "REP-ADM-001", c2: "Annual Intake & Seat Capacity Audit", sub: "Wing-wise target vs actual admissions", c3: "Institutional All Wings", c4: "Session 2025-26", c5: "Dean Admissions", c6: "1,248 Records", c7: "Today (08:00 AM)", badge: "badge-active", status: "Live Synced" },
       { c1: "REP-ADM-002", c2: "CBSE Statutory Registration Roll (LOC)", sub: "OASIS and UDISE+ student manifest", c3: "Classes 9 & 11 Batches", c4: "Statutory CBSE", c5: "Registrar Office", c6: "184 Enrolled", c7: "28 Oct 2024", badge: "badge-active", status: "Verified" },
@@ -388,6 +432,9 @@ const submodulesData = {
   // 16. re-admissions.php
   're-admissions.php': {
     title: 'Re-admissions',
+    icon: 'bi-arrow-repeat',
+    actionBtnText: 'Process Re-Admission',
+    actionBtnIcon: 'bi-arrow-repeat',
     desc: 'Student reinstatement requests, academic gap year approvals, and returning scholar registrations',
     kpi1: { title: "Re-admission Files", val: "18 Cases", trend: "Returning Students", icon: "bi-arrow-repeat", color: "kpi-primary" },
     kpi2: { title: "Approved & Rejoined", val: "14 Scholars", trend: "Academic Clearances Done", icon: "bi-person-check-fill", color: "kpi-success" },
@@ -413,6 +460,9 @@ const submodulesData = {
   // 17. withdrawal-requests.php
   'withdrawal-requests.php': {
     title: 'Withdrawal Requests',
+    icon: 'bi-box-arrow-left',
+    actionBtnText: 'Submit Withdrawal Form',
+    actionBtnIcon: 'bi-file-earmark-x',
     desc: 'Transfer Certificate (TC) applications, security deposit refund clearances, and student exit protocols',
     kpi1: { title: "Withdrawal Requests", val: "12 Total", trend: "0.42% Low Annual Churn", icon: "bi-box-arrow-right", color: "kpi-primary" },
     kpi2: { title: "TC Dispatched", val: "9 Issued", trend: "Counter-Signed by Education Dept", icon: "bi-file-earmark-check-fill", color: "kpi-success" },
@@ -440,6 +490,38 @@ const submodulesData = {
 let count = 0;
 for (const [filename, d] of Object.entries(submodulesData)) {
   const filePath = path.join(ADMISSIONS_DIR, filename);
+
+  const isReports = d.isReportPage === true;
+  const headerActionHtml = isReports ? `
+    <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
+      <i class="bi bi-printer me-1"></i> Print
+    </button>
+    <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', '${filename.replace('.php', '')}_export.csv')" title="Export Table as CSV">
+      <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+    </button>
+    <button class="btn btn-primary fw-bold" onclick="EduTables.print()">
+      <i class="bi bi-file-earmark-pdf me-1"></i> Print / Save PDF
+    </button>` : `
+    <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
+      <i class="bi bi-printer me-1"></i> Print
+    </button>
+    <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', '${filename.replace('.php', '')}_export.csv')" title="Export Table as CSV">
+      <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+    </button>
+    <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
+      <i class="bi ${d.actionBtnIcon || 'bi-plus-lg'} me-1"></i> ${d.actionBtnText || 'Add New Record'}
+    </button>`;
+
+  const rowActionHtml = isReports ? `
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Summary"><i class="bi bi-eye"></i></button>
+            <button class="action-btn text-primary" onclick="EduTables.exportCSV('#mainDataTable', '${filename.replace('.php', '')}_download.csv')" title="Download Report"><i class="bi bi-download"></i></button>
+          </div>` : `
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, '${d.title.replace(/'/g, "\\'")}')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>`;
 
   const content = `<?php
 /**
@@ -472,22 +554,10 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi ${d.icon} text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
-  <div class="page-actions-group d-flex flex-wrap gap-2">
-    <a href="<?php echo base_url('modules/admissions/dashboard.php'); ?>" class="btn btn-light border" title="Back to Admissions Command Center">
-      <i class="bi bi-speedometer2 me-1"></i> Dashboard
-    </a>
-    <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
-      <i class="bi bi-printer me-1"></i> Print
-    </button>
-    <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', '${filename.replace('.php', '')}_export.csv')" title="Export Table as CSV">
-      <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
-    </button>
-    <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
-    </button>
+  <div class="page-actions-group d-flex flex-wrap gap-2">${headerActionHtml}
   </div>
 </div>
 
@@ -577,12 +647,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
         <td><span class="badge bg-light text-primary border font-size-12">${r.c6}</span></td>
         <td><small class="text-muted">${r.c7 || ''}</small></td>
         <td><span class="badge-status ${r.badge}">${r.status}</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, '${d.title.replace(/'/g, "\\'")}')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
+        <td class="text-center">${rowActionHtml}
         </td>
       </tr>
       `).join('')}

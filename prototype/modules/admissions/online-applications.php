@@ -4,7 +4,7 @@
  * Dedicated operational interface & records management for Online Applications
  */
 $page_title = "Online Applications";
-$page_desc = "Self-service parent portal registrations, payment gateway reconciliations, and e-form tracking";
+$page_desc = "Web portal registration forms, uploaded applicant documents, and online gateway fee payments";
 $active_module = "admissions";
 $active_submodule = "online-applications.php";
 $depth = 2;
@@ -29,13 +29,10 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-laptop text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
-    <a href="<?php echo base_url('modules/admissions/dashboard.php'); ?>" class="btn btn-light border" title="Back to Admissions Command Center">
-      <i class="bi bi-speedometer2 me-1"></i> Dashboard
-    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -43,7 +40,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
     <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
+      <i class="bi bi-plus-lg me-1"></i> New Online Form
     </button>
   </div>
 </div>
@@ -53,41 +50,41 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Online Submissions</h6>
+        <h6>Portal Submissions</h6>
         <div class="kpi-value">684 Applications</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 81.2% of Total Intake</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Session 2025-2026</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-laptop-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-globe"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Form Fee Collected</h6>
+        <h6>Application Fee Paid</h6>
         <div class="kpi-value">₹8,55,000</div>
         <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> ₹1,250 / Registration</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-credit-card-2-front-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-info">
-      <div class="kpi-info">
-        <h6>Doc Uploads Complete</h6>
-        <div class="kpi-value">94.8%</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Aadhaar & Birth Cert</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-file-earmark-check-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-check2-circle"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Awaiting Scrutiny</h6>
-        <div class="kpi-value">38 Forms</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Avg Turnaround 1.2h</div>
+        <h6>Draft Incomplete</h6>
+        <div class="kpi-value">86 Abandoned</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Automated SMS Sent</div>
       </div>
       <div class="kpi-icon"><i class="bi bi-hourglass-split"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-info">
+      <div class="kpi-info">
+        <h6>Scrutiny Cleared</h6>
+        <div class="kpi-value">542 Approved</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Moved to Verification</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
     </div>
   </div>
 </div>
@@ -97,22 +94,23 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search applicant, txn ref, parent email...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search application #, applicant name, grade, mobile...">
     </div>
     <select class="form-select" style="max-width: 220px;">
-      <option selected>All Grades</option>
-      <option >Pre-Primary (Nursery/Prep)</option>
-      <option >Primary Wing (Class 1-5)</option>
-      <option >Middle Wing (Class 6-8)</option>
-      <option >Secondary Wing (Class 9-10)</option>
-      <option >Senior Secondary (11-12)</option>
+      <option selected>All Target Grades</option>
+      <option >Pre-Primary (Nursery - Prep)</option>
+      <option >Primary Wing (Class 1 - 5)</option>
+      <option >Middle Wing (Class 6 - 8)</option>
+      <option >Secondary (Class 9 - 10)</option>
+      <option >Senior Secondary (Class 11 - 12)</option>
     </select>
     <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
       <option >Fee Paid & Submitted</option>
-      <option >Document Scrutiny</option>
-      <option >Shortlisted for Test</option>
-      <option >Incomplete Draft</option>
+      <option >Scrutiny Approved</option>
+      <option >Documents Due</option>
+      <option >Payment Pending</option>
+      <option >Under Review</option>
     </select>
   </div>
   <div class="table-filter-right">

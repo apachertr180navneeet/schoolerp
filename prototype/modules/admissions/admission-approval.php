@@ -29,13 +29,10 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-check2-circle text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
-    <a href="<?php echo base_url('modules/admissions/dashboard.php'); ?>" class="btn btn-light border" title="Back to Admissions Command Center">
-      <i class="bi bi-speedometer2 me-1"></i> Dashboard
-    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -43,7 +40,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
     <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
+      <i class="bi bi-shield-check me-1"></i> Grant Admission
     </button>
   </div>
 </div>
