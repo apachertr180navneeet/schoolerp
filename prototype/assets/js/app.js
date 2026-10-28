@@ -417,9 +417,158 @@ window.EduApp = (function () {
     }, 4000);
   }
 
-  // Quick Command Palette (Ctrl+K or Header Search)
+  // Quick Command Palette & Modern Topbar Inline Search
   function initQuickSearch() {
-    // Inject modal if not present
+    // Topbar Inline Search Elements
+    const topbarInput = document.getElementById('topbarSearchInput');
+    const topbarDropdown = document.getElementById('topbarSearchDropdown');
+    const topbarResults = document.getElementById('topbarSearchResults');
+    const topbarClear = document.getElementById('topbarSearchClear');
+    const topbarBadge = document.getElementById('topbarSearchBadge');
+    const topbarContainer = document.getElementById('topbarSearchContainer');
+    let selectedIdx = -1;
+
+    function renderTopbarResults(query) {
+      if (!topbarResults) return;
+      const prefix = getRootPrefix();
+      const q = (query || '').toLowerCase().trim();
+      const isPhp = window.location.pathname.endsWith('.php');
+
+      let matches = [];
+      if (!q) {
+        // Default quick recommendations when input is empty
+        matches = [
+          { title: "Admin Overview Dashboard", category: "Dashboards", path: "dashboards/admin.html", icon: "bi-speedometer2" },
+          { title: "Fee Collection Counter POS", category: "Fees", path: "modules/fees/fee-collection.html", icon: "bi-credit-card-2-front" },
+          { title: "Student Admissions Desk", category: "Admissions", path: "modules/admissions/online-applications.html", icon: "bi-person-plus" },
+          { title: "Class Daily Attendance", category: "Attendance", path: "modules/attendance/daily-attendance.html", icon: "bi-calendar-check" },
+          { title: "CBSE LOC Verification", category: "Compliance", path: "modules/compliance/cbse-reporting.html", icon: "bi-award" },
+          { title: "Timetable Master Schedule", category: "Academics", path: "modules/academics/class-timetable.html", icon: "bi-calendar3-range" },
+          { title: "Exam Report Cards", category: "Examinations", path: "modules/examinations/report-cards.html", icon: "bi-file-earmark-text" },
+          { title: "School General Settings", category: "Administration", path: "modules/administration/school-settings.html", icon: "bi-gear" }
+        ];
+        if (topbarBadge) topbarBadge.textContent = "Recommended";
+      } else {
+        matches = routeRegistry.filter(item => {
+          return item.title.toLowerCase().includes(q) || item.category.toLowerCase().includes(q);
+        });
+        if (topbarBadge) topbarBadge.textContent = matches.length + (matches.length === 1 ? ' screen' : ' screens');
+      }
+
+      if (matches.length === 0) {
+        topbarResults.innerHTML = `
+          <div class="text-center py-4 text-muted">
+            <i class="bi bi-search font-size-24 mb-1.5 d-block text-secondary"></i>
+            <span class="font-size-13">No matching screens for "<strong>${escapeHtml(query)}</strong>"</span>
+          </div>
+        `;
+        selectedIdx = -1;
+        return;
+      }
+
+      selectedIdx = 0; // Default first item selected for instant Enter
+      topbarResults.innerHTML = matches.slice(0, 10).map((item, idx) => {
+        const targetPath = isPhp ? item.path.replace(/\.html/g, '.php') : item.path;
+        return `
+          <a href="${prefix}${targetPath}" class="search-result-item ${idx === 0 ? 'selected' : ''}" data-idx="${idx}">
+            <i class="bi ${item.icon}"></i>
+            <span class="item-title">${highlightMatch(item.title, q)}</span>
+            <span class="item-badge">${item.category}</span>
+          </a>
+        `;
+      }).join('');
+    }
+
+    function highlightMatch(text, q) {
+      if (!q) return escapeHtml(text);
+      const regex = new RegExp(`(${escapeRegex(q)})`, 'gi');
+      return escapeHtml(text).replace(regex, '<mark class="bg-primary text-white px-0.5 rounded">$1</mark>');
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    function escapeRegex(str) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    if (topbarInput && topbarDropdown) {
+      // Focus & Click: open dropdown
+      topbarInput.addEventListener('focus', () => {
+        renderTopbarResults(topbarInput.value);
+        topbarDropdown.classList.remove('d-none');
+        if (topbarClear) {
+          topbarClear.classList.toggle('d-none', !topbarInput.value);
+        }
+      });
+
+      // Typing: filter live results
+      topbarInput.addEventListener('input', (e) => {
+        renderTopbarResults(e.target.value);
+        topbarDropdown.classList.remove('d-none');
+        if (topbarClear) {
+          topbarClear.classList.toggle('d-none', !e.target.value);
+        }
+      });
+
+      // Keyboard navigation (Up, Down, Enter, Esc)
+      topbarInput.addEventListener('keydown', (e) => {
+        const items = topbarResults.querySelectorAll('.search-result-item');
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (items.length === 0) return;
+          selectedIdx = (selectedIdx + 1) % items.length;
+          updateSelection(items);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (items.length === 0) return;
+          selectedIdx = (selectedIdx - 1 + items.length) % items.length;
+          updateSelection(items);
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (items.length > 0 && selectedIdx >= 0 && items[selectedIdx]) {
+            items[selectedIdx].click();
+          }
+        } else if (e.key === 'Escape') {
+          topbarDropdown.classList.add('d-none');
+          topbarInput.blur();
+        }
+      });
+
+      function updateSelection(items) {
+        items.forEach((item, idx) => {
+          if (idx === selectedIdx) {
+            item.classList.add('selected');
+            item.scrollIntoView({ block: 'nearest' });
+          } else {
+            item.classList.remove('selected');
+          }
+        });
+      }
+
+      // Clear button
+      if (topbarClear) {
+        topbarClear.addEventListener('click', (e) => {
+          e.stopPropagation();
+          topbarInput.value = '';
+          topbarClear.classList.add('d-none');
+          renderTopbarResults('');
+          topbarInput.focus();
+        });
+      }
+
+      // Click outside listener to close dropdown
+      document.addEventListener('click', (e) => {
+        if (topbarContainer && !topbarContainer.contains(e.target)) {
+          topbarDropdown.classList.add('d-none');
+        }
+      });
+    }
+
+    // Modal fallback quick search
     if (!document.getElementById('quickSearchModal')) {
       const modalHtml = `
         <div class="modal fade cmd-k-modal" id="quickSearchModal" tabindex="-1" aria-hidden="true">
@@ -443,18 +592,20 @@ window.EduApp = (function () {
       document.body.insertAdjacentHTML('beforeend', modalHtml);
     }
 
-    // Key shortcut Ctrl + K
+    // Global Key shortcut Ctrl + K
     document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        openQuickSearch();
+        if (topbarInput) {
+          topbarInput.focus();
+          topbarInput.select();
+          renderTopbarResults(topbarInput.value);
+          topbarDropdown.classList.remove('d-none');
+        } else {
+          openQuickSearch();
+        }
       }
     });
-
-    const headerSearchBtn = document.getElementById('btnHeaderSearch');
-    if (headerSearchBtn) {
-      headerSearchBtn.addEventListener('click', openQuickSearch);
-    }
 
     const cmdInput = document.getElementById('cmdKInput');
     if (cmdInput) {

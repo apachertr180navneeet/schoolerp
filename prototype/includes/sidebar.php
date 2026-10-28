@@ -554,34 +554,12 @@ function is_link_active($target_path, $active_mod, $active_sub) {
 
         <?php else: ?>
           <!-- ================= SUPER ADMIN / MASTER ROOT SIDEBAR ================= -->
-          <div class="sidebar-section-title">Master Executive Desks</div>
+          <div class="sidebar-section-title">Master Executive Desk</div>
           <li class="sidebar-nav-item">
             <a href="<?php echo base_url('dashboards/admin.php'); ?>" class="sidebar-nav-link <?php echo ($active_mod === 'dashboard' && $active_sub === 'admin.php') ? 'active' : ''; ?>">
               <i class="bi bi-speedometer2 nav-icon"></i>
               <span class="nav-text">Super Admin Command</span>
             </a>
-          </li>
-
-          <!-- Role Desks Collapsible Quick Access -->
-          <li class="sidebar-nav-item">
-            <a class="sidebar-nav-link <?php echo ($active_mod === 'dashboard' && $active_sub !== 'admin.php') ? 'active' : ''; ?>" data-bs-toggle="collapse" href="#sub_stakeholder_desks" role="button" aria-expanded="<?php echo ($active_mod === 'dashboard' && $active_sub !== 'admin.php') ? 'true' : 'false'; ?>">
-              <i class="bi bi-person-badge nav-icon"></i>
-              <span class="nav-text">All 10 Stakeholder Desks</span>
-              <i class="bi bi-chevron-right arrow-icon"></i>
-            </a>
-            <div class="collapse <?php echo ($active_mod === 'dashboard' && $active_sub !== 'admin.php') ? 'show' : ''; ?>" id="sub_stakeholder_desks">
-              <ul class="sidebar-submenu">
-                <li><a href="<?php echo base_url('dashboards/principal.php'); ?>" class="sub-link <?php echo ($active_sub === 'principal.php') ? 'active' : ''; ?>">Principal Desk</a></li>
-                <li><a href="<?php echo base_url('dashboards/teacher.php'); ?>" class="sub-link <?php echo ($active_sub === 'teacher.php') ? 'active' : ''; ?>">Teacher Workplace</a></li>
-                <li><a href="<?php echo base_url('dashboards/accountant.php'); ?>" class="sub-link <?php echo ($active_sub === 'accountant.php') ? 'active' : ''; ?>">Accounts & Fee POS</a></li>
-                <li><a href="<?php echo base_url('dashboards/admission-officer.php'); ?>" class="sub-link <?php echo ($active_sub === 'admission-officer.php') ? 'active' : ''; ?>">Admission Office</a></li>
-                <li><a href="<?php echo base_url('dashboards/librarian.php'); ?>" class="sub-link <?php echo ($active_sub === 'librarian.php') ? 'active' : ''; ?>">Library Resource</a></li>
-                <li><a href="<?php echo base_url('dashboards/transport-manager.php'); ?>" class="sub-link <?php echo ($active_sub === 'transport-manager.php') ? 'active' : ''; ?>">Transport Fleet</a></li>
-                <li><a href="<?php echo base_url('dashboards/hr-manager.php'); ?>" class="sub-link <?php echo ($active_sub === 'hr-manager.php') ? 'active' : ''; ?>">HR & Payroll</a></li>
-                <li><a href="<?php echo base_url('dashboards/student.php'); ?>" class="sub-link <?php echo ($active_sub === 'student.php') ? 'active' : ''; ?>">Student Portal</a></li>
-                <li><a href="<?php echo base_url('dashboards/parent.php'); ?>" class="sub-link <?php echo ($active_sub === 'parent.php') ? 'active' : ''; ?>">Parent Portal</a></li>
-              </ul>
-            </div>
           </li>
 
           <!-- All 28 Core Modules Section for Super Admin -->

@@ -112,9 +112,11 @@ a:hover {
    ========================================================================== */
 .erp-wrapper {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
+  position: relative;
 }
 
 /* Sidebar Styles */
@@ -126,8 +128,9 @@ a:hover {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  position: sticky;
-  top: 0;
+  max-height: 100vh;
+  overflow: hidden;
+  position: relative;
   z-index: 1020;
   transition: var(--transition);
   border-right: 1px solid rgba(255, 255, 255, 0.06);
@@ -181,9 +184,10 @@ a:hover {
 }
 
 .sidebar-scroll {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
-  padding: 0.85rem 0.6rem;
+  padding: 0.85rem 0.6rem 2rem 0.6rem;
 }
 
 .sidebar-scroll::-webkit-scrollbar {
@@ -307,9 +311,13 @@ a:hover {
 
 /* Sidebar Footer */
 .sidebar-footer {
+  flex-shrink: 0;
+  margin-top: auto;
   padding: 0.85rem 1.15rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 0, 0, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0f172a;
+  position: relative;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -383,11 +391,15 @@ a:hover {
    Main Content Area & Top Header
    ========================================================================== */
 .erp-main {
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   min-width: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   background-color: var(--bg-app);
+  position: relative;
 }
 
 .erp-header {
@@ -401,6 +413,7 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 1010;
+  flex-shrink: 0;
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
 }
@@ -430,35 +443,182 @@ a:hover {
   color: var(--primary);
 }
 
-.header-search-btn {
+/* ==========================================================================
+   Modern Topbar Inline Search UI & Live Autocomplete Dropdown
+   ========================================================================== */
+.header-search-wrapper {
+  position: relative;
+  width: 320px;
+  max-width: 100%;
+}
+
+.header-search-box {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
   background-color: var(--bg-app);
   border: 1px solid var(--border-color);
-  padding: 0.45rem 1rem;
-  border-radius: 20px;
-  color: var(--text-muted);
+  border-radius: 24px;
+  height: 38px;
+  padding: 0 0.85rem;
+  gap: 0.6rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.header-search-box:focus-within {
+  background-color: var(--bg-card);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.search-box-icon {
   font-size: 0.85rem;
-  cursor: pointer;
-  width: 260px;
-  transition: var(--transition);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: color 0.2s ease;
 }
 
-.header-search-btn:hover {
-  border-color: var(--primary-light);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+.header-search-box:focus-within .search-box-icon {
+  color: var(--primary);
+}
+
+.search-box-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.825rem;
   color: var(--text-main);
+  padding: 0;
+  line-height: 1.2;
 }
 
-.header-search-btn kbd {
-  margin-left: auto;
-  background: var(--bg-card);
+.search-box-input::placeholder {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.search-box-clear {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.search-box-clear:hover {
+  background-color: var(--border-light);
+  color: var(--danger);
+}
+
+.search-box-kbd {
+  font-family: inherit;
+  font-size: 0.68rem;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   color: var(--text-muted);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  flex-shrink: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Live Search Dropdown */
+.header-search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 440px;
+  max-width: 90vw;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  z-index: 1050;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: searchDropSlide 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes searchDropSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.search-dropdown-list {
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  transition: all 0.15s ease;
+}
+
+.search-result-item:hover,
+.search-result-item.selected {
+  background-color: var(--primary-subtle);
+  color: var(--primary);
+}
+
+.search-result-item i {
+  font-size: 1rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.search-result-item:hover i,
+.search-result-item.selected i {
+  color: var(--primary);
+}
+
+.search-result-item .item-title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.search-result-item .item-badge {
   font-size: 0.7rem;
-  padding: 2px 6px;
+  color: var(--text-muted);
+  background-color: var(--bg-app);
+  padding: 2px 7px;
   border-radius: 4px;
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.kbd-sm {
+  font-size: 0.65rem;
+  padding: 1px 4px;
+  background: var(--bg-app);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  color: var(--text-muted);
 }
 
 .header-right {

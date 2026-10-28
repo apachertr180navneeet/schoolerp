@@ -38,8 +38,8 @@
     padding: 0 1rem;
   }
 
-  .header-search-btn {
-    width: 180px;
+  .header-search-wrapper {
+    width: 200px;
   }
 
   .erp-content {
@@ -77,7 +77,7 @@
 }
 
 @media (max-width: 575.98px) {
-  .header-search-btn {
+  .header-search-wrapper {
     display: none;
   }
 
