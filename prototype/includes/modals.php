@@ -7,51 +7,80 @@ $modal_item_title = htmlspecialchars($page_title ?? 'Record');
 <!-- Common Add New Modal -->
 <div class="modal fade" id="addNewRecordModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-plus-circle-fill text-primary"></i> Add New <?php echo $modal_item_title; ?></h5>
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom p-3 px-4">
+        <div class="d-flex align-items-center gap-2">
+          <div class="p-2 rounded-2 bg-primary-subtle text-primary font-size-18">
+            <i class="bi bi-plus-circle-fill"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold text-dark mb-0" id="addRecordModalTitle">Add New <?php echo $modal_item_title; ?></h5>
+            <small class="text-muted font-size-12">Enter verified record attributes for instant LocalStorage synchronization</small>
+          </div>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form id="addNewRecordForm" onsubmit="EduForms.handleGenericSubmit(event, 'addNewRecordModal', '<?php echo $modal_item_title; ?>', '#mainDataTable')">
-        <div class="modal-body">
-          <div class="row g-3">
+      <form id="addNewRecordForm" onsubmit="EduForms.handleDynamicSubmit(event, 'addNewRecordModal', '<?php echo addslashes($modal_item_title); ?>', '#mainDataTable')">
+        <div class="modal-body p-4" id="addRecordDynamicContainer">
+          <div class="row g-3" id="addRecordFieldsRow">
             <div class="col-md-6">
-              <label class="form-label">Record Title / Name <span class="required">*</span></label>
-              <input type="text" class="form-control" id="addRecordTitle" name="title" required placeholder="Enter name or title">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblAddCode">Reference Code / ID</label>
+              <input type="text" class="form-control font-mono font-size-13" id="addRecordCode" name="code" placeholder="Auto-generated if left blank">
             </div>
             <div class="col-md-6">
-              <label class="form-label">Class / Category <span class="required">*</span></label>
-              <select class="form-select" id="addRecordCategory" name="category" required>
-                <option value="" selected disabled>Select class / category</option>
-                <option>Class 10 - Section A</option>
-                <option>Class 10 - Section B</option>
-                <option>Class 12 - Science (PCM)</option>
-                <option>Class 12 - Commerce</option>
-                <option>General Administration</option>
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblAddTitle">Title / Full Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control font-size-13" id="addRecordTitle" name="title" required placeholder="Enter primary title or name">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblAddSub">Subtitle / Secondary Specification</label>
+              <input type="text" class="form-control font-size-13" id="addRecordSub" name="sub" placeholder="e.g. Model, Subtitle, Variant">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblAddCategory">Category / Wing / Department <span class="text-danger">*</span></label>
+              <select class="form-select font-size-13" id="addRecordCategory" name="category" required>
+                <option value="" selected disabled>Select category / department</option>
               </select>
             </div>
             <div class="col-md-6">
-              <label class="form-label">Reference Code / ID</label>
-              <input type="text" class="form-control" id="addRecordCode" name="code" placeholder="Auto-generated if blank (e.g. REF-2024-091)">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblAddC4">Responsible / Incharge / Details</label>
+              <input type="text" class="form-control font-size-13" id="addRecordC4" name="c4" placeholder="Enter details or incharge">
             </div>
             <div class="col-md-6">
-              <label class="form-label">Status</label>
-              <select class="form-select" id="addRecordStatus" name="status">
-                <option selected>Active / Approved</option>
-                <option>Paid</option>
-                <option>Pending Review</option>
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblAddC5">Contact / Metric / Specs</label>
+              <input type="text" class="form-control font-size-13" id="addRecordC5" name="c5" placeholder="Enter contact, capacity, or specs">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblAddC6">Tag / Location / Source</label>
+              <input type="text" class="form-control font-size-13" id="addRecordC6" name="c6" placeholder="Enter tag, room, or location">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblAddC7">Date / Amount / Reference</label>
+              <input type="text" class="form-control font-size-13" id="addRecordC7" name="c7" placeholder="Today or custom value">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-size-13 fw-semibold text-muted">Status</label>
+              <select class="form-select font-size-13" id="addRecordStatus" name="status">
+                <option selected>Active</option>
+                <option>Approved</option>
+                <option>Pending</option>
+                <option>In Review</option>
                 <option>Draft</option>
+                <option>On Route</option>
+                <option>Paid</option>
+                <option>Enrolled</option>
               </select>
             </div>
             <div class="col-12">
-              <label class="form-label">Detailed Notes / Description</label>
-              <textarea class="form-control" id="addRecordNotes" name="notes" rows="3" placeholder="Enter additional details or remarks..."></textarea>
+              <label class="form-label font-size-13 fw-semibold text-muted">Detailed Notes / Operational Remarks</label>
+              <textarea class="form-control font-size-13" id="addRecordNotes" name="notes" rows="2" placeholder="Enter additional audit notes or remarks..."></textarea>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary fw-bold"><i class="bi bi-check-lg me-1"></i> Save <?php echo $modal_item_title; ?></button>
+        <div class="modal-footer bg-light p-3 px-4 d-flex justify-content-between">
+          <button type="button" class="btn btn-light border btn-sm px-3 rounded-pill" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm px-4 fw-bold rounded-pill shadow-sm">
+            <i class="bi bi-plus-lg me-1"></i> Save <?php echo $modal_item_title; ?>
+          </button>
         </div>
       </form>
     </div>
@@ -61,51 +90,82 @@ $modal_item_title = htmlspecialchars($page_title ?? 'Record');
 <!-- Common Edit Modal -->
 <div class="modal fade" id="editRecordModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-pencil-square text-primary"></i> Edit <?php echo $modal_item_title; ?></h5>
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom p-3 px-4">
+        <div class="d-flex align-items-center gap-2">
+          <div class="p-2 rounded-2 bg-primary-subtle text-primary font-size-18">
+            <i class="bi bi-pencil-square"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold text-dark mb-0" id="editRecordModalTitle">Edit <?php echo $modal_item_title; ?></h5>
+            <small class="text-muted font-size-12">Modify attributes and persist changes instantly to LocalStorage</small>
+          </div>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form id="editRecordForm" onsubmit="EduForms.handleGenericSubmit(event, 'editRecordModal', '<?php echo $modal_item_title; ?>', '#mainDataTable')">
+      <form id="editRecordForm" onsubmit="EduForms.handleDynamicSubmit(event, 'editRecordModal', '<?php echo addslashes($modal_item_title); ?>', '#mainDataTable')">
         <input type="hidden" id="editRecordRowId" name="rowId">
-        <div class="modal-body">
-          <div class="row g-3">
+        <div class="modal-body p-4" id="editRecordDynamicContainer">
+          <div class="row g-3" id="editRecordFieldsRow">
             <div class="col-md-6">
-              <label class="form-label">Record Title / Name <span class="required">*</span></label>
-              <input type="text" class="form-control" id="editRecordTitle" name="title" required value="Sample Record Entry">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblEditCode">Reference Code / ID</label>
+              <input type="text" class="form-control font-mono font-size-13" id="editRecordCode" name="code">
             </div>
             <div class="col-md-6">
-              <label class="form-label">Class / Category</label>
-              <select class="form-select" id="editRecordCategory" name="category">
-                <option selected>Class 10 - Section A</option>
-                <option>Class 10 - Section B</option>
-                <option>Class 12 - Science (PCM)</option>
-                <option>Class 12 - Commerce</option>
-                <option>General Administration</option>
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblEditTitle">Title / Full Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control font-size-13" id="editRecordTitle" name="title" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblEditSub">Subtitle / Secondary Specification</label>
+              <input type="text" class="form-control font-size-13" id="editRecordSub" name="sub">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblEditCategory">Category / Wing / Department</label>
+              <select class="form-select font-size-13" id="editRecordCategory" name="category">
+                <option value="">Select category</option>
               </select>
             </div>
             <div class="col-md-6">
-              <label class="form-label">Reference Code / ID</label>
-              <input type="text" class="form-control" id="editRecordCode" name="code">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblEditC4">Details / Incharge / Responsible</label>
+              <input type="text" class="form-control font-size-13" id="editRecordC4" name="c4">
             </div>
             <div class="col-md-6">
-              <label class="form-label">Status</label>
-              <select class="form-select" id="editRecordStatus" name="status">
-                <option selected>Active / Approved</option>
-                <option>Paid</option>
-                <option>Pending Review</option>
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblEditC5">Contact / Metrics / Specs</label>
+              <input type="text" class="form-control font-size-13" id="editRecordC5" name="c5">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblEditC6">Location / Tag / Source</label>
+              <input type="text" class="form-control font-size-13" id="editRecordC6" name="c6">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-size-13 fw-semibold text-muted" id="lblEditC7">Date / Amount / Reference</label>
+              <input type="text" class="form-control font-size-13" id="editRecordC7" name="c7">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-size-13 fw-semibold text-muted">Status</label>
+              <select class="form-select font-size-13" id="editRecordStatus" name="status">
+                <option>Active</option>
+                <option>Approved</option>
+                <option>Pending</option>
+                <option>In Review</option>
                 <option>Draft</option>
+                <option>Enrolled</option>
+                <option>On Route</option>
+                <option>Paid</option>
+                <option>Inactive</option>
               </select>
             </div>
             <div class="col-12">
-              <label class="form-label">Remarks / Notes</label>
-              <textarea class="form-control" id="editRecordNotes" name="notes" rows="2">Record updated during active session audit.</textarea>
+              <label class="form-label font-size-13 fw-semibold text-muted">Remarks / Notes</label>
+              <textarea class="form-control font-size-13" id="editRecordNotes" name="notes" rows="2"></textarea>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary fw-bold">Update Changes</button>
+        <div class="modal-footer bg-light p-3 px-4 d-flex justify-content-between">
+          <button type="button" class="btn btn-light border btn-sm px-3 rounded-pill" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm px-4 fw-bold rounded-pill shadow-sm">
+            <i class="bi bi-check2-circle me-1"></i> Update Changes
+          </button>
         </div>
       </form>
     </div>
@@ -114,42 +174,66 @@ $modal_item_title = htmlspecialchars($page_title ?? 'Record');
 
 <!-- Common View Details Modal -->
 <div class="modal fade" id="viewRecordModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-info-circle text-primary"></i> <?php echo $modal_item_title; ?> Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body font-size-14">
-        <div class="list-group list-group-flush">
-          <div class="list-group-item d-flex justify-content-between px-0">
-            <span class="text-muted">Entity Title:</span>
-            <strong class="text-dark dark-text-white" id="viewRecordTitle">Aarav Sharma</strong>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom p-3 px-4">
+        <div class="d-flex align-items-center gap-2">
+          <div class="p-2 rounded-2 bg-info-subtle text-info font-size-18">
+            <i class="bi bi-eye-fill"></i>
           </div>
-          <div class="list-group-item d-flex justify-content-between px-0">
-            <span class="text-muted">Enrollment / Ref ID:</span>
-            <span class="font-mono text-primary fw-bold" id="viewRecordCode">ADM-8491</span>
-          </div>
-          <div class="list-group-item d-flex justify-content-between px-0">
-            <span class="text-muted">Class & Section:</span>
-            <span id="viewRecordCategory">Class 10 - Section A</span>
-          </div>
-          <div class="list-group-item d-flex justify-content-between px-0">
-            <span class="text-muted">Status:</span>
-            <span id="viewRecordStatus"><span class="badge bg-success-subtle text-success">Active / Approved</span></span>
-          </div>
-          <div class="list-group-item d-flex justify-content-between px-0">
-            <span class="text-muted">Last Updated:</span>
-            <span id="viewRecordDate">28 Oct 2024 (by Super Admin)</span>
-          </div>
-          <div class="list-group-item d-flex justify-content-between px-0">
-            <span class="text-muted">Remarks / Notes:</span>
-            <span id="viewRecordNotes" class="text-muted">Verified & Synced in local storage</span>
+          <div>
+            <h5 class="modal-title fw-bold text-dark mb-0" id="viewModalHeading"><?php echo $modal_item_title; ?> Dossier</h5>
+            <small class="text-muted font-size-12">Comprehensive audit record & attribute specifications</small>
           </div>
         </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      <div class="modal-body p-4">
+        <!-- Executive Entity Card Header -->
+        <div class="p-3 bg-light rounded-3 border mb-3 d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="rounded-3 bg-primary text-white d-flex align-items-center justify-content-center fw-bold font-size-18 shadow-sm" style="width: 52px; height: 52px; flex-shrink: 0;" id="viewRecordAvatar">
+              RC
+            </div>
+            <div>
+              <h5 class="fw-bold text-dark mb-0 font-size-16" id="viewRecordTitle">Record Title</h5>
+              <div class="text-muted font-size-12" id="viewRecordSub">Record Subtitle / Specification</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <span class="badge font-mono bg-white text-primary border border-primary border-opacity-25 px-2 py-1 font-size-12 shadow-sm" id="viewRecordCode">REF-0000</span>
+            <span id="viewRecordStatusBadge"><span class="badge-status badge-active">Active</span></span>
+          </div>
+        </div>
+
+        <!-- Specifications Grid Container -->
+        <div class="border rounded-3 p-3 bg-white mb-3">
+          <h6 class="font-size-12 text-uppercase text-muted fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-card-checklist text-primary"></i> Record Field Specifications
+          </h6>
+          <div class="row g-3" id="viewRecordSpecsGrid">
+            <!-- Dynamically populated key-value specs for all table columns -->
+          </div>
+        </div>
+
+        <!-- LocalStorage Audit Info -->
+        <div class="d-flex align-items-center justify-content-between p-2 px-3 bg-light rounded-2 border font-size-12 text-muted">
+          <span><i class="bi bi-database-check text-success me-1"></i> Data Status: <strong class="text-dark">Synchronized with LocalStorage</strong></span>
+          <span id="viewRecordAuditDate">Updated Today</span>
+        </div>
+      </div>
+      <div class="modal-footer bg-light p-3 px-4 d-flex justify-content-between">
+        <div>
+          <button type="button" class="btn btn-outline-secondary btn-sm px-3 rounded-pill" onclick="window.print()">
+            <i class="bi bi-printer me-1"></i> Print
+          </button>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-light border btn-sm px-3 rounded-pill" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary btn-sm px-4 fw-bold rounded-pill" id="viewModalEditBtn">
+            <i class="bi bi-pencil me-1"></i> Edit This Record
+          </button>
+        </div>
       </div>
     </div>
   </div>

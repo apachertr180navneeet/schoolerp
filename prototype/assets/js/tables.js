@@ -152,36 +152,73 @@ window.EduTables = (function () {
 
   function applyRowEdit(tr, data) {
     if (!tr || !data) return;
-    // Name / Title
-    const nameEl = tr.querySelector('.table-user-name');
-    if (nameEl && data.title) {
-      nameEl.textContent = data.title;
-    } else {
-      const col = tr.cells[1] || tr.cells[0];
-      if (col && data.title) col.textContent = data.title;
+
+    // Cell 0: Reference Code
+    if (tr.cells[0]) {
+      const codeEl = tr.cells[0].querySelector('.font-mono') || tr.cells[0];
+      if (data.code) codeEl.textContent = data.code;
     }
 
-    // Category / Class
-    const subEl = tr.querySelector('.table-user-sub');
-    if (subEl && data.category) {
-      subEl.textContent = data.category;
+    // Cell 1: Name / Title + Subtitle
+    if (tr.cells[1]) {
+      const nameEl = tr.cells[1].querySelector('.fw-semibold, .table-user-name');
+      const subEl = tr.cells[1].querySelector('small, .table-user-sub');
+      if (nameEl && data.title) {
+        nameEl.textContent = data.title;
+      } else if (data.title) {
+        tr.cells[1].textContent = data.title;
+      }
+      if (subEl && data.sub !== undefined) {
+        subEl.textContent = data.sub;
+      }
+      const avatarEl = tr.cells[1].querySelector('.table-avatar');
+      if (avatarEl && data.title) {
+        avatarEl.textContent = getInitials(data.title);
+      }
     }
 
-    // Avatar
-    const avatarEl = tr.querySelector('.table-avatar');
-    if (avatarEl && data.title) {
-      avatarEl.textContent = getInitials(data.title);
+    // Cell 2: Category / Wing / Route / Group
+    if (tr.cells[2] && data.category) {
+      const badge = tr.cells[2].querySelector('.badge');
+      if (badge) {
+        badge.textContent = data.category;
+      } else {
+        tr.cells[2].textContent = data.category;
+      }
     }
 
-    // Reference Code
-    const codeEl = tr.querySelector('.font-mono');
-    if (codeEl && data.code) {
-      codeEl.textContent = data.code;
+    // Cell 3: Details / Responsible / Incharge
+    if (tr.cells[3] && data.c4 !== undefined) {
+      const el = tr.cells[3].querySelector('small, span') || tr.cells[3];
+      el.textContent = data.c4;
     }
 
-    // Status badge
-    const badgeEl = tr.querySelector('.badge-status, .badge');
-    if (badgeEl && data.status) {
+    // Cell 4: Contact / Metric / Specs
+    if (tr.cells[4] && data.c5 !== undefined) {
+      const el = tr.cells[4].querySelector('small, span') || tr.cells[4];
+      el.textContent = data.c5;
+    }
+
+    // Cell 5: Tag / Location / Source
+    if (tr.cells[5] && data.c6 !== undefined) {
+      const badge = tr.cells[5].querySelector('.badge');
+      if (badge) {
+        badge.textContent = data.c6;
+      } else {
+        tr.cells[5].textContent = data.c6;
+      }
+    }
+
+    // Cell 6: Date / Reference / Amount
+    if (tr.cells[6] && data.c7 !== undefined) {
+      const el = tr.cells[6].querySelector('small, span') || tr.cells[6];
+      el.textContent = data.c7;
+    }
+
+    // Status badge (second to last cell before Actions)
+    const statusColIndex = tr.cells.length - 2;
+    if (statusColIndex >= 0 && tr.cells[statusColIndex] && data.status) {
+      const badgeEl = tr.cells[statusColIndex].querySelector('.badge-status, .badge') || tr.cells[statusColIndex];
       badgeEl.textContent = data.status;
       badgeEl.className = 'badge-status ' + getStatusClass(data.status);
     }
@@ -192,39 +229,32 @@ window.EduTables = (function () {
     tr.dataset.rowId = record.id;
     tr.className = 'table-row-new';
 
-    const ths = table.querySelectorAll('thead th');
+    const ths = Array.from(table.querySelectorAll('thead th'));
     const colCount = Math.max(ths.length, 6);
 
-    const avatar = getInitials(record.title);
-    const code = record.code || ('REF-' + Math.floor(1000 + Math.random() * 9000));
-    const statusClass = getStatusClass(record.status);
+    const code = record.code || ('REC-' + Math.floor(1000 + Math.random() * 9000));
+    const title = record.title || 'New Entry';
+    const sub = record.sub || '';
+    const category = record.category || 'General';
+    const c4 = record.c4 || '—';
+    const c5 = record.c5 || '—';
+    const c6 = record.c6 || '—';
+    const c7 = record.c7 || record.date || 'Today';
+    const status = record.status || 'Active';
+    const statusClass = getStatusClass(status);
 
     let cellsHtml = `
       <td class="fw-bold text-primary font-mono font-size-13">${escapeHtml(code)}</td>
       <td>
-        <div class="table-user-cell">
-          <div class="table-avatar bg-primary text-white">${avatar}</div>
-          <div>
-            <div class="table-user-name">${escapeHtml(record.title)}</div>
-            <div class="table-user-sub">${escapeHtml(record.category || 'General')}</div>
-          </div>
-        </div>
+        <div class="fw-semibold text-dark">${escapeHtml(title)}</div>
+        ${sub ? `<small class="text-muted font-size-11">${escapeHtml(sub)}</small>` : ''}
       </td>
-    `;
-
-    if (colCount >= 7) {
-      cellsHtml += `<td><small class="text-muted">${escapeHtml(record.notes || 'Institutional Entry')}</small></td>`;
-    }
-    if (colCount >= 8) {
-      cellsHtml += `<td><span class="font-size-13">${escapeHtml(record.category || 'Standard')}</span></td>`;
-    }
-    if (colCount >= 9) {
-      cellsHtml += `<td class="text-end fw-bold font-size-14 text-dark dark-text-white">${record.amount || '—'}</td>`;
-    }
-
-    cellsHtml += `
-      <td><small class="text-muted">${record.date || 'Today'}</small></td>
-      <td><span class="badge-status ${statusClass}">${escapeHtml(record.status || 'Active')}</span></td>
+      <td><span class="badge bg-light text-muted border font-size-12">${escapeHtml(category)}</span></td>
+      <td><small class="text-dark">${escapeHtml(c4)}</small></td>
+      <td><small class="text-muted font-mono font-size-12">${escapeHtml(c5)}</small></td>
+      <td><span class="badge bg-light text-primary border font-size-12">${escapeHtml(c6)}</span></td>
+      <td><small class="text-muted">${escapeHtml(c7)}</small></td>
+      <td><span class="badge-status ${statusClass}">${escapeHtml(status)}</span></td>
       <td class="text-center">
         <div class="action-btn-group justify-content-center">
           <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -252,69 +282,266 @@ window.EduTables = (function () {
         return;
       }
     });
+
+    // Attach Add Modal listener to dynamically adapt labels and options
+    const addModal = document.getElementById('addNewRecordModal');
+    if (addModal && !addModal.dataset.listenerAttached) {
+      addModal.dataset.listenerAttached = 'true';
+      addModal.addEventListener('show.bs.modal', function () {
+        prepareAddModal(table);
+      });
+    }
   }
 
   function extractRowData(tr) {
     if (!tr) return {};
-    const codeEl = tr.querySelector('.font-mono, td:first-child');
-    const nameEl = tr.querySelector('.table-user-name');
-    const subEl = tr.querySelector('.table-user-sub');
+    const table = tr.closest('table') || document.querySelector('#mainDataTable');
+    const ths = table ? Array.from(table.querySelectorAll('thead th')) : [];
+    const headers = ths.map(th => th.innerText.trim()).filter(h => !h.toLowerCase().includes('action'));
+
+    const codeCell = tr.querySelector('.font-mono, td:first-child');
+    const code = codeCell ? codeCell.innerText.trim() : '';
+
+    const nameCell = tr.cells[1];
+    let title = '';
+    let sub = '';
+    if (nameCell) {
+      const semibold = nameCell.querySelector('.fw-semibold, .table-user-name');
+      const smallEl = nameCell.querySelector('small, .table-user-sub');
+      if (semibold) {
+        title = semibold.innerText.trim();
+        sub = smallEl ? smallEl.innerText.trim() : '';
+      } else {
+        const parts = nameCell.innerText.trim().split('\n').map(p => p.trim()).filter(Boolean);
+        title = parts[0] || 'Record Entry';
+        sub = parts[1] || '';
+      }
+    }
+
+    const catCell = tr.cells[2];
+    const category = catCell ? catCell.innerText.trim() : '';
+
+    const c4Cell = tr.cells[3];
+    const c4 = c4Cell ? c4Cell.innerText.trim() : '';
+
+    const c5Cell = tr.cells[4];
+    const c5 = c5Cell ? c5Cell.innerText.trim() : '';
+
+    const c6Cell = tr.cells[5];
+    const c6 = c6Cell ? c6Cell.innerText.trim() : '';
+
+    const c7Cell = tr.cells[6];
+    const c7 = c7Cell ? c7Cell.innerText.trim() : '';
+
+    const statusColIndex = tr.cells.length - 2;
     const badgeEl = tr.querySelector('.badge-status, .badge');
+    const status = badgeEl ? badgeEl.innerText.trim() : (tr.cells[statusColIndex] ? tr.cells[statusColIndex].innerText.trim() : 'Active');
+
+    // Build specs list for View modal
+    const fields = [];
+    headers.forEach((h, idx) => {
+      if (tr.cells[idx]) {
+        fields.push({
+          header: h,
+          text: tr.cells[idx].innerText.trim().replace(/\s+/g, ' ')
+        });
+      }
+    });
 
     return {
-      id: tr.dataset.rowId || (codeEl ? codeEl.textContent.trim() : ''),
-      code: codeEl ? codeEl.textContent.trim() : '',
-      title: nameEl ? nameEl.textContent.trim() : (tr.cells[1] ? tr.cells[1].innerText.trim() : 'Record'),
-      category: subEl ? subEl.textContent.trim() : (tr.cells[2] ? tr.cells[2].innerText.trim() : 'Class 10-A'),
-      status: badgeEl ? badgeEl.textContent.trim() : 'Active / Approved',
+      id: tr.dataset.rowId || code || ('orig-' + Math.random().toString(36).substr(2, 6)),
+      code: code,
+      title: title,
+      sub: sub,
+      category: category,
+      c4: c4,
+      c5: c5,
+      c6: c6,
+      c7: c7,
+      status: status,
+      headers: headers,
+      fields: fields,
       date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
     };
   }
 
+  function collectModuleCategories(table) {
+    const list = new Set();
+    // 1. Scan page filter dropdowns
+    const filterSelects = document.querySelectorAll('.table-filter-bar select, .table-filter-left select');
+    filterSelects.forEach(sel => {
+      Array.from(sel.options).forEach(opt => {
+        const t = opt.text.trim();
+        if (t && !t.toLowerCase().startsWith('all ') && t !== 'All' && !t.includes('Status')) {
+          list.add(t);
+        }
+      });
+    });
+
+    // 2. Scan existing table column 2
+    if (table) {
+      const rows = table.querySelectorAll('tbody tr');
+      rows.forEach(r => {
+        if (r.cells[2]) {
+          const t = r.cells[2].innerText.trim();
+          if (t && t.length < 50) list.add(t);
+        }
+      });
+    }
+
+    const arr = Array.from(list);
+    return arr.length > 0 ? arr : ['General Category', 'Senior Secondary', 'Primary Wing', 'Administrative', 'Standard'];
+  }
+
+  function generateDomainCode(header0, table) {
+    const h = (header0 || '').toLowerCase();
+    if (h.includes('plate') || h.includes('vehicle')) {
+      return 'DL-1V-' + Math.floor(1000 + Math.random() * 9000);
+    }
+    if (h.includes('isbn') || h.includes('accession')) {
+      return '978-81-' + Math.floor(10000 + Math.random() * 90000);
+    }
+    if (h.includes('scholar') || h.includes('adm') || h.includes('app')) {
+      return 'ADM-2025-' + Math.floor(1000 + Math.random() * 9000);
+    }
+    if (h.includes('staff') || h.includes('emp')) {
+      return 'EMP-2025-' + Math.floor(1000 + Math.random() * 9000);
+    }
+    if (h.includes('sku') || h.includes('item')) {
+      return 'INV-ITEM-' + Math.floor(1000 + Math.random() * 9000);
+    }
+    if (h.includes('fee') || h.includes('head')) {
+      return 'FH-' + Math.floor(100 + Math.random() * 900);
+    }
+    // Check first row's code format
+    if (table) {
+      const firstCode = table.querySelector('tbody tr .font-mono');
+      if (firstCode) {
+        const txt = firstCode.textContent.trim();
+        const parts = txt.split('-');
+        if (parts.length > 1) {
+          return parts.slice(0, -1).join('-') + '-' + Math.floor(1000 + Math.random() * 9000);
+        }
+      }
+    }
+    return 'REC-2025-' + Math.floor(1000 + Math.random() * 9000);
+  }
+
   function populateViewModal(tr) {
     const data = extractRowData(tr);
+    const avatarEl = document.getElementById('viewRecordAvatar');
     const titleEl = document.getElementById('viewRecordTitle');
+    const subEl = document.getElementById('viewRecordSub');
     const codeEl = document.getElementById('viewRecordCode');
-    const catEl = document.getElementById('viewRecordCategory');
-    const statusEl = document.getElementById('viewRecordStatus');
-    const dateEl = document.getElementById('viewRecordDate');
-    const notesEl = document.getElementById('viewRecordNotes');
+    const statusBadgeEl = document.getElementById('viewRecordStatusBadge');
+    const specsGrid = document.getElementById('viewRecordSpecsGrid');
+    const auditDateEl = document.getElementById('viewRecordAuditDate');
+    const editBtn = document.getElementById('viewModalEditBtn');
 
+    if (avatarEl) avatarEl.textContent = getInitials(data.title);
     if (titleEl) titleEl.textContent = data.title;
-    if (codeEl) codeEl.textContent = data.code || 'REF-2024-AUTO';
-    if (catEl) catEl.textContent = data.category || 'Standard';
-    if (statusEl) {
-      statusEl.innerHTML = `<span class="badge ${getStatusClass(data.status)}">${escapeHtml(data.status)}</span>`;
+    if (subEl) subEl.textContent = data.sub || (data.category ? (data.category + ' • Verified Institutional Record') : 'Verified Record Dossier');
+    if (codeEl) codeEl.textContent = data.code || 'REF-AUTO';
+    if (statusBadgeEl) {
+      statusBadgeEl.innerHTML = `<span class="badge-status ${getStatusClass(data.status)}">${escapeHtml(data.status)}</span>`;
     }
-    if (dateEl) dateEl.textContent = data.date + ' (Synced in LocalStorage)';
-    if (notesEl) notesEl.textContent = 'Active institutional record synchronized with browser local storage.';
+
+    if (specsGrid && data.fields) {
+      specsGrid.innerHTML = data.fields.map(f => `
+        <div class="col-md-6">
+          <div class="p-2.5 rounded-2 bg-light border-0">
+            <span class="text-muted font-size-11 d-block text-uppercase fw-semibold mb-1">${escapeHtml(f.header)}</span>
+            <span class="text-dark font-size-13 fw-semibold">${escapeHtml(f.text || '—')}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    if (auditDateEl) auditDateEl.textContent = 'Updated ' + data.date + ' (LocalStorage Synced)';
+
+    if (editBtn) {
+      editBtn.onclick = function () {
+        const viewModalEl = document.getElementById('viewRecordModal');
+        if (viewModalEl) {
+          const bsView = bootstrap.Modal.getInstance(viewModalEl);
+          if (bsView) bsView.hide();
+        }
+        setTimeout(() => {
+          populateEditModal(tr);
+          const editModalEl = document.getElementById('editRecordModal');
+          if (editModalEl) {
+            const bsEdit = new bootstrap.Modal(editModalEl);
+            bsEdit.show();
+          }
+        }, 250);
+      };
+    }
   }
 
   function populateEditModal(tr) {
     const data = extractRowData(tr);
+    const table = tr.closest('table') || document.querySelector('#mainDataTable');
+
+    const headers = data.headers || [];
+    const setLbl = (id, val) => {
+      const el = document.getElementById(id);
+      if (el && val) el.innerHTML = `${escapeHtml(val)} <span class="text-danger">*</span>`;
+    };
+    const setLblOptional = (id, val) => {
+      const el = document.getElementById(id);
+      if (el && val) el.textContent = val;
+    };
+
+    setLblOptional('lblEditCode', headers[0] || 'Reference Code / ID');
+    setLbl('lblEditTitle', headers[1] || 'Title / Full Name');
+    setLblOptional('lblEditCategory', headers[2] || 'Category / Wing / Department');
+    setLblOptional('lblEditC4', headers[3] || 'Responsible / Incharge / Details');
+    setLblOptional('lblEditC5', headers[4] || 'Contact / Metrics / Specs');
+    setLblOptional('lblEditC6', headers[5] || 'Tag / Location / Source');
+    setLblOptional('lblEditC7', headers[6] || 'Date / Amount / Reference');
+
     const rowIdInput = document.getElementById('editRecordRowId');
-    const titleInput = document.getElementById('editRecordTitle');
-    const catSelect = document.getElementById('editRecordCategory');
     const codeInput = document.getElementById('editRecordCode');
+    const titleInput = document.getElementById('editRecordTitle');
+    const subInput = document.getElementById('editRecordSub');
+    const catSelect = document.getElementById('editRecordCategory');
+    const c4Input = document.getElementById('editRecordC4');
+    const c5Input = document.getElementById('editRecordC5');
+    const c6Input = document.getElementById('editRecordC6');
+    const c7Input = document.getElementById('editRecordC7');
     const statusSelect = document.getElementById('editRecordStatus');
     const notesInput = document.getElementById('editRecordNotes');
 
     if (rowIdInput) rowIdInput.value = data.id;
-    if (titleInput) titleInput.value = data.title;
     if (codeInput) codeInput.value = data.code;
-    if (catSelect && data.category) {
-      let found = false;
-      for (let i = 0; i < catSelect.options.length; i++) {
-        if (catSelect.options[i].text.toLowerCase().includes(data.category.toLowerCase())) {
-          catSelect.selectedIndex = i;
-          found = true;
-          break;
+    if (titleInput) titleInput.value = data.title;
+    if (subInput) subInput.value = data.sub;
+    if (c4Input) c4Input.value = data.c4;
+    if (c5Input) c5Input.value = data.c5;
+    if (c6Input) c6Input.value = data.c6;
+    if (c7Input) c7Input.value = data.c7;
+
+    if (catSelect) {
+      catSelect.innerHTML = '<option value="">Select category / group</option>';
+      const categories = collectModuleCategories(table);
+      categories.forEach(cat => {
+        catSelect.add(new Option(cat, cat));
+      });
+      if (data.category) {
+        let found = false;
+        for (let i = 0; i < catSelect.options.length; i++) {
+          if (catSelect.options[i].text.toLowerCase().trim() === data.category.toLowerCase().trim()) {
+            catSelect.selectedIndex = i;
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          catSelect.add(new Option(data.category, data.category, true, true));
         }
       }
-      if (!found) {
-        catSelect.add(new Option(data.category, data.category, true, true));
-      }
     }
+
     if (statusSelect && data.status) {
       for (let i = 0; i < statusSelect.options.length; i++) {
         if (statusSelect.options[i].text.toLowerCase().includes(data.status.toLowerCase())) {
@@ -323,9 +550,67 @@ window.EduTables = (function () {
         }
       }
     }
+
     if (notesInput) {
-      notesInput.value = `Updated entry for ${data.title} (${data.code}).`;
+      notesInput.value = `Verified institutional entry for ${data.title} (${data.code}).`;
     }
+  }
+
+  function prepareAddModal(table) {
+    table = table || document.querySelector('#mainDataTable');
+    if (!table) return;
+
+    const ths = Array.from(table.querySelectorAll('thead th'));
+    const headers = ths.map(th => th.innerText.trim()).filter(h => !h.toLowerCase().includes('action'));
+
+    const setLbl = (id, val) => {
+      const el = document.getElementById(id);
+      if (el && val) el.innerHTML = `${escapeHtml(val)} <span class="text-danger">*</span>`;
+    };
+    const setLblOptional = (id, val) => {
+      const el = document.getElementById(id);
+      if (el && val) el.textContent = val;
+    };
+
+    setLblOptional('lblAddCode', headers[0] || 'Reference Code / ID');
+    setLbl('lblAddTitle', headers[1] || 'Title / Full Name');
+    setLbl('lblAddCategory', headers[2] || 'Category / Department');
+    setLblOptional('lblAddC4', headers[3] || 'Responsible / Incharge / Details');
+    setLblOptional('lblAddC5', headers[4] || 'Contact / Metrics / Specs');
+    setLblOptional('lblAddC6', headers[5] || 'Tag / Location / Source');
+    setLblOptional('lblAddC7', headers[6] || 'Date / Amount / Reference');
+
+    const codeInput = document.getElementById('addRecordCode');
+    if (codeInput) {
+      codeInput.value = generateDomainCode(headers[0] || '', table);
+    }
+
+    const catSelect = document.getElementById('addRecordCategory');
+    if (catSelect) {
+      catSelect.innerHTML = '<option value="" selected disabled>Select category / department</option>';
+      const categories = collectModuleCategories(table);
+      categories.forEach(cat => {
+        catSelect.add(new Option(cat, cat));
+      });
+      if (categories.length > 0) {
+        catSelect.selectedIndex = 1;
+      }
+    }
+
+    const titleInput = document.getElementById('addRecordTitle');
+    if (titleInput) titleInput.value = '';
+    const subInput = document.getElementById('addRecordSub');
+    if (subInput) subInput.value = '';
+    const c4Input = document.getElementById('addRecordC4');
+    if (c4Input) c4Input.value = '';
+    const c5Input = document.getElementById('addRecordC5');
+    if (c5Input) c5Input.value = '';
+    const c6Input = document.getElementById('addRecordC6');
+    if (c6Input) c6Input.value = '';
+    const c7Input = document.getElementById('addRecordC7');
+    if (c7Input) c7Input.value = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    const notesInput = document.getElementById('addRecordNotes');
+    if (notesInput) notesInput.value = '';
   }
 
   function addRecord(record, tableSelector = '#mainDataTable') {
