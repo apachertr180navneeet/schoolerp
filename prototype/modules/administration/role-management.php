@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Role Management
+ * EDUSYS PRO - ROLE MANAGEMENT
+ * Dedicated operational interface & records management for Role Management
  */
 $page_title = "Role Management";
-$page_desc = "Dedicated operational interface & records management for Role Management";
+$page_desc = "Role definitions, security tiers, hierarchical access roles, and default permission inheritance";
 $active_module = "administration";
 $active_submodule = "role-management.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/administration/school-profile.php'); ?>">Administration & Setup</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/administration/school-profile.php'); ?>" class="btn btn-light border" title="School Institutional Dossier">
+      <i class="bi bi-building me-1"></i> Profile
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Records</h6>
-        <div class="kpi-value">1,248 Items</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
+        <h6>Configured Roles</h6>
+        <div class="kpi-value">12 System Roles</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> RBAC Security Grid</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-shield-shaded"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-danger">
+      <div class="kpi-info">
+        <h6>Tier 1 Root Roles</h6>
+        <div class="kpi-value">2 Roles</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Super Admin & Principal</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-key-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Verified & Active</h6>
-        <div class="kpi-value">1,190 Entries</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
+        <h6>Assigned Users</h6>
+        <div class="kpi-value">168 Active Users</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> All Staff Profiled</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
-      <div class="kpi-info">
-        <h6>Under Scrutiny</h6>
-        <div class="kpi-value">58 Pending</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-person-check-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Audit Compliant</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+        <h6>Inheritance Tree</h6>
+        <div class="kpi-value">Hierarchical</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Strict Parent-Child Tiers</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-diagram-3"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,21 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search role management by code, title, category...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search role code, title, tier...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Categories</option>
-      <option >Primary Wing</option>
-      <option >Middle Wing</option>
-      <option >Secondary Wing</option>
-      <option >Senior Secondary Wing</option>
-      <option >General Administration</option>
+    <select class="form-select" style="max-width: 240px;">
+      <option selected>All Security Tiers</option>
+      <option >Tier 1: Root / Executive</option>
+      <option >Tier 2: Academic Leadership</option>
+      <option >Tier 3: Teaching Faculty</option>
+      <option >Tier 4: Administrative & Finance</option>
+      <option >Tier 5: Operational Support</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Active & Enforced</option>
+      <option >System Reserved</option>
+      <option >Under Audit</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +124,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Record Code</th>
-        <th>Role Management Title</th>
-        <th>Operational Scope</th>
-        <th>Assigned Incharge</th>
-        <th>Reference / Contact</th>
-        <th>Last Updated</th>
-        <th>Session</th>
+        <th>Role Code</th>
+        <th>Role Title & Scope</th>
+        <th>Security Tier</th>
+        <th>Assigned Staff Count</th>
+        <th>Default Landing Dashboard</th>
+        <th>Permission Grants</th>
+        <th>Created Date</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,17 +138,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">ROLE-ROOT</td>
         <td>
-          <div class="fw-semibold text-dark">Role Management Standard Master #01</div>
-          <small class="text-muted font-size-11">High Priority Institutional Record</small>
+          <div class="fw-semibold text-dark">Super Administrator</div>
+          <small class="text-muted font-size-11">Full unrestricted system root privileges</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Tier 1 (Root Access)</span></td>
+        <td><small class="text-dark">4 Users</small></td>
+        <td><small class="text-muted font-mono font-size-12">dashboards/admin.php</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">All 28 Modules (Full Control)</span></td>
+        <td><small class="text-muted">01 Apr 2024</small></td>
+        <td><span class="badge-status badge-active">System Reserved</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +159,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
+        <td class="fw-bold text-primary font-mono font-size-13">ROLE-PRIN</td>
         <td>
-          <div class="fw-semibold text-dark">Role Management Policy Schedule #02</div>
-          <small class="text-muted font-size-11">Curriculum Implementation</small>
+          <div class="fw-semibold text-dark">School Principal</div>
+          <small class="text-muted font-size-11">Executive academic, HR, and institutional sanction</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Tier 1 (Executive)</span></td>
+        <td><small class="text-dark">1 User</small></td>
+        <td><small class="text-muted font-mono font-size-12">dashboards/principal.php</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Full Read + Sanction + Audit</span></td>
+        <td><small class="text-muted">01 Apr 2024</small></td>
+        <td><span class="badge-status badge-active">System Reserved</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +180,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">ROLE-DEAN</td>
         <td>
-          <div class="fw-semibold text-dark">Role Management Register Protocol #03</div>
-          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+          <div class="fw-semibold text-dark">Dean Academics / Vice Principal</div>
+          <small class="text-muted font-size-11">Curriculum, timetable, examinations & PTM</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Tier 2 (Academic Lead)</span></td>
+        <td><small class="text-dark">2 Users</small></td>
+        <td><small class="text-muted font-mono font-size-12">dashboards/admin.php</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Academics, SIS, Exams, PTM</span></td>
+        <td><small class="text-muted">01 Apr 2024</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +201,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">ROLE-TCH</td>
         <td>
-          <div class="fw-semibold text-dark">Role Management Operation Log #04</div>
-          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+          <div class="fw-semibold text-dark">Teaching Faculty / Class Teacher</div>
+          <small class="text-muted font-size-11">Attendance, marks, assignments, PTM slots</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
-        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Tier 3 (Faculty)</span></td>
+        <td><small class="text-dark">124 Users</small></td>
+        <td><small class="text-muted font-mono font-size-12">dashboards/teacher.php</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Classroom SIS, LMS, Marks, PTM</span></td>
+        <td><small class="text-muted">01 Apr 2024</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +222,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">ROLE-ACC</td>
         <td>
-          <div class="fw-semibold text-dark">Role Management Activity Benchmark #05</div>
-          <small class="text-muted font-size-11">Student Welfare Guideline</small>
+          <div class="fw-semibold text-dark">Chief Accountant / Cashier</div>
+          <small class="text-muted font-size-11">Fee collection, receipts, salaries, vouchers</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Tier 4 (Finance)</span></td>
+        <td><small class="text-dark">5 Users</small></td>
+        <td><small class="text-muted font-mono font-size-12">dashboards/accountant.php</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Fees, Finance, Payroll, Vouchers</span></td>
+        <td><small class="text-muted">01 Apr 2024</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +243,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
+        <td class="fw-bold text-primary font-mono font-size-13">ROLE-TRP</td>
         <td>
-          <div class="fw-semibold text-dark">Role Management Digital Catalog #06</div>
-          <small class="text-muted font-size-11">IT System Resource</small>
+          <div class="fw-semibold text-dark">Transport & Fleet Manager</div>
+          <small class="text-muted font-size-11">Bus routes, vehicle telematics, fuel, drivers</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Tier 4 (Operations)</span></td>
+        <td><small class="text-dark">3 Users</small></td>
+        <td><small class="text-muted font-mono font-size-12">modules/transport/routes.php</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Transport & GPS Telematics Only</span></td>
+        <td><small class="text-muted">01 Apr 2024</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +264,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
+        <td class="fw-bold text-primary font-mono font-size-13">ROLE-LIB</td>
         <td>
-          <div class="fw-semibold text-dark">Role Management Governance Audit #07</div>
-          <small class="text-muted font-size-11">SMC Resolution Archive</small>
+          <div class="fw-semibold text-dark">Head Librarian</div>
+          <small class="text-muted font-size-11">Accession register, book circulation, overdue fines</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Tier 4 (Operations)</span></td>
+        <td><small class="text-dark">3 Users</small></td>
+        <td><small class="text-muted font-mono font-size-12">modules/library/books.php</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Library Management Only</span></td>
+        <td><small class="text-muted">01 Apr 2024</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +285,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
+        <td class="fw-bold text-primary font-mono font-size-13">ROLE-REC</td>
         <td>
-          <div class="fw-semibold text-dark">Role Management Session Directive #08</div>
-          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+          <div class="fw-semibold text-dark">Front Desk & Receptionist</div>
+          <small class="text-muted font-size-11">Visitor passes, enquiries, postal logs, gate check</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Tier 5 (Support)</span></td>
+        <td><small class="text-dark">4 Users</small></td>
+        <td><small class="text-muted font-mono font-size-12">modules/front-office/visitors.php</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Front Office, Visitors, Gate Pass</span></td>
+        <td><small class="text-muted">01 Apr 2024</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +309,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

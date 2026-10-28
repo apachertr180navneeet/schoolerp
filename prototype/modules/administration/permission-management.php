@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Permission Management
+ * EDUSYS PRO - PERMISSION MANAGEMENT
+ * Dedicated operational interface & records management for Permission Management
  */
 $page_title = "Permission Management";
-$page_desc = "Dedicated operational interface & records management for Permission Management";
+$page_desc = "Granular Role-Based Access Control (RBAC) matrix for View, Create, Edit, Delete, and Export across all 28 modules";
 $active_module = "administration";
 $active_submodule = "permission-management.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/administration/school-profile.php'); ?>">Administration & Setup</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/administration/school-profile.php'); ?>" class="btn btn-light border" title="School Institutional Dossier">
+      <i class="bi bi-building me-1"></i> Profile
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,45 +48,44 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Records</h6>
-        <div class="kpi-value">1,248 Items</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
+        <h6>Governed Modules</h6>
+        <div class="kpi-value">28 Modules</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Full RBAC Coverage</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-grid-3x3-gap-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Verified & Active</h6>
-        <div class="kpi-value">1,190 Entries</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
+        <h6>Granular Controls</h6>
+        <div class="kpi-value">CRUD + Export</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 5 Operation Gates</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-toggles"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Under Scrutiny</h6>
-        <div class="kpi-value">58 Pending</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
+        <h6>Custom Overrides</h6>
+        <div class="kpi-value">8 Special Grants</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Role-Specific Permissions</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-shield-plus"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Audit Compliant</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+        <h6>Security Audit</h6>
+        <div class="kpi-value">Passed 100%</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & ISO 27001 Standard</div>
       </div>
       <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
     </div>
@@ -94,21 +97,24 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search permission management by code, title, category...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search module, permission ID, role...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Categories</option>
-      <option >Primary Wing</option>
-      <option >Middle Wing</option>
-      <option >Secondary Wing</option>
-      <option >Senior Secondary Wing</option>
-      <option >General Administration</option>
+    <select class="form-select" style="max-width: 240px;">
+      <option selected>All Modules</option>
+      <option >Administration & Setup</option>
+      <option >Admissions & SIS</option>
+      <option >Academics & Timetable</option>
+      <option >Examinations & Marks</option>
+      <option >Fees & Finance</option>
+      <option >HR & Payroll</option>
+      <option >Transport & Operations</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Permission Active</option>
+      <option >Restricted</option>
+      <option >Read-Only Grant</option>
+      <option >Blocked</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,31 +127,31 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Record Code</th>
-        <th>Permission Management Title</th>
-        <th>Operational Scope</th>
-        <th>Assigned Incharge</th>
-        <th>Reference / Contact</th>
-        <th>Last Updated</th>
-        <th>Session</th>
-        <th>Status</th>
+        <th>Permission ID</th>
+        <th>Governed Module Scope</th>
+        <th>Target Role</th>
+        <th>View / Read</th>
+        <th>Create / Add</th>
+        <th>Edit / Update</th>
+        <th>Delete / Purge</th>
+        <th>Export CSV/PDF</th>
         <th class="text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">PRM-ADM-01</td>
         <td>
-          <div class="fw-semibold text-dark">Permission Management Standard Master #01</div>
-          <small class="text-muted font-size-11">High Priority Institutional Record</small>
+          <div class="fw-semibold text-dark">Administration & Master Setup</div>
+          <small class="text-muted font-size-11">School Profile, Branding, System Config</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Super Administrator</span></td>
+        <td><small class="text-dark">Granted (Full)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Granted (Full)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Granted (Full)</span></td>
+        <td><small class="text-muted">Granted (Full)</small></td>
+        <td><span class="badge-status undefined">Granted (Full)</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +162,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
+        <td class="fw-bold text-primary font-mono font-size-13">PRM-ADM-02</td>
         <td>
-          <div class="fw-semibold text-dark">Permission Management Policy Schedule #02</div>
-          <small class="text-muted font-size-11">Curriculum Implementation</small>
+          <div class="fw-semibold text-dark">Administration & Master Setup</div>
+          <small class="text-muted font-size-11">School Profile, Branding, System Config</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">School Principal</span></td>
+        <td><small class="text-dark">Granted (Full)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Granted (Full)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Granted (Full)</span></td>
+        <td><small class="text-muted">Restricted (No)</small></td>
+        <td><span class="badge-status undefined">Granted (Full)</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +183,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">PRM-ADM-03</td>
         <td>
-          <div class="fw-semibold text-dark">Permission Management Register Protocol #03</div>
-          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+          <div class="fw-semibold text-dark">Administration & Master Setup</div>
+          <small class="text-muted font-size-11">School Profile, Branding, System Config</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Teaching Faculty</span></td>
+        <td><small class="text-dark">Read Only</small></td>
+        <td><small class="text-muted font-mono font-size-12">Blocked (No)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Blocked (No)</span></td>
+        <td><small class="text-muted">Blocked (No)</small></td>
+        <td><span class="badge-status undefined">Blocked (No)</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +204,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">PRM-FEE-01</td>
         <td>
-          <div class="fw-semibold text-dark">Permission Management Operation Log #04</div>
-          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+          <div class="fw-semibold text-dark">Fees Management & Invoicing</div>
+          <small class="text-muted font-size-11">Challans, Receipts, Outstanding Ledgers</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
-        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Accountant</span></td>
+        <td><small class="text-dark">Granted (Full)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Granted (Full)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Granted (Full)</span></td>
+        <td><small class="text-muted">Restricted (No)</small></td>
+        <td><span class="badge-status undefined">Granted (Full)</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +225,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">PRM-FEE-02</td>
         <td>
-          <div class="fw-semibold text-dark">Permission Management Activity Benchmark #05</div>
-          <small class="text-muted font-size-11">Student Welfare Guideline</small>
+          <div class="fw-semibold text-dark">Fees Management & Invoicing</div>
+          <small class="text-muted font-size-11">Challans, Receipts, Outstanding Ledgers</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Teaching Faculty</span></td>
+        <td><small class="text-dark">View Own Class</small></td>
+        <td><small class="text-muted font-mono font-size-12">Blocked (No)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Blocked (No)</span></td>
+        <td><small class="text-muted">Blocked (No)</small></td>
+        <td><span class="badge-status undefined">Blocked (No)</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +246,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
+        <td class="fw-bold text-primary font-mono font-size-13">PRM-EXM-01</td>
         <td>
-          <div class="fw-semibold text-dark">Permission Management Digital Catalog #06</div>
-          <small class="text-muted font-size-11">IT System Resource</small>
+          <div class="fw-semibold text-dark">Examination & Results Processing</div>
+          <small class="text-muted font-size-11">Report Cards, Marks Entry, Grading</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Teaching Faculty</span></td>
+        <td><small class="text-dark">Granted (Full)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Granted (Marks)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Granted (Marks)</span></td>
+        <td><small class="text-muted">Blocked (No)</small></td>
+        <td><span class="badge-status undefined">Granted (Class)</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +267,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
+        <td class="fw-bold text-primary font-mono font-size-13">PRM-TRP-01</td>
         <td>
-          <div class="fw-semibold text-dark">Permission Management Governance Audit #07</div>
-          <small class="text-muted font-size-11">SMC Resolution Archive</small>
+          <div class="fw-semibold text-dark">Transport & GPS Telematics</div>
+          <small class="text-muted font-size-11">Bus Routes, Vehicle Tracking, Fuel Logs</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Transport Supervisor</span></td>
+        <td><small class="text-dark">Granted (Full)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Granted (Full)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Granted (Full)</span></td>
+        <td><small class="text-muted">Blocked (No)</small></td>
+        <td><span class="badge-status undefined">Granted (Full)</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +288,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
+        <td class="fw-bold text-primary font-mono font-size-13">PRM-LIB-01</td>
         <td>
-          <div class="fw-semibold text-dark">Permission Management Session Directive #08</div>
-          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+          <div class="fw-semibold text-dark">Library & Book Circulation</div>
+          <small class="text-muted font-size-11">Accession Register, Issue/Return, Fines</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Librarian</span></td>
+        <td><small class="text-dark">Granted (Full)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Granted (Full)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Granted (Full)</span></td>
+        <td><small class="text-muted">Restricted (No)</small></td>
+        <td><span class="badge-status undefined">Granted (Full)</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +312,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

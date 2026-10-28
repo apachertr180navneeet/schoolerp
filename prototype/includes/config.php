@@ -136,8 +136,6 @@ $modules_registry = [
             ['file' => 'holidays.php', 'title' => 'Holidays & Vacations'],
             ['file' => 'events-calendar.php', 'title' => 'School Events Calendar'],
             ['file' => 'school-settings.php', 'title' => 'School Settings'],
-            ['file' => 'custom-fields.php', 'title' => 'Custom Fields'],
-            ['file' => 'form-builder.php', 'title' => 'Form Builder'],
             ['file' => 'user-management.php', 'title' => 'User Management'],
             ['file' => 'role-management.php', 'title' => 'Role Management'],
             ['file' => 'permission-management.php', 'title' => 'Permission Management'],

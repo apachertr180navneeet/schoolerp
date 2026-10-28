@@ -27,6 +27,7 @@ const PROTECTED_FILES = [
 // Helper: Normalize relative path for checking protected files
 function isProtected(filePath) {
   const norm = filePath.replace(/\\/g, '/');
+  if (norm.includes('prototype/modules/administration/')) return true;
   if (norm.includes('prototype/modules/admissions/')) return true;
   if (norm.includes('prototype/modules/events-ptm/')) return true;
   return PROTECTED_FILES.some(p => norm.endsWith(p));

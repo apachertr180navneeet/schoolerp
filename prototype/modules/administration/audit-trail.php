@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Audit Trail
+ * EDUSYS PRO - AUDIT TRAIL
+ * Dedicated operational interface & records management for Audit Trail
  */
 $page_title = "Audit Trail";
-$page_desc = "Dedicated operational interface & records management for Audit Trail";
+$page_desc = "Immutable forensic audit trail of critical operational actions: fee adjustments, grade modifications, and TC discharges";
 $active_module = "administration";
 $active_submodule = "audit-trail.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/administration/school-profile.php'); ?>">Administration & Setup</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -28,63 +29,51 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-fingerprint text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
-  <div class="page-actions-group d-flex flex-wrap gap-2">
-    <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
-      <i class="bi bi-printer me-1"></i> Print
-    </button>
-    <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', 'audit-trail_export.csv')" title="Export Table as CSV">
-      <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
-    </button>
-    <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
-    </button>
-  </div>
 </div>
-
 
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Records</h6>
-        <div class="kpi-value">1,248 Items</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
+        <h6>Audited Actions</h6>
+        <div class="kpi-value">148 Critical Events</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Zero-Tampering Ledger</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
-      <div class="kpi-info">
-        <h6>Verified & Active</h6>
-        <div class="kpi-value">1,190 Entries</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-fingerprint"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Under Scrutiny</h6>
-        <div class="kpi-value">58 Pending</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
+        <h6>Fee Waivers Approved</h6>
+        <div class="kpi-value">12 Concessions</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Principal Certified</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-cash-coin"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Audit Compliant</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+        <h6>Marks Modifications</h6>
+        <div class="kpi-value">4 Re-evaluations</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> HOD Verified Overrides</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-pencil-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-success">
+      <div class="kpi-info">
+        <h6>Compliance Score</h6>
+        <div class="kpi-value">100% Certified</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Statutory CBSE Standard</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +83,20 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search audit trail by code, title, category...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search audit ID, officer, entity...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Categories</option>
-      <option >Primary Wing</option>
-      <option >Middle Wing</option>
-      <option >Secondary Wing</option>
-      <option >Senior Secondary Wing</option>
-      <option >General Administration</option>
+    <select class="form-select" style="max-width: 240px;">
+      <option selected>All Audit Domains</option>
+      <option >Financial Concessions & Waivers</option>
+      <option >Examination Marks Modification</option>
+      <option >Student Discharges & TC Issuance</option>
+      <option >System Security & Permission Grants</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Verified & Retained</option>
+      <option >Requires Management Counter-Sign</option>
+      <option >Audit Flagged</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,183 +109,167 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Record Code</th>
-        <th>Audit Trail Title</th>
-        <th>Operational Scope</th>
-        <th>Assigned Incharge</th>
-        <th>Reference / Contact</th>
-        <th>Last Updated</th>
-        <th>Session</th>
-        <th>Status</th>
+        <th>Audit ID #</th>
+        <th>Operational Domain</th>
+        <th>Critical Action Performed</th>
+        <th>Authorizing Officer</th>
+        <th>Previous State / Value</th>
+        <th>New Sanctioned State</th>
+        <th>Audit Timestamp</th>
+        <th>Compliance</th>
         <th class="text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">AUD-2024-0148</td>
         <td>
-          <div class="fw-semibold text-dark">Audit Trail Standard Master #01</div>
-          <small class="text-muted font-size-11">High Priority Institutional Record</small>
+          <div class="fw-semibold text-dark">Fee Concession</div>
+          <small class="text-muted font-size-11">15% Sibling Discount Granted</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Student: Saanvi Reddy (Cl 6)</span></td>
+        <td><small class="text-dark">Dr. Ananya Roy (Principal)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Gross Fee: ₹26,800 / Term</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Discounted Fee: ₹22,780 / Term</span></td>
+        <td><small class="text-muted">28 Oct 2024 (08:45 AM)</small></td>
+        <td><span class="badge-status badge-active">Verified</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Audit Trail')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
+        <td class="fw-bold text-primary font-mono font-size-13">AUD-2024-0147</td>
         <td>
-          <div class="fw-semibold text-dark">Audit Trail Policy Schedule #02</div>
-          <small class="text-muted font-size-11">Curriculum Implementation</small>
+          <div class="fw-semibold text-dark">Marks Re-evaluation</div>
+          <small class="text-muted font-size-11">Class 10-A Science Periodic Test 1</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Student: Vihaan Singh (Roll #03)</span></td>
+        <td><small class="text-dark">Dr. Alok Verma (Science Dean)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Previous Score: 18 / 25</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Re-evaluated Score: 21 / 25</span></td>
+        <td><small class="text-muted">27 Oct 2024 (03:15 PM)</small></td>
+        <td><span class="badge-status badge-active">Verified</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Audit Trail')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">AUD-2024-0146</td>
         <td>
-          <div class="fw-semibold text-dark">Audit Trail Register Protocol #03</div>
-          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+          <div class="fw-semibold text-dark">Transfer Certificate</div>
+          <small class="text-muted font-size-11">Official TC Generation & Discharge</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Student: Tushar Sengupta (Cl 8-B)</span></td>
+        <td><small class="text-dark">Dr. Ananya Roy (Principal)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Status: Enrolled Active</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Status: Discharged / TC #8412</span></td>
+        <td><small class="text-muted">26 Oct 2024 (11:20 AM)</small></td>
+        <td><span class="badge-status badge-active">Verified</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Audit Trail')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">AUD-2024-0145</td>
         <td>
-          <div class="fw-semibold text-dark">Audit Trail Operation Log #04</div>
-          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+          <div class="fw-semibold text-dark">Security Role Change</div>
+          <small class="text-muted font-size-11">Elevated User Permission Grant</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
-        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">User: Suresh Chawla (Accountant)</span></td>
+        <td><small class="text-dark">Vikram Malhotra (IT Director)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Role: Standard Cashier</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Role: Chief Accounts Officer</span></td>
+        <td><small class="text-muted">25 Oct 2024 (02:00 PM)</small></td>
+        <td><span class="badge-status badge-active">Verified</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Audit Trail')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">AUD-2024-0144</td>
         <td>
-          <div class="fw-semibold text-dark">Audit Trail Activity Benchmark #05</div>
-          <small class="text-muted font-size-11">Student Welfare Guideline</small>
+          <div class="fw-semibold text-dark">Caution Deposit Refund</div>
+          <small class="text-muted font-size-11">Discharged Student Caution Return</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Student: Ananya Dixit (Cl 5-A)</span></td>
+        <td><small class="text-dark">Suresh Chawla (Accounts)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Caution Held: ₹15,000</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">NEFT Transferred: ₹15,000</span></td>
+        <td><small class="text-muted">24 Oct 2024 (10:15 AM)</small></td>
+        <td><span class="badge-status badge-active">Verified</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Audit Trail')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
+        <td class="fw-bold text-primary font-mono font-size-13">AUD-2024-0143</td>
         <td>
-          <div class="fw-semibold text-dark">Audit Trail Digital Catalog #06</div>
-          <small class="text-muted font-size-11">IT System Resource</small>
+          <div class="fw-semibold text-dark">Grade Subject Mapping</div>
+          <small class="text-muted font-size-11">Added AI Vocational Elective</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Class 10 Core Curriculum</span></td>
+        <td><small class="text-dark">Dean Academics</small></td>
+        <td><small class="text-muted font-mono font-size-12">5 Subjects Mapped</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">6 Subjects Mapped (Added AI)</span></td>
+        <td><small class="text-muted">23 Oct 2024 (04:30 PM)</small></td>
+        <td><span class="badge-status badge-active">Verified</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Audit Trail')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
+        <td class="fw-bold text-primary font-mono font-size-13">AUD-2024-0142</td>
         <td>
-          <div class="fw-semibold text-dark">Audit Trail Governance Audit #07</div>
-          <small class="text-muted font-size-11">SMC Resolution Archive</small>
+          <div class="fw-semibold text-dark">Late Fee Waiver</div>
+          <small class="text-muted font-size-11">Medical Exemption Late Fee Waiver</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Student: Kabir Mehta (Cl 3-A)</span></td>
+        <td><small class="text-dark">Dr. Ananya Roy (Principal)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Fine Due: ₹650</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Fine Waived: ₹0 (Medical Proof)</span></td>
+        <td><small class="text-muted">22 Oct 2024 (01:15 PM)</small></td>
+        <td><span class="badge-status badge-active">Verified</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Audit Trail')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
+        <td class="fw-bold text-primary font-mono font-size-13">AUD-2024-0141</td>
         <td>
-          <div class="fw-semibold text-dark">Audit Trail Session Directive #08</div>
-          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+          <div class="fw-semibold text-dark">Class Section Allocation</div>
+          <small class="text-muted font-size-11">Section Capacity Expansion</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Class 10 Section A Capacity</span></td>
+        <td><small class="text-dark">Dean Academics</small></td>
+        <td><small class="text-muted font-mono font-size-12">Capacity: 35 Students</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Expanded Capacity: 38 Students</span></td>
+        <td><small class="text-muted">21 Oct 2024 (11:00 AM)</small></td>
+        <td><span class="badge-status badge-active">Verified</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Audit Trail')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
@@ -306,5 +278,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

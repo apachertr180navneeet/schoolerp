@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Working Days & Hours
+ * EDUSYS PRO - WORKING DAYS & HOURS
+ * Dedicated operational interface & records management for Working Days & Hours
  */
 $page_title = "Working Days & Hours";
-$page_desc = "Dedicated operational interface & records management for Working Days & Hours";
+$page_desc = "Instructional day calendar, daily bell schedule, period duration, recess intervals, and assembly timings";
 $active_module = "administration";
 $active_submodule = "working-days.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/administration/school-profile.php'); ?>">Administration & Setup</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/administration/school-profile.php'); ?>" class="btn btn-light border" title="School Institutional Dossier">
+      <i class="bi bi-building me-1"></i> Profile
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Records</h6>
-        <div class="kpi-value">1,248 Items</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
+        <h6>Instructional Days</h6>
+        <div class="kpi-value">224 Days</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Full Academic Session</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
-      <div class="kpi-info">
-        <h6>Verified & Active</h6>
-        <div class="kpi-value">1,190 Entries</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
-      <div class="kpi-info">
-        <h6>Under Scrutiny</h6>
-        <div class="kpi-value">58 Pending</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-calendar-check"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Audit Compliant</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+        <h6>Teaching Periods</h6>
+        <div class="kpi-value">8 Periods / Day</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 40 Mins Each + Zero Period</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-stopwatch"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-success">
+      <div class="kpi-info">
+        <h6>School Timings</h6>
+        <div class="kpi-value">08:00 AM - 02:15 PM</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 6 Hours 15 Mins Daily</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-clock-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Recess Break</h6>
+        <div class="kpi-value">30 Minutes</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> 11:00 AM to 11:30 AM</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-cup-hot"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,21 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search working days & hours by code, title, category...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search shift code, day title, period...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Categories</option>
-      <option >Primary Wing</option>
-      <option >Middle Wing</option>
-      <option >Secondary Wing</option>
-      <option >Senior Secondary Wing</option>
-      <option >General Administration</option>
+    <select class="form-select" style="max-width: 240px;">
+      <option selected>All Shift Schedules</option>
+      <option >Regular Summer Shift (Apr - Oct)</option>
+      <option >Winter Shift (Nov - Feb)</option>
+      <option >Examination Day Shift (08:30 - 12:30)</option>
+      <option >Pre-Primary Half-Day Shift</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Active Default</option>
+      <option >Seasonal Schedule</option>
+      <option >Examination Preset</option>
+      <option >Draft</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +124,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Record Code</th>
-        <th>Working Days & Hours Title</th>
-        <th>Operational Scope</th>
-        <th>Assigned Incharge</th>
-        <th>Reference / Contact</th>
-        <th>Last Updated</th>
-        <th>Session</th>
+        <th>Shift Code</th>
+        <th>Schedule Title & Day Type</th>
+        <th>Applicable Grades</th>
+        <th>Arrival Time</th>
+        <th>Assembly & Zero Period</th>
+        <th>Period Duration</th>
+        <th>Dispersal Time</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,17 +138,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SFT-REG-01</td>
         <td>
-          <div class="fw-semibold text-dark">Working Days & Hours Standard Master #01</div>
-          <small class="text-muted font-size-11">High Priority Institutional Record</small>
+          <div class="fw-semibold text-dark">Regular School Timings (Mon to Fri)</div>
+          <small class="text-muted font-size-11">Standard 8-Period Instructional Day</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Classes 1 to 12</span></td>
+        <td><small class="text-dark">07:55 AM Gates Close</small></td>
+        <td><small class="text-muted font-mono font-size-12">08:00 AM - 08:30 AM (Assembly)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">40 Mins &bull; 8 Periods</span></td>
+        <td><small class="text-muted">02:15 PM Dispersal</small></td>
+        <td><span class="badge-status badge-active">Active Default</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +159,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SFT-PRE-02</td>
         <td>
-          <div class="fw-semibold text-dark">Working Days & Hours Policy Schedule #02</div>
-          <small class="text-muted font-size-11">Curriculum Implementation</small>
+          <div class="fw-semibold text-dark">Pre-Primary Foundation Shift (Mon to Fri)</div>
+          <small class="text-muted font-size-11">Early Childhood Play & Learning</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Nursery, LKG, UKG</span></td>
+        <td><small class="text-dark">08:30 AM Gates Close</small></td>
+        <td><small class="text-muted font-mono font-size-12">08:30 AM - 09:00 AM (Circle Time)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">30 Mins &bull; 6 Periods</span></td>
+        <td><small class="text-muted">12:30 PM Dispersal</small></td>
+        <td><span class="badge-status badge-active">Active Default</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +180,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SFT-SAT-03</td>
         <td>
-          <div class="fw-semibold text-dark">Working Days & Hours Register Protocol #03</div>
-          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+          <div class="fw-semibold text-dark">Senior Secondary Saturday Session</div>
+          <small class="text-muted font-size-11">Board Remedial & JEE/NEET Foundation</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Classes 9 to 12 (1st & 3rd Sat)</span></td>
+        <td><small class="text-dark">08:00 AM Gates Close</small></td>
+        <td><small class="text-muted font-mono font-size-12">08:00 AM - 08:15 AM (Briefing)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">50 Mins &bull; 4 Double Labs</span></td>
+        <td><small class="text-muted">01:00 PM Dispersal</small></td>
+        <td><span class="badge-status badge-active">Active Preset</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +201,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SFT-WIN-04</td>
         <td>
-          <div class="fw-semibold text-dark">Working Days & Hours Operation Log #04</div>
-          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+          <div class="fw-semibold text-dark">Winter Shift Timings (Dense Fog Protocol)</div>
+          <small class="text-muted font-size-11">Government Cold Wave Reschedule</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
-        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">All Grades (Nursery to 12)</span></td>
+        <td><small class="text-dark">08:55 AM Gates Close</small></td>
+        <td><small class="text-muted font-mono font-size-12">09:00 AM - 09:20 AM (In-Class)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">35 Mins &bull; 8 Periods</span></td>
+        <td><small class="text-muted">02:45 PM Dispersal</small></td>
+        <td><span class="badge-status badge-pending">Seasonal (Nov-Jan)</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +222,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SFT-EXM-05</td>
         <td>
-          <div class="fw-semibold text-dark">Working Days & Hours Activity Benchmark #05</div>
-          <small class="text-muted font-size-11">Student Welfare Guideline</small>
+          <div class="fw-semibold text-dark">Board & Term Examination Shift</div>
+          <small class="text-muted font-size-11">Exam Days Only (Reading & Writing)</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Classes 6 to 12</span></td>
+        <td><small class="text-dark">08:15 AM Gates Close</small></td>
+        <td><small class="text-muted font-mono font-size-12">08:30 AM - 08:45 AM (Reading)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">3 Hours Continuous Exam</span></td>
+        <td><small class="text-muted">12:00 PM Dispersal</small></td>
+        <td><span class="badge-status badge-active">Exam Preset</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +243,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SFT-PTM-06</td>
         <td>
-          <div class="fw-semibold text-dark">Working Days & Hours Digital Catalog #06</div>
-          <small class="text-muted font-size-11">IT System Resource</small>
+          <div class="fw-semibold text-dark">Parent-Teacher Meeting Saturday Shift</div>
+          <small class="text-muted font-size-11">Classroom Parent Consultation Slots</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">All Grades (Nursery to 12)</span></td>
+        <td><small class="text-dark">08:15 AM Teachers In</small></td>
+        <td><small class="text-muted font-mono font-size-12">08:30 AM First Slot Opens</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">10-Min Slots &bull; 48 Classrooms</span></td>
+        <td><small class="text-muted">01:30 PM Close</small></td>
+        <td><span class="badge-status badge-active">PTM Preset</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +264,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SFT-SPR-07</td>
         <td>
-          <div class="fw-semibold text-dark">Working Days & Hours Governance Audit #07</div>
-          <small class="text-muted font-size-11">SMC Resolution Archive</small>
+          <div class="fw-semibold text-dark">After-School Sports Academy Session</div>
+          <small class="text-muted font-size-11">Coaching in Football, Cricket, Tennis, Swimming</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Registered Squad Athletes</span></td>
+        <td><small class="text-dark">02:30 PM Assembly</small></td>
+        <td><small class="text-muted font-mono font-size-12">Warm-up & Physical Conditioning</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">90 Mins Coaching Drills</span></td>
+        <td><small class="text-muted">04:30 PM Bus Departure</small></td>
+        <td><span class="badge-status badge-active">Active Preset</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +285,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SFT-CLB-08</td>
         <td>
-          <div class="fw-semibold text-dark">Working Days & Hours Session Directive #08</div>
-          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+          <div class="fw-semibold text-dark">Zero Period Club & Activity Block</div>
+          <small class="text-muted font-size-11">Every Wednesday 7th & 8th Period</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Classes 4 to 10</span></td>
+        <td><small class="text-dark">In Regular Day</small></td>
+        <td><small class="text-muted font-mono font-size-12">Robotics, Music, Dance, Karate</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">80 Mins Combined Lab</span></td>
+        <td><small class="text-muted">02:15 PM Standard</small></td>
+        <td><span class="badge-status badge-active">Active Preset</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +309,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

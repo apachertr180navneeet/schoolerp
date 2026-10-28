@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Class-Subject Mapping
+ * EDUSYS PRO - CLASS-SUBJECT MAPPING
+ * Dedicated operational interface & records management for Class-Subject Mapping
  */
 $page_title = "Class-Subject Mapping";
-$page_desc = "Dedicated operational interface & records management for Class-Subject Mapping";
+$page_desc = "Curriculum allocation matrix: linking academic grades, CBSE subject codes, weekly period quotas, and lab hours";
 $active_module = "administration";
 $active_submodule = "class-subject-mapping.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/administration/school-profile.php'); ?>">Administration & Setup</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/administration/school-profile.php'); ?>" class="btn btn-light border" title="School Institutional Dossier">
+      <i class="bi bi-building me-1"></i> Profile
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Records</h6>
-        <div class="kpi-value">1,248 Items</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
+        <h6>Mapped Subjects</h6>
+        <div class="kpi-value">74 Allocations</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Curriculum Synchronized</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-diagram-3-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Verified & Active</h6>
-        <div class="kpi-value">1,190 Entries</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
+        <h6>Mandatory Core</h6>
+        <div class="kpi-value">42 Subjects</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Languages, Math, Science, SST</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
-      <div class="kpi-info">
-        <h6>Under Scrutiny</h6>
-        <div class="kpi-value">58 Pending</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-check2-circle"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Audit Compliant</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+        <h6>Elective Baskets</h6>
+        <div class="kpi-value">18 Baskets</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Senior Sec Specializations</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Lab Practical Subjects</h6>
+        <div class="kpi-value">14 Subjects</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Physics, Chem, Bio, CS, AI</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-mortarboard"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,23 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search class-subject mapping by code, title, category...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search grade, subject code, subject title...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Categories</option>
-      <option >Primary Wing</option>
-      <option >Middle Wing</option>
-      <option >Secondary Wing</option>
-      <option >Senior Secondary Wing</option>
-      <option >General Administration</option>
+    <select class="form-select" style="max-width: 240px;">
+      <option selected>All Grades</option>
+      <option >Class 12 (Senior Secondary)</option>
+      <option >Class 11 (Senior Secondary)</option>
+      <option >Class 10 (Secondary)</option>
+      <option >Class 9 (Secondary)</option>
+      <option >Classes 6-8 (Middle Wing)</option>
+      <option >Classes 1-5 (Primary Wing)</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Mapped & Active</option>
+      <option >Curriculum Approved</option>
+      <option >Elective Choice</option>
+      <option >Under Review</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +126,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Record Code</th>
-        <th>Class-Subject Mapping Title</th>
-        <th>Operational Scope</th>
-        <th>Assigned Incharge</th>
-        <th>Reference / Contact</th>
-        <th>Last Updated</th>
-        <th>Session</th>
+        <th>Mapping Code</th>
+        <th>Grade & Stream</th>
+        <th>Subject Code & Name</th>
+        <th>Subject Category</th>
+        <th>Weekly Periods</th>
+        <th>Theory / Lab Ratio</th>
+        <th>HOD Faculty Incharge</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,17 +140,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">MAP-12-042</td>
         <td>
-          <div class="fw-semibold text-dark">Class-Subject Mapping Standard Master #01</div>
-          <small class="text-muted font-size-11">High Priority Institutional Record</small>
+          <div class="fw-semibold text-dark">Class 12 - Science (PCM)</div>
+          <small class="text-muted font-size-11">Senior Secondary</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">042 &bull; Physics (Theory & Lab)</span></td>
+        <td><small class="text-dark">Mandatory Core</small></td>
+        <td><small class="text-muted font-mono font-size-12">6 Periods / Week</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">70% Th + 30% Pr</span></td>
+        <td><small class="text-muted">Dr. Alok Verma</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +161,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
+        <td class="fw-bold text-primary font-mono font-size-13">MAP-12-043</td>
         <td>
-          <div class="fw-semibold text-dark">Class-Subject Mapping Policy Schedule #02</div>
-          <small class="text-muted font-size-11">Curriculum Implementation</small>
+          <div class="fw-semibold text-dark">Class 12 - Science (PCM)</div>
+          <small class="text-muted font-size-11">Senior Secondary</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">043 &bull; Chemistry (Theory & Lab)</span></td>
+        <td><small class="text-dark">Mandatory Core</small></td>
+        <td><small class="text-muted font-mono font-size-12">6 Periods / Week</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">70% Th + 30% Pr</span></td>
+        <td><small class="text-muted">Dr. Sunita Kapoor</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +182,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">MAP-12-041</td>
         <td>
-          <div class="fw-semibold text-dark">Class-Subject Mapping Register Protocol #03</div>
-          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+          <div class="fw-semibold text-dark">Class 12 - Science (PCM)</div>
+          <small class="text-muted font-size-11">Senior Secondary</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">041 &bull; Mathematics</span></td>
+        <td><small class="text-dark">Mandatory Core</small></td>
+        <td><small class="text-muted font-mono font-size-12">7 Periods / Week</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">80% Th + 20% Int</span></td>
+        <td><small class="text-muted">Mr. Rajiv Narang</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +203,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">MAP-12-083</td>
         <td>
-          <div class="fw-semibold text-dark">Class-Subject Mapping Operation Log #04</div>
-          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+          <div class="fw-semibold text-dark">Class 12 - Science (PCM)</div>
+          <small class="text-muted font-size-11">Senior Secondary</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
-        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">083 &bull; Computer Science (Python)</span></td>
+        <td><small class="text-dark">Elective Basket A</small></td>
+        <td><small class="text-muted font-mono font-size-12">5 Periods / Week</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">70% Th + 30% Pr</span></td>
+        <td><small class="text-muted">Mr. Vikramaditya Sen</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +224,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">MAP-12-055</td>
         <td>
-          <div class="fw-semibold text-dark">Class-Subject Mapping Activity Benchmark #05</div>
-          <small class="text-muted font-size-11">Student Welfare Guideline</small>
+          <div class="fw-semibold text-dark">Class 12 - Commerce</div>
+          <small class="text-muted font-size-11">Senior Secondary</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">055 &bull; Accountancy</span></td>
+        <td><small class="text-dark">Mandatory Core</small></td>
+        <td><small class="text-muted font-mono font-size-12">6 Periods / Week</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">80% Th + 20% Pr</span></td>
+        <td><small class="text-muted">Mrs. Radhika Iyer</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +245,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
+        <td class="fw-bold text-primary font-mono font-size-13">MAP-10-086</td>
         <td>
-          <div class="fw-semibold text-dark">Class-Subject Mapping Digital Catalog #06</div>
-          <small class="text-muted font-size-11">IT System Resource</small>
+          <div class="fw-semibold text-dark">Class 10 - Secondary</div>
+          <small class="text-muted font-size-11">Secondary Wing</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">086 &bull; Science (Phy/Chem/Bio)</span></td>
+        <td><small class="text-dark">Mandatory Core</small></td>
+        <td><small class="text-muted font-mono font-size-12">7 Periods / Week</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">80% Th + 20% Int</span></td>
+        <td><small class="text-muted">Dr. Alok Verma</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +266,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
+        <td class="fw-bold text-primary font-mono font-size-13">MAP-10-041</td>
         <td>
-          <div class="fw-semibold text-dark">Class-Subject Mapping Governance Audit #07</div>
-          <small class="text-muted font-size-11">SMC Resolution Archive</small>
+          <div class="fw-semibold text-dark">Class 10 - Secondary</div>
+          <small class="text-muted font-size-11">Secondary Wing</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">041 &bull; Mathematics Standard</span></td>
+        <td><small class="text-dark">Mandatory Core</small></td>
+        <td><small class="text-muted font-mono font-size-12">7 Periods / Week</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">80% Th + 20% Int</span></td>
+        <td><small class="text-muted">Mrs. Sunita Kaul</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +287,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
+        <td class="fw-bold text-primary font-mono font-size-13">MAP-08-018</td>
         <td>
-          <div class="fw-semibold text-dark">Class-Subject Mapping Session Directive #08</div>
-          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+          <div class="fw-semibold text-dark">Class 8 - Middle Wing</div>
+          <small class="text-muted font-size-11">Middle Wing</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">018 &bull; French 3rd Language</span></td>
+        <td><small class="text-dark">Language Elective</small></td>
+        <td><small class="text-muted font-mono font-size-12">3 Periods / Week</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">80% Th + 20% Int</span></td>
+        <td><small class="text-muted">Mr. Deepak Rawat</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +311,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

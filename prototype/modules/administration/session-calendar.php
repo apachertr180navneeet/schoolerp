@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Session Calendar
+ * EDUSYS PRO - SESSION CALENDAR
+ * Dedicated operational interface & records management for Session Calendar
  */
 $page_title = "Session Calendar";
-$page_desc = "Dedicated operational interface & records management for Session Calendar";
+$page_desc = "Annual term breakdown, exam windows, instructional periods, and compliance milestones for 2024-2025";
 $active_module = "administration";
 $active_submodule = "session-calendar.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/administration/school-profile.php'); ?>">Administration & Setup</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/administration/school-profile.php'); ?>" class="btn btn-light border" title="School Institutional Dossier">
+      <i class="bi bi-building me-1"></i> Profile
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Records</h6>
-        <div class="kpi-value">1,248 Items</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
+        <h6>Instructional Days</h6>
+        <div class="kpi-value">224 Working Days</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Exceeds CBSE Minimum (220)</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
-      <div class="kpi-info">
-        <h6>Verified & Active</h6>
-        <div class="kpi-value">1,190 Entries</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
-      <div class="kpi-info">
-        <h6>Under Scrutiny</h6>
-        <div class="kpi-value">58 Pending</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-calendar3-week-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Audit Compliant</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+        <h6>Academic Terms</h6>
+        <div class="kpi-value">2 Terms</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Term 1 (Apr-Sep) & Term 2 (Oct-Mar)</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-diagram-2-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Exam Windows</h6>
+        <div class="kpi-value">4 Windows</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> PT-1, Mid-Term, PT-2, Pre-Board</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-pencil-square"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-success">
+      <div class="kpi-info">
+        <h6>Working Saturdays</h6>
+        <div class="kpi-value">12 Days</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> 1st & 3rd Saturdays for Cl 9-12</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,21 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search session calendar by code, title, category...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search milestone, term, event title...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Categories</option>
-      <option >Primary Wing</option>
-      <option >Middle Wing</option>
-      <option >Secondary Wing</option>
-      <option >Senior Secondary Wing</option>
-      <option >General Administration</option>
+    <select class="form-select" style="max-width: 240px;">
+      <option selected>All Milestones</option>
+      <option >Term 1: Foundational (Apr - Sep)</option>
+      <option >Term 2: Board & Annual (Oct - Mar)</option>
+      <option >Examination Windows</option>
+      <option >Institutional Holidays & Vacations</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Completed Milestone</option>
+      <option >Active / Upcoming</option>
+      <option >Scheduled</option>
+      <option >Board Tentative</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +124,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Record Code</th>
-        <th>Session Calendar Title</th>
-        <th>Operational Scope</th>
-        <th>Assigned Incharge</th>
-        <th>Reference / Contact</th>
-        <th>Last Updated</th>
-        <th>Session</th>
+        <th>Milestone ID</th>
+        <th>Academic Milestone Title</th>
+        <th>Academic Term</th>
+        <th>Applicable Wings</th>
+        <th>Key Deliverables</th>
+        <th>Duration / Span</th>
+        <th>Start Date</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,17 +138,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CAL-2024-01</td>
         <td>
-          <div class="fw-semibold text-dark">Session Calendar Standard Master #01</div>
-          <small class="text-muted font-size-11">High Priority Institutional Record</small>
+          <div class="fw-semibold text-dark">Academic Session 2024-25 Commencement</div>
+          <small class="text-muted font-size-11">Orientation Assembly & Textbook Distribution</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Term 1</span></td>
+        <td><small class="text-dark">All Grades (Nursery to 12)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Timetable Rollout, House Allocation</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Day 1 Opening</span></td>
+        <td><small class="text-muted">01 Apr 2024</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +159,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CAL-2024-02</td>
         <td>
-          <div class="fw-semibold text-dark">Session Calendar Policy Schedule #02</div>
-          <small class="text-muted font-size-11">Curriculum Implementation</small>
+          <div class="fw-semibold text-dark">Periodic Test 1 (PT-1) Assessment Window</div>
+          <small class="text-muted font-size-11">Formative Unit Evaluations (25 Marks)</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Term 1</span></td>
+        <td><small class="text-dark">Classes 1 to 12</small></td>
+        <td><small class="text-muted font-mono font-size-12">Question Papers, Answer Sheet Audit</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">7 Working Days</span></td>
+        <td><small class="text-muted">15 Jul 2024</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +180,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CAL-2024-03</td>
         <td>
-          <div class="fw-semibold text-dark">Session Calendar Register Protocol #03</div>
-          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+          <div class="fw-semibold text-dark">Mid-Term / Half-Yearly Examinations</div>
+          <small class="text-muted font-size-11">Summative Board Pattern Exams (80 Marks)</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Term 1</span></td>
+        <td><small class="text-dark">Classes 6 to 12</small></td>
+        <td><small class="text-muted font-mono font-size-12">Centralized Seating, Board Pattern Papers</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">12 Working Days</span></td>
+        <td><small class="text-muted">16 Sep 2024</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +201,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CAL-2024-04</td>
         <td>
-          <div class="fw-semibold text-dark">Session Calendar Operation Log #04</div>
-          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+          <div class="fw-semibold text-dark">Term 1 PTM & Comprehensive Report Card</div>
+          <small class="text-muted font-size-11">Parent Consultation & Evaluation Sheets</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
-        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Term 1</span></td>
+        <td><small class="text-dark">All Grades (Nursery to 12)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Offline Report Cards & Teacher Feedback</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">1 Full Day</span></td>
+        <td><small class="text-muted">05 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +222,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CAL-2024-05</td>
         <td>
-          <div class="fw-semibold text-dark">Session Calendar Activity Benchmark #05</div>
-          <small class="text-muted font-size-11">Student Welfare Guideline</small>
+          <div class="fw-semibold text-dark">Term 2 Instructional Cycle Commencement</div>
+          <small class="text-muted font-size-11">Post-Autumn Syllabus Acceleration</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Term 2</span></td>
+        <td><small class="text-dark">All Grades (Nursery to 12)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Practical Lab Projects, Science Fair</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Instructional Block</span></td>
+        <td><small class="text-muted">07 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">In Progress</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +243,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CAL-2024-06</td>
         <td>
-          <div class="fw-semibold text-dark">Session Calendar Digital Catalog #06</div>
-          <small class="text-muted font-size-11">IT System Resource</small>
+          <div class="fw-semibold text-dark">Periodic Test 2 (PT-2) Assessment Window</div>
+          <small class="text-muted font-size-11">Cumulative Pre-Final Formative Exam</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Term 2</span></td>
+        <td><small class="text-dark">Classes 1 to 9 & 11</small></td>
+        <td><small class="text-muted font-mono font-size-12">Syllabus 80% Coverage</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">7 Working Days</span></td>
+        <td><small class="text-muted">02 Dec 2024</small></td>
+        <td><span class="badge-status badge-pending">Scheduled</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +264,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CAL-2024-07</td>
         <td>
-          <div class="fw-semibold text-dark">Session Calendar Governance Audit #07</div>
-          <small class="text-muted font-size-11">SMC Resolution Archive</small>
+          <div class="fw-semibold text-dark">Pre-Board Examination 1 (Classes 10 & 12)</div>
+          <small class="text-muted font-size-11">Full CBSE Board Pattern Mock Examination</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Term 2</span></td>
+        <td><small class="text-dark">Senior Secondary (10 & 12)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Sample Paper Roster, Flying Squad</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">12 Working Days</span></td>
+        <td><small class="text-muted">06 Jan 2025</small></td>
+        <td><span class="badge-status badge-pending">Scheduled</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +285,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CAL-2024-08</td>
         <td>
-          <div class="fw-semibold text-dark">Session Calendar Session Directive #08</div>
-          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+          <div class="fw-semibold text-dark">CBSE Annual Board Exams Commencement</div>
+          <small class="text-muted font-size-11">Class 10 & 12 Official CBSE Board Exams</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Term 2</span></td>
+        <td><small class="text-dark">Classes 10 & 12</small></td>
+        <td><small class="text-muted font-mono font-size-12">Admit Cards, External Center Allocation</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">45 Calendar Days</span></td>
+        <td><small class="text-muted">15 Feb 2025</small></td>
+        <td><span class="badge-status badge-pending">Board Tentative</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +309,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

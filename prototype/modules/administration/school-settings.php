@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - School Settings
+ * EDUSYS PRO - SCHOOL SETTINGS
+ * Dedicated operational interface & records management for School Settings
  */
 $page_title = "School Settings";
-$page_desc = "Dedicated operational interface & records management for School Settings";
+$page_desc = "Core institutional ERP parameters, financial year rules, timezone, currency, grading systems, and SMS gateway credentials";
 $active_module = "administration";
 $active_submodule = "school-settings.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/administration/school-profile.php'); ?>">Administration & Setup</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/administration/school-profile.php'); ?>" class="btn btn-light border" title="School Institutional Dossier">
+      <i class="bi bi-building me-1"></i> Profile
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Records</h6>
-        <div class="kpi-value">1,248 Items</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
+        <h6>ERP Engine Version</h6>
+        <div class="kpi-value">v4.2.0-PRO</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Continuous LTS Release</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
-      <div class="kpi-info">
-        <h6>Verified & Active</h6>
-        <div class="kpi-value">1,190 Entries</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
-      <div class="kpi-info">
-        <h6>Under Scrutiny</h6>
-        <div class="kpi-value">58 Pending</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-cpu-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Audit Compliant</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+        <h6>Timezone & Locale</h6>
+        <div class="kpi-value">Asia/Kolkata</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Indian Standard Time (IST)</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-globe-central-south-asia"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-success">
+      <div class="kpi-info">
+        <h6>Active Currency</h6>
+        <div class="kpi-value">₹ INR</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Indian Rupee Standard</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Gateways Online</h6>
+        <div class="kpi-value">100% Operational</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> SMS, WhatsApp, Email, Razorpay</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-shield-fill-check"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,22 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search school settings by code, title, category...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search config parameter, setting title, category...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Categories</option>
-      <option >Primary Wing</option>
-      <option >Middle Wing</option>
-      <option >Secondary Wing</option>
-      <option >Senior Secondary Wing</option>
-      <option >General Administration</option>
+    <select class="form-select" style="max-width: 240px;">
+      <option selected>All Configuration Domains</option>
+      <option >Institutional Identifiers</option>
+      <option >Academic & Grading Policies</option>
+      <option >Financial & Fee Parameters</option>
+      <option >Communication Gateways & API</option>
+      <option >Security & Session Rules</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Active / Enforced</option>
+      <option >System Locked</option>
+      <option >Custom Configured</option>
+      <option >Pending Sync</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +125,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Record Code</th>
-        <th>School Settings Title</th>
-        <th>Operational Scope</th>
-        <th>Assigned Incharge</th>
-        <th>Reference / Contact</th>
+        <th>Config Key</th>
+        <th>Parameter Title & Description</th>
+        <th>Category</th>
+        <th>Active System Value</th>
+        <th>Default Value</th>
+        <th>Modified By</th>
         <th>Last Updated</th>
-        <th>Session</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,17 +139,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CONF-GEN-01</td>
         <td>
-          <div class="fw-semibold text-dark">School Settings Standard Master #01</div>
-          <small class="text-muted font-size-11">High Priority Institutional Record</small>
+          <div class="fw-semibold text-dark">Official Institution Name</div>
+          <small class="text-muted font-size-11">Primary legal school identity in all reports</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Institutional Identifiers</span></td>
+        <td><small class="text-dark">Delhi Public Global Academy</small></td>
+        <td><small class="text-muted font-mono font-size-12">Delhi Public Global Academy</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Super Administrator</span></td>
+        <td><small class="text-muted">28 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Enforced</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +160,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CONF-GEN-02</td>
         <td>
-          <div class="fw-semibold text-dark">School Settings Policy Schedule #02</div>
-          <small class="text-muted font-size-11">Curriculum Implementation</small>
+          <div class="fw-semibold text-dark">CBSE Affiliation Number</div>
+          <small class="text-muted font-size-11">Official board affiliation reference for LOC</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Institutional Identifiers</span></td>
+        <td><small class="text-dark">2130842 (Valid till 2029)</small></td>
+        <td><small class="text-muted font-mono font-size-12">2130842</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Super Administrator</span></td>
+        <td><small class="text-muted">28 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Locked</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +181,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CONF-ACA-03</td>
         <td>
-          <div class="fw-semibold text-dark">School Settings Register Protocol #03</div>
-          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+          <div class="fw-semibold text-dark">Active Academic Year</div>
+          <small class="text-muted font-size-11">Primary active academic session for student roster</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Academic Policies</span></td>
+        <td><small class="text-dark">2024-2025 (Active Cycle)</small></td>
+        <td><small class="text-muted font-mono font-size-12">2024-2025</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Dean Academics</span></td>
+        <td><small class="text-muted">01 Apr 2024</small></td>
+        <td><span class="badge-status badge-active">Enforced</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +202,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CONF-ACA-04</td>
         <td>
-          <div class="fw-semibold text-dark">School Settings Operation Log #04</div>
-          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+          <div class="fw-semibold text-dark">Grading Scale Model</div>
+          <small class="text-muted font-size-11">Assessment scoring standard</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
-        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Academic Policies</span></td>
+        <td><small class="text-dark">CBSE 9-Point Grading (A1 to E)</small></td>
+        <td><small class="text-muted font-mono font-size-12">CBSE 9-Point Scale</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Dean Academics</span></td>
+        <td><small class="text-muted">15 May 2024</small></td>
+        <td><span class="badge-status badge-active">Enforced</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +223,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CONF-FIN-05</td>
         <td>
-          <div class="fw-semibold text-dark">School Settings Activity Benchmark #05</div>
-          <small class="text-muted font-size-11">Student Welfare Guideline</small>
+          <div class="fw-semibold text-dark">Late Fee Penalty Policy</div>
+          <small class="text-muted font-size-11">Grace period and daily charge after due date</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Financial Rules</span></td>
+        <td><small class="text-dark">₹50 / Day after 10th of Month</small></td>
+        <td><small class="text-muted font-mono font-size-12">₹50 / Day</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Chief Accountant</span></td>
+        <td><small class="text-muted">10 Jul 2024</small></td>
+        <td><span class="badge-status badge-active">Enforced</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +244,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CONF-SEC-06</td>
         <td>
-          <div class="fw-semibold text-dark">School Settings Digital Catalog #06</div>
-          <small class="text-muted font-size-11">IT System Resource</small>
+          <div class="fw-semibold text-dark">Staff Session Timeout</div>
+          <small class="text-muted font-size-11">Automatic logout threshold for inactive admin sessions</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Security Rules</span></td>
+        <td><small class="text-dark">30 Minutes Inactivity</small></td>
+        <td><small class="text-muted font-mono font-size-12">30 Mins</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">IT Systems Admin</span></td>
+        <td><small class="text-muted">20 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Enforced</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +265,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CONF-COM-07</td>
         <td>
-          <div class="fw-semibold text-dark">School Settings Governance Audit #07</div>
-          <small class="text-muted font-size-11">SMC Resolution Archive</small>
+          <div class="fw-semibold text-dark">SMS & WhatsApp DLT Provider</div>
+          <small class="text-muted font-size-11">Govt DLT approved messaging gateway for attendance & fee</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Gateways & API</span></td>
+        <td><small class="text-dark">GupShup Enterprise DLT (Active)</small></td>
+        <td><small class="text-muted font-mono font-size-12">GupShup Live</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">IT Systems Admin</span></td>
+        <td><small class="text-muted">25 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Enforced</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +286,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CONF-PAY-08</td>
         <td>
-          <div class="fw-semibold text-dark">School Settings Session Directive #08</div>
-          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+          <div class="fw-semibold text-dark">Online Fee Payment Gateway</div>
+          <small class="text-muted font-size-11">Parent portal payment processing engine</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Gateways & API</span></td>
+        <td><small class="text-dark">Razorpay Enterprise (PG_LIVE_9481)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Razorpay Live</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Chief Accountant</span></td>
+        <td><small class="text-muted">18 Oct 2024</small></td>
+        <td><span class="badge-status badge-active">Enforced</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +310,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

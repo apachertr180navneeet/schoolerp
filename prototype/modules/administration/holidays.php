@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Holidays & Vacations
+ * EDUSYS PRO - HOLIDAYS & VACATIONS
+ * Dedicated operational interface & records management for Holidays & Vacations
  */
 $page_title = "Holidays & Vacations";
-$page_desc = "Dedicated operational interface & records management for Holidays & Vacations";
+$page_desc = "Gazetted public holidays, restricted cultural festivals, seasonal vacations, and educational board recesses";
 $active_module = "administration";
 $active_submodule = "holidays.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/administration/school-profile.php'); ?>">Administration & Setup</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -32,6 +33,9 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    <a href="<?php echo base_url('modules/administration/school-profile.php'); ?>" class="btn btn-light border" title="School Institutional Dossier">
+      <i class="bi bi-building me-1"></i> Profile
+    </a>
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -44,47 +48,46 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Total Records</h6>
-        <div class="kpi-value">1,248 Items</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
+        <h6>Annual Holidays</h6>
+        <div class="kpi-value">28 Gazetted Days</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Government & Board Approved</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
-      <div class="kpi-info">
-        <h6>Verified & Active</h6>
-        <div class="kpi-value">1,190 Entries</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-calendar2-heart-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Under Scrutiny</h6>
-        <div class="kpi-value">58 Pending</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
+        <h6>Summer Vacation</h6>
+        <div class="kpi-value">45 Days</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 18 May to 01 Jul 2024</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-sun-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Audit Compliant</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+        <h6>Winter Vacation</h6>
+        <div class="kpi-value">10 Days</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 30 Dec 2024 to 08 Jan 2025</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-snow"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-success">
+      <div class="kpi-info">
+        <h6>National Days</h6>
+        <div class="kpi-value">3 Sovereign Days</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Republic, Independence, Gandhi</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-flag-fill"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +97,21 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search holidays & vacations by code, title, category...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search holiday title, gazette notification, date...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Categories</option>
-      <option >Primary Wing</option>
-      <option >Middle Wing</option>
-      <option >Secondary Wing</option>
-      <option >Senior Secondary Wing</option>
-      <option >General Administration</option>
+    <select class="form-select" style="max-width: 240px;">
+      <option selected>All Holidays</option>
+      <option >National Gazetted Holidays</option>
+      <option >Major Festive Vacations</option>
+      <option >Summer & Winter Recesses</option>
+      <option >Restricted / Discretionary Leaves</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Mandatory Holiday</option>
+      <option >Vacation Recess</option>
+      <option >Restricted Day</option>
+      <option >Completed</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +124,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Record Code</th>
-        <th>Holidays & Vacations Title</th>
-        <th>Operational Scope</th>
-        <th>Assigned Incharge</th>
-        <th>Reference / Contact</th>
-        <th>Last Updated</th>
-        <th>Session</th>
+        <th>Holiday Code</th>
+        <th>Holiday / Vacation Title</th>
+        <th>Holiday Category</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Duration</th>
+        <th>Gazette Notification Ref</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,17 +138,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td class="fw-bold text-primary font-mono font-size-13">HOL-2024-01</td>
         <td>
-          <div class="fw-semibold text-dark">Holidays & Vacations Standard Master #01</div>
-          <small class="text-muted font-size-11">High Priority Institutional Record</small>
+          <div class="fw-semibold text-dark">Mahavir Jayanti</div>
+          <small class="text-muted font-size-11">Jain Religious Observance</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Gazetted Festival</span></td>
+        <td><small class="text-dark">21 Apr 2024</small></td>
+        <td><small class="text-muted font-mono font-size-12">21 Apr 2024</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">1 Day (Sunday)</span></td>
+        <td><small class="text-muted">DoE Circular #948</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +159,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
+        <td class="fw-bold text-primary font-mono font-size-13">HOL-2024-02</td>
         <td>
-          <div class="fw-semibold text-dark">Holidays & Vacations Policy Schedule #02</div>
-          <small class="text-muted font-size-11">Curriculum Implementation</small>
+          <div class="fw-semibold text-dark">Buddha Purnima</div>
+          <small class="text-muted font-size-11">Buddhist Holiday</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
-        <td><small class="text-dark">Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Gazetted Festival</span></td>
+        <td><small class="text-dark">23 May 2024</small></td>
+        <td><small class="text-muted font-mono font-size-12">23 May 2024</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">1 Day (Thursday)</span></td>
+        <td><small class="text-muted">DoE Circular #952</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +180,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td class="fw-bold text-primary font-mono font-size-13">HOL-2024-03</td>
         <td>
-          <div class="fw-semibold text-dark">Holidays & Vacations Register Protocol #03</div>
-          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+          <div class="fw-semibold text-dark">Annual Summer Vacation 2024</div>
+          <small class="text-muted font-size-11">Post-Term 1 Instructional Recess</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">School Vacation</span></td>
+        <td><small class="text-dark">18 May 2024</small></td>
+        <td><small class="text-muted font-mono font-size-12">01 Jul 2024</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">45 Days</span></td>
+        <td><small class="text-muted">Annual Academic Cal #2024</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +201,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td class="fw-bold text-primary font-mono font-size-13">HOL-2024-04</td>
         <td>
-          <div class="fw-semibold text-dark">Holidays & Vacations Operation Log #04</div>
-          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+          <div class="fw-semibold text-dark">Independence Day (78th National Day)</div>
+          <small class="text-muted font-size-11">Celebration Assembly & Flag Hoisting</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
-        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">National Holiday</span></td>
+        <td><small class="text-dark">15 Aug 2024</small></td>
+        <td><small class="text-muted font-mono font-size-12">15 Aug 2024</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">1 Day (Ceremony Held)</span></td>
+        <td><small class="text-muted">MHA Order #842</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +222,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td class="fw-bold text-primary font-mono font-size-13">HOL-2024-05</td>
         <td>
-          <div class="fw-semibold text-dark">Holidays & Vacations Activity Benchmark #05</div>
-          <small class="text-muted font-size-11">Student Welfare Guideline</small>
+          <div class="fw-semibold text-dark">Mahatma Gandhi Jayanti</div>
+          <small class="text-muted font-size-11">Father of Nation & Swachhata Diwas</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
-        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">National Holiday</span></td>
+        <td><small class="text-dark">02 Oct 2024</small></td>
+        <td><small class="text-muted font-mono font-size-12">02 Oct 2024</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">1 Day (Wednesday)</span></td>
+        <td><small class="text-muted">Govt of India Gazette #102</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +243,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
+        <td class="fw-bold text-primary font-mono font-size-13">HOL-2024-06</td>
         <td>
-          <div class="fw-semibold text-dark">Holidays & Vacations Digital Catalog #06</div>
-          <small class="text-muted font-size-11">IT System Resource</small>
+          <div class="fw-semibold text-dark">Dussehra & Vijayadashami Break</div>
+          <small class="text-muted font-size-11">Navratri & Durga Puja Festive Holidays</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Festive Break</span></td>
+        <td><small class="text-dark">11 Oct 2024</small></td>
+        <td><small class="text-muted font-mono font-size-12">13 Oct 2024</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">3 Days</span></td>
+        <td><small class="text-muted">CBSE Notification #491</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +264,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
+        <td class="fw-bold text-primary font-mono font-size-13">HOL-2024-07</td>
         <td>
-          <div class="fw-semibold text-dark">Holidays & Vacations Governance Audit #07</div>
-          <small class="text-muted font-size-11">SMC Resolution Archive</small>
+          <div class="fw-semibold text-dark">Diwali & Govardhan Puja Holidays</div>
+          <small class="text-muted font-size-11">Deepawali Festival of Lights</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
-        <td><small class="text-dark">Dr. Sunita Rao</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Festive Break</span></td>
+        <td><small class="text-dark">31 Oct 2024</small></td>
+        <td><small class="text-muted font-mono font-size-12">03 Nov 2024</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">4 Days</span></td>
+        <td><small class="text-muted">State Gazette #912</small></td>
+        <td><span class="badge-status badge-active">Upcoming</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +285,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
+        <td class="fw-bold text-primary font-mono font-size-13">HOL-2024-08</td>
         <td>
-          <div class="fw-semibold text-dark">Holidays & Vacations Session Directive #08</div>
-          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+          <div class="fw-semibold text-dark">Guru Nanak Jayanti (Gurpurab)</div>
+          <small class="text-muted font-size-11">Prakash Utsav Holiday</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
-        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
-        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
-        <td><small class="text-muted">2024-2025</small></td>
-        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Gazetted Festival</span></td>
+        <td><small class="text-dark">15 Nov 2024</small></td>
+        <td><small class="text-muted font-mono font-size-12">15 Nov 2024</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">1 Day (Friday)</span></td>
+        <td><small class="text-muted">Govt of India Gazette #114</small></td>
+        <td><span class="badge-status badge-active">Upcoming</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +309,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>
