@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Grade Configuration
+ * EDUSYS PRO - GRADE CONFIGURATION
+ * Dedicated operational interface & records management for Grade Configuration
  */
 $page_title = "Grade Configuration";
-$page_desc = "Dedicated operational interface & records management for Grade Configuration";
+$page_desc = "Define grading scales, cutoff thresholds, grade point averages (GPA), and descriptive remark templates";
 $active_module = "examinations";
 $active_submodule = "grade-configuration.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/examinations/dashboard.php'); ?>">Examination & Results</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -28,10 +29,11 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-sliders2 text-primary me-2"></i><?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
+    
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
@@ -39,40 +41,29 @@ require_once __DIR__ . '/../../includes/topbar.php';
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
     <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
+      <i class="bi bi-plus-lg me-1"></i> Add Grade Range
     </button>
   </div>
 </div>
-
 
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Upcoming Tests</h6>
-        <div class="kpi-value">28 Papers</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Term 2 Mid-Term Cycle</div>
+        <h6>Grading Scales</h6>
+        <div class="kpi-value">3 Active Scales</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle-fill"></i> CBSE 9-Pt, 5-Pt & CCE</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-journal-code"></i></div>
+      <div class="kpi-icon"><i class="bi bi-sliders"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Class Average</h6>
-        <div class="kpi-value">78.4%</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> +3.2% vs Term 1</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-graph-up-arrow"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-info">
-      <div class="kpi-info">
-        <h6>Moderated Papers</h6>
-        <div class="kpi-value">100%</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> CBSE Norms Validated</div>
+        <h6>Passing Threshold</h6>
+        <div class="kpi-value">33% Minimum</div>
+        <div class="kpi-trend neutral"><i class="bi bi-info-circle-fill"></i> Theory & Practical Separately</div>
       </div>
       <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
     </div>
@@ -80,231 +71,352 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Marks Published</h6>
-        <div class="kpi-value">2,840 / 2,840</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Report Cards Ready</div>
+        <h6>Top Tier (A1)</h6>
+        <div class="kpi-value">Top 1/8th</div>
+        <div class="kpi-trend positive"><i class="bi bi-graph-up-arrow"></i> Or 91% - 100% Absolute</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-trophy"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-info">
+      <div class="kpi-info">
+        <h6>Grace Mark Limit</h6>
+        <div class="kpi-value">5 Marks Max</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> As per School Board Bye-laws</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-award"></i></div>
     </div>
   </div>
 </div>
 
-<!-- Domain Table Filter Bar -->
-<div class="table-filter-bar mb-3">
-  <div class="table-filter-left">
-    <div class="table-search-input">
-      <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search exam code, subject, evaluator...">
+<!-- Main Table Container -->
+<div class="table-container mb-4">
+  <div class="table-header">
+    <div class="table-title">
+      <i class="bi bi-sliders2 text-primary me-2"></i> Grade Configuration Register
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Assessments</option>
-      <option >Periodic Test 1</option>
-      <option >Half-Yearly Examination</option>
-      <option >Periodic Test 2</option>
-      <option >Pre-Board Mock 1</option>
-      <option >CBSE Annual Board Exam</option>
-    </select>
-    <select class="form-select" style="max-width: 150px;">
-      <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
-    </select>
+    <div class="table-actions">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" id="tableSearchInput" class="form-control" placeholder="Search grade configuration..." onkeyup="EduTables.search('#mainDataTable', this.value)">
+      </div>
+      <div class="filter-dropdown">
+        <select class="form-select form-select-sm" onchange="EduTables.filter('#mainDataTable', this.value)">
+          <option value="">All Records</option>
+          <option value="Active">Active</option>
+          <option value="Completed">Completed</option>
+          <option value="Pending">Pending</option>
+        </select>
+      </div>
+    </div>
   </div>
-  <div class="table-filter-right">
-    <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> verified records</span>
+
+  <div class="table-responsive">
+    <table class="table erp-table table-hover" id="mainDataTable">
+      <thead>
+        <tr>
+          <th>Grade Name</th>
+          <th>Marks Range %</th>
+          <th>Grade Point</th>
+          <th>Descriptive Performance Remark</th>
+          <th>Classification</th>
+          <th>Color Tag</th>
+          <th>Status</th>
+          <th class="text-center" style="width: 120px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><span class="badge bg-success">A1</span></td>
+          <td>91% - 100%</td>
+          <td>10.0</td>
+          <td>Outstanding Conceptual Mastery & Analytical Skill</td>
+          <td>Pass / Distinction</td>
+          <td><span class="text-success fw-bold">Success Green</span></td>
+          <td><span class="badge bg-success-subtle text-success border">Active</span></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge bg-primary">A2</span></td>
+          <td>81% - 90%</td>
+          <td>9.0</td>
+          <td>Excellent Proficiency with High Precision</td>
+          <td>Pass / Distinction</td>
+          <td><span class="text-primary fw-bold">Royal Blue</span></td>
+          <td><span class="badge bg-success-subtle text-success border">Active</span></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge bg-info">B1</span></td>
+          <td>71% - 80%</td>
+          <td>8.0</td>
+          <td>Very Good Comprehension with Systematic Application</td>
+          <td>Pass / First Division</td>
+          <td><span class="text-info fw-bold">Cyan</span></td>
+          <td><span class="badge bg-success-subtle text-success border">Active</span></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge bg-secondary">B2</span></td>
+          <td>61% - 70%</td>
+          <td>7.0</td>
+          <td>Good Understanding with Sound Foundational Knowledge</td>
+          <td>Pass / First Division</td>
+          <td><span class="text-secondary fw-bold">Neutral Gray</span></td>
+          <td><span class="badge bg-success-subtle text-success border">Active</span></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge bg-warning text-dark">C1</span></td>
+          <td>51% - 60%</td>
+          <td>6.0</td>
+          <td>Satisfactory Demonstration of Required Outcomes</td>
+          <td>Pass / Second Division</td>
+          <td><span class="text-warning fw-bold">Amber</span></td>
+          <td><span class="badge bg-success-subtle text-success border">Active</span></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge bg-warning text-dark">C2</span></td>
+          <td>41% - 50%</td>
+          <td>5.0</td>
+          <td>Average Capability, Reinforcement Advised</td>
+          <td>Pass / Third Division</td>
+          <td><span class="text-warning fw-bold">Amber</span></td>
+          <td><span class="badge bg-success-subtle text-success border">Active</span></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge bg-danger">D</span></td>
+          <td>33% - 40%</td>
+          <td>4.0</td>
+          <td>Marginal Performance, Targeted Support Required</td>
+          <td>Pass / Borderline</td>
+          <td><span class="text-danger fw-bold">Light Red</span></td>
+          <td><span class="badge bg-success-subtle text-success border">Active</span></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge bg-dark">E</span></td>
+          <td>0% - 32%</td>
+          <td>0.0</td>
+          <td>Needs Substantial Improvement / Remedial Support</td>
+          <td>Needs Improvement / Compartment</td>
+          <td><span class="text-dark fw-bold">Dark Gray</span></td>
+          <td><span class="badge bg-success-subtle text-success border">Active</span></td>
+          <td>
+            
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-footer">
+    <div class="table-info font-size-13 text-muted">
+      Showing 1 to 8 of 8 entries (CBSE Academic Cycle 2026-27)
+    </div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination pagination-sm mb-0">
+        <li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a></li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a></li>
+      </ul>
+    </nav>
   </div>
 </div>
 
-<!-- Domain Data Table -->
-<div class="erp-table-responsive mb-0">
-  <table class="erp-table" id="mainDataTable">
-    <thead>
-      <tr>
-        <th>Exam / Test Code</th>
-        <th>Subject & Paper Title</th>
-        <th>Grade / Stream</th>
-        <th>Date & Time</th>
-        <th>Maximum Marks</th>
-        <th>Average Score</th>
-        <th>Evaluator Faculty</th>
-        <th>Result Status</th>
-        <th class="text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">EX-10-MAT-T2</td>
-        <td>
-          <div class="fw-semibold text-dark">Mathematics (Standard - 041)</div>
-          <small class="text-muted font-size-11">Theory Paper</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 (A, B, C)</span></td>
-        <td><small class="text-dark">24 Nov 2024 • 09:30 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">80 Marks</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">64.2 / 80 (80.2%)</span></td>
-        <td><small class="text-muted">Mr. S. K. Rastogi</small></td>
-        <td><span class="badge-status badge-active">Verified & Locked</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
+<!-- Modal: Add New Record -->
+<div class="modal fade" id="addNewRecordModal" tabindex="-1" aria-labelledby="addNewRecordModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addNewRecordModalLabel"><i class="bi bi-sliders2 text-primary me-2"></i>Add Grade Range</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="recordForm" onsubmit="event.preventDefault(); alert('Saved successfully in CBSE Exam Repository!'); bootstrap.Modal.getInstance(document.getElementById('addNewRecordModal')).hide();">
+          <div class="row g-3">
+            
+            <div class="col-md-6">
+              <label class="form-label fw-semibold font-size-13">Exam Cycle / Session</label>
+              
+              <select class="form-select form-select-sm">
+                <option>Annual Board Examination 2026</option><option>Pre-Board II (X & XII)</option><option>Term-2 Final Exams (VI-IX)</option><option>Periodic Assessment 2 (PA-2)</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold font-size-13">Class & Section</label>
+              
+              <select class="form-select form-select-sm">
+                <option>Class X - All Sections</option><option>Class XII - Science (A, B)</option><option>Class XII - Commerce (C)</option><option>Class XII - Humanities (D)</option><option>Class IX - All Sections</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold font-size-13">Subject / Paper</label>
+              
+              <input type="text" class="form-control form-control-sm" placeholder="e.g. Mathematics Standard (041)">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold font-size-13">Date / Deadline</label>
+              
+              <input type="date" class="form-control form-control-sm" placeholder="">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold font-size-13">Remarks / Instructions</label>
+              
+              <textarea class="form-control form-control-sm" rows="3" placeholder="CBSE assessment guidelines and specific remarks..."></textarea>
+            </div>
           </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">EX-10-SCI-T2</td>
-        <td>
-          <div class="fw-semibold text-dark">Science (Theory - 086)</div>
-          <small class="text-muted font-size-11">Theory Paper</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 (A, B, C)</span></td>
-        <td><small class="text-dark">26 Nov 2024 • 09:30 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">80 Marks</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">61.8 / 80 (77.2%)</span></td>
-        <td><small class="text-muted">Mr. Vikram Rathore</small></td>
-        <td><span class="badge-status badge-active">Verified & Locked</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
+          <div class="modal-footer px-0 pb-0 pt-3 mt-3 border-top">
+            <button type="button" class="btn btn-sm btn-light border" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-sm btn-primary fw-bold"><i class="bi bi-check2 me-1"></i> Confirm & Save</button>
           </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">EX-10-ENG-T2</td>
-        <td>
-          <div class="fw-semibold text-dark">English Lang & Literature (301)</div>
-          <small class="text-muted font-size-11">ASL + Theory</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 (A, B, C)</span></td>
-        <td><small class="text-dark">28 Nov 2024 • 09:30 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">80 Marks</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">68.5 / 80 (85.6%)</span></td>
-        <td><small class="text-muted">Mrs. Priya Nambiar</small></td>
-        <td><span class="badge-status badge-active">Verified & Locked</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">EX-12-PHY-T2</td>
-        <td>
-          <div class="fw-semibold text-dark">Physics (Theory - 042)</div>
-          <small class="text-muted font-size-11">CBSE Mock 1</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 (Science)</span></td>
-        <td><small class="text-dark">29 Nov 2024 • 09:30 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">70 Marks</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">52.4 / 70 (74.8%)</span></td>
-        <td><small class="text-muted">Mr. Vikram Rathore</small></td>
-        <td><span class="badge-status badge-pending">In Evaluation</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">EX-12-CHE-T2</td>
-        <td>
-          <div class="fw-semibold text-dark">Chemistry (Theory - 043)</div>
-          <small class="text-muted font-size-11">CBSE Mock 1</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 (Science)</span></td>
-        <td><small class="text-dark">02 Dec 2024 • 09:30 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">70 Marks</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">54.1 / 70 (77.2%)</span></td>
-        <td><small class="text-muted">Dr. Anuj Jha</small></td>
-        <td><span class="badge-status badge-pending">In Evaluation</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">EX-12-ACC-T2</td>
-        <td>
-          <div class="fw-semibold text-dark">Accountancy (055)</div>
-          <small class="text-muted font-size-11">Theory + Project</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 (Commerce)</span></td>
-        <td><small class="text-dark">02 Dec 2024 • 09:30 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">80 Marks</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">62.0 / 80 (77.5%)</span></td>
-        <td><small class="text-muted">Mr. M. K. Aggarwal</small></td>
-        <td><span class="badge-status badge-active">Published</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">EX-10-SST-T2</td>
-        <td>
-          <div class="fw-semibold text-dark">Social Science (087)</div>
-          <small class="text-muted font-size-11">Theory + Map Work</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 (A, B, C)</span></td>
-        <td><small class="text-dark">04 Dec 2024 • 09:30 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">80 Marks</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">63.5 / 80 (79.3%)</span></td>
-        <td><small class="text-muted">Mrs. Rashmi Sen</small></td>
-        <td><span class="badge-status badge-pending">Scheduled</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">EX-12-CSC-T2</td>
-        <td>
-          <div class="fw-semibold text-dark">Computer Science (083)</div>
-          <small class="text-muted font-size-11">Theory + Lab Code</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 (Science)</span></td>
-        <td><small class="text-dark">06 Dec 2024 • 09:30 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">70 Marks</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">59.2 / 70 (84.5%)</span></td>
-        <td><small class="text-muted">Mr. Rohit Ganguly</small></td>
-        <td><span class="badge-status badge-pending">Scheduled</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Grade Configuration')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-    </tbody>
-  </table>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- Modal: Tool Modal (if applicable) -->
+<div class="modal fade" id="actionToolModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-sliders2 text-primary me-2"></i>Add Grade Range</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info py-2 font-size-13">
+          <i class="bi bi-info-circle-fill me-1"></i> Running this operation will validate datasets and process examination calculations for active sessions.
+        </div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label font-size-13 fw-semibold">Target Academic Session</label>
+            <select class="form-select form-select-sm">
+              <option>2026-2027 (Active Session)</option>
+              <option>2025-2026 (Archived)</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label font-size-13 fw-semibold">Select Examination Group</label>
+            <select class="form-select form-select-sm">
+              <option>Annual Final Assessment 2026</option>
+              <option>Pre-Board Examination Series II</option>
+              <option>Term 2 Periodic Assessments</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label font-size-13 fw-semibold">Target Classes</label>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge bg-light text-dark border p-2"><input type="checkbox" checked class="form-check-input me-1"> Class X (CBSE AISSE)</span>
+              <span class="badge bg-light text-dark border p-2"><input type="checkbox" checked class="form-check-input me-1"> Class XII (CBSE AISSCE)</span>
+              <span class="badge bg-light text-dark border p-2"><input type="checkbox" checked class="form-check-input me-1"> Class IX</span>
+              <span class="badge bg-light text-dark border p-2"><input type="checkbox" checked class="form-check-input me-1"> Class XI</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer px-0 pb-0 pt-3 mt-3 border-top">
+          <button type="button" class="btn btn-sm btn-light border" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-sm btn-primary fw-bold" onclick="alert('Operation initiated successfully! Processing background queue.'); bootstrap.Modal.getInstance(document.getElementById('actionToolModal')).hide();"><i class="bi bi-cpu me-1"></i> Start Execution</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: View Record Details -->
+<div class="modal fade" id="viewRecordModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-info-circle text-primary me-2"></i>Record Summary</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body font-size-13">
+        <div class="p-3 bg-light rounded mb-3 border">
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Module Context:</span>
+            <span class="fw-bold text-primary">Grade Configuration</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Affiliation Standard:</span>
+            <span class="badge bg-primary-subtle text-primary border">CBSE New Delhi (Aff. 2130048)</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Academic Session:</span>
+            <span class="fw-semibold">2026-2027</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span class="text-muted">Verification Status:</span>
+            <span class="badge bg-success-subtle text-success border"><i class="bi bi-check-circle me-1"></i>Verified & Locked</span>
+          </div>
+        </div>
+        <p class="text-muted small mb-0"><i class="bi bi-shield-lock me-1"></i> Audited by Examination Controller & Academic In-charge.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-primary" onclick="window.print()"><i class="bi bi-printer me-1"></i> Print Dossier</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <?php require_once __DIR__ . '/../../includes/footer.php'; ?>
