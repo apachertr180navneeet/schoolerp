@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Biometric Device Integration
+ * EDUSYS PRO - BIOMETRIC DEVICE INTEGRATION
+ * Dedicated operational interface & records management for Biometric Device Integration
  */
 $page_title = "Biometric Device Integration";
-$page_desc = "Dedicated operational interface & records management for Biometric Device Integration";
+$page_desc = "Hardware device management: ZKTeco and Matrix fingerprint & facial recognition terminals and real-time sync";
 $active_module = "attendance";
 $active_submodule = "biometric-integration.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/attendance/dashboard.php'); ?>">Attendance Management</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -28,7 +29,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-fingerprint text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
@@ -39,52 +40,51 @@ require_once __DIR__ . '/../../includes/topbar.php';
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
     <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
+      <i class="bi bi-hdd-network-fill me-1"></i> Register Terminal
     </button>
   </div>
 </div>
-
 
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Today's Attendance</h6>
-        <div class="kpi-value">95.8%</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 2,721 Present Today</div>
+        <h6>Terminals Online</h6>
+        <div class="kpi-value">12 of 12 Devices</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Hardware Connected</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-calendar-check-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
-      <div class="kpi-info">
-        <h6>Absenteeism</h6>
-        <div class="kpi-value">119 Students</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> SMS Sent to Parents</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-person-x-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-hdd-network-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Staff Attendance</h6>
-        <div class="kpi-value">186 / 190</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 97.9% On Duty</div>
+        <h6>Punches Today</h6>
+        <div class="kpi-value">3,142 Punches</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Face & Fingerprint Verified</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-person-badge-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-fingerprint"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>RFID Sync Health</h6>
-        <div class="kpi-value">100% Online</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> 16 Gate Turnstiles Live</div>
+        <h6>Sync Latency</h6>
+        <div class="kpi-value">0.4 Seconds</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Real-time Push SDK Active</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-wifi"></i></div>
+      <div class="kpi-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Terminal Health</h6>
+        <div class="kpi-value">100% Operational</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Zero Offline Alerts</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +94,21 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search attendance by roll, student name, class...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search terminal ID, device model, location, IP...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Status</option>
-      <option >Present (RFID In)</option>
-      <option >Absent / Unexcused</option>
-      <option >Leave with Approval</option>
-      <option >Late Arrival</option>
-      <option >Half Day Dispatched</option>
+    <select class="form-select" style="max-width: 220px;">
+      <option selected>All Gate Locations</option>
+      <option >Main Gate 1 & 2 Terminals</option>
+      <option >Administrative Staff Block</option>
+      <option >Faculty Staff Rooms</option>
+      <option >Science Laboratories Hub</option>
+      <option >Transport Garage Terminal</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Online & Synchronized</option>
+      <option >Standby Mode</option>
+      <option >Network Offline</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +121,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Punch / Ref #</th>
-        <th>Student / Staff Name</th>
-        <th>Class & Section</th>
-        <th>In-Time (Turnstile)</th>
-        <th>Out-Time</th>
-        <th>Logging Mode</th>
-        <th>SMS Notification</th>
+        <th>Device ID</th>
+        <th>Device Model & Brand</th>
+        <th>Installation Location</th>
+        <th>IP Address & Port</th>
+        <th>Last Heartbeat Sync</th>
+        <th>Punches Synced Today</th>
+        <th>Device Health</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,17 +135,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-091</td>
+        <td class="fw-bold text-primary font-mono font-size-13">BIO-TERM-01</td>
         <td>
-          <div class="fw-semibold text-dark">Aarav Sharma</div>
-          <small class="text-muted font-size-11">Roll: 14</small>
+          <div class="fw-semibold text-dark">ZKTeco ProFace X (Face + Finger)</div>
+          <small class="text-muted font-size-11">Facial Recognition AI</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">07:38 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">RFID Smart Card</span></td>
-        <td><small class="text-muted">Parent Alert Delivered</small></td>
-        <td><span class="badge-status badge-active">Present</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Main Gate 1 (Staff Entrance)</span></td>
+        <td><small class="text-dark">192.168.1.101 : 4370</small></td>
+        <td><small class="text-muted font-mono font-size-12">10 Secs Ago (Live)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">412 Staff Punches</span></td>
+        <td><small class="text-muted">Healthy (CPU 12%)</small></td>
+        <td><span class="badge-status badge-active">Online</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +156,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-092</td>
+        <td class="fw-bold text-primary font-mono font-size-13">BIO-TERM-02</td>
         <td>
-          <div class="fw-semibold text-dark">Diya Patel</div>
-          <small class="text-muted font-size-11">Roll: 02</small>
+          <div class="fw-semibold text-dark">ZKTeco ProFace X (Face + Finger)</div>
+          <small class="text-muted font-size-11">Facial Recognition AI</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">07:41 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">RFID Smart Card</span></td>
-        <td><small class="text-muted">Parent Alert Delivered</small></td>
-        <td><span class="badge-status badge-active">Present</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Main Gate 2 (Student Entrance)</span></td>
+        <td><small class="text-dark">192.168.1.102 : 4370</small></td>
+        <td><small class="text-muted font-mono font-size-12">8 Secs Ago (Live)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">1,248 Student Punches</span></td>
+        <td><small class="text-muted">Healthy (CPU 18%)</small></td>
+        <td><span class="badge-status badge-active">Online</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +177,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-093</td>
+        <td class="fw-bold text-primary font-mono font-size-13">BIO-TERM-03</td>
         <td>
-          <div class="fw-semibold text-dark">Vihaan Singh</div>
-          <small class="text-muted font-size-11">Roll: 01</small>
+          <div class="fw-semibold text-dark">ZKTeco ProFace X (Face + Finger)</div>
+          <small class="text-muted font-size-11">Facial Recognition AI</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section B</span></td>
-        <td><small class="text-dark">07:44 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Facial Recognition</span></td>
-        <td><small class="text-muted">Parent Alert Delivered</small></td>
-        <td><span class="badge-status badge-active">Present</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Bus Bay Gate 3 (Bus Dispersal)</span></td>
+        <td><small class="text-dark">192.168.1.103 : 4370</small></td>
+        <td><small class="text-muted font-mono font-size-12">12 Secs Ago (Live)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">840 Student Punches</span></td>
+        <td><small class="text-muted">Healthy (CPU 14%)</small></td>
+        <td><span class="badge-status badge-active">Online</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +198,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-094</td>
+        <td class="fw-bold text-primary font-mono font-size-13">BIO-TERM-04</td>
         <td>
-          <div class="fw-semibold text-dark">Karan Malhotra</div>
-          <small class="text-muted font-size-11">Roll: 19</small>
+          <div class="fw-semibold text-dark">Matrix COSEC Vega (Fingerprint)</div>
+          <small class="text-muted font-size-11">High-Speed Optical Sensor</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section B</span></td>
-        <td><small class="text-dark">--</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Absentee Scan</span></td>
-        <td><small class="text-muted">Absent SMS Sent @ 08:30</small></td>
-        <td><span class="badge-status badge-inactive">Absent</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Senior Staff Room (Block A)</span></td>
+        <td><small class="text-dark">192.168.1.104 : 8000</small></td>
+        <td><small class="text-muted font-mono font-size-12">15 Secs Ago (Live)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">108 Faculty Punches</span></td>
+        <td><small class="text-muted">Healthy (CPU 8%)</small></td>
+        <td><span class="badge-status badge-active">Online</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +219,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-095</td>
+        <td class="fw-bold text-primary font-mono font-size-13">BIO-TERM-05</td>
         <td>
-          <div class="fw-semibold text-dark">Rohan Gupta</div>
-          <small class="text-muted font-size-11">Roll: 14</small>
+          <div class="fw-semibold text-dark">Matrix COSEC Vega (Fingerprint)</div>
+          <small class="text-muted font-size-11">High-Speed Optical Sensor</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">07:35 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">RFID Smart Card</span></td>
-        <td><small class="text-muted">Parent Alert Delivered</small></td>
-        <td><span class="badge-status badge-active">Present</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Middle Staff Room (Block C)</span></td>
+        <td><small class="text-dark">192.168.1.105 : 8000</small></td>
+        <td><small class="text-muted font-mono font-size-12">20 Secs Ago (Live)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">84 Faculty Punches</span></td>
+        <td><small class="text-muted">Healthy (CPU 6%)</small></td>
+        <td><span class="badge-status badge-active">Online</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +240,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-096</td>
+        <td class="fw-bold text-primary font-mono font-size-13">BIO-TERM-06</td>
         <td>
-          <div class="fw-semibold text-dark">Ishaan Verma</div>
-          <small class="text-muted font-size-11">Roll: 08</small>
+          <div class="fw-semibold text-dark">ZKTeco SilkBio-101TC</div>
+          <small class="text-muted font-size-11">Hybrid Facial + Finger</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science B</span></td>
-        <td><small class="text-dark">08:02 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Gate Guard Manual</span></td>
-        <td><small class="text-muted">Late In SMS Sent</small></td>
-        <td><span class="badge-status badge-pending">Late Arrival</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Administrative Office Desk</span></td>
+        <td><small class="text-dark">192.168.1.106 : 4370</small></td>
+        <td><small class="text-muted font-mono font-size-12">5 Secs Ago (Live)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">142 Admin Punches</span></td>
+        <td><small class="text-muted">Healthy (CPU 10%)</small></td>
+        <td><span class="badge-status badge-active">Online</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +261,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-097</td>
+        <td class="fw-bold text-primary font-mono font-size-13">BIO-TERM-07</td>
         <td>
-          <div class="fw-semibold text-dark">Meera Reddy</div>
-          <small class="text-muted font-size-11">Roll: 11</small>
+          <div class="fw-semibold text-dark">eSSL Biomax N-BM60</div>
+          <small class="text-muted font-size-11">Rugged Garage Model</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 8 - Section A</span></td>
-        <td><small class="text-dark">07:40 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">RFID Smart Card</span></td>
-        <td><small class="text-muted">Parent Alert Delivered</small></td>
-        <td><span class="badge-status badge-active">Present</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Transport Workshop Garage</span></td>
+        <td><small class="text-dark">192.168.1.107 : 5005</small></td>
+        <td><small class="text-muted font-mono font-size-12">18 Secs Ago (Live)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">36 Drivers / Staff</span></td>
+        <td><small class="text-muted">Healthy (CPU 5%)</small></td>
+        <td><span class="badge-status badge-active">Online</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +282,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-098</td>
+        <td class="fw-bold text-primary font-mono font-size-13">BIO-TERM-08</td>
         <td>
-          <div class="fw-semibold text-dark">Tanvi Saxena</div>
-          <small class="text-muted font-size-11">Roll: 23</small>
+          <div class="fw-semibold text-dark">ZKTeco ProFace X (Face + Finger)</div>
+          <small class="text-muted font-size-11">Facial Recognition AI</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 9 - Section A</span></td>
-        <td><small class="text-dark">--</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Medical Leave Portal</span></td>
-        <td><small class="text-muted">Approved Medical Leave</small></td>
-        <td><span class="badge-status badge-pending">Excused Leave</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Sports Complex Gate</span></td>
+        <td><small class="text-dark">192.168.1.108 : 4370</small></td>
+        <td><small class="text-muted font-mono font-size-12">14 Secs Ago (Live)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">172 Coaches / Athletes</span></td>
+        <td><small class="text-muted">Healthy (CPU 9%)</small></td>
+        <td><span class="badge-status badge-active">Online</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +306,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

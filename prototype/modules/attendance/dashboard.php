@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Attendance Dashboard
+ * EDUSYS PRO - ATTENDANCE MANAGEMENT COMMAND CENTER (DASHBOARD)
+ * Real-time daily attendance oversight: RFID gate taps, student & staff percentages, and low-attendance warnings
  */
 $page_title = "Attendance Dashboard";
-$page_desc = "Dedicated operational interface & records management for Attendance Dashboard";
+$page_desc = "Real-time institutional attendance radar: 2,840 students, 146 staff, RFID gate stream, and low-attendance alerts";
 $active_module = "attendance";
 $active_submodule = "dashboard.php";
 $depth = 2;
@@ -19,8 +20,8 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
-      <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/attendance/dashboard.php'); ?>">Attendance Management</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Attendance Dashboard</li>
     </ol>
   </nav>
 </div>
@@ -28,283 +29,213 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-calendar2-check-fill text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
-    <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
-      <i class="bi bi-printer me-1"></i> Print
-    </button>
-    <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', 'dashboard_export.csv')" title="Export Table as CSV">
-      <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
-    </button>
-    <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
-    </button>
+    <a href="<?php echo base_url('modules/attendance/daily-attendance.php'); ?>" class="btn btn-light border">
+      <i class="bi bi-calendar-check me-1"></i> Daily Roster
+    </a>
+    <a href="<?php echo base_url('modules/attendance/low-attendance-alerts.php'); ?>" class="btn btn-danger text-white fw-bold">
+      <i class="bi bi-exclamation-triangle-fill me-1"></i> Low Attendance (<75% Alert)
+    </a>
+    <a href="<?php echo base_url('modules/attendance/absentee-list.php'); ?>" class="btn btn-primary fw-bold">
+      <i class="bi bi-bell-fill me-1"></i> Absentee SMS Center
+    </a>
   </div>
 </div>
-
 
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Today's Attendance</h6>
-        <div class="kpi-value">95.8%</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 2,721 Present Today</div>
+        <h6>Student Attendance Today</h6>
+        <div class="kpi-value">96.2%</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 2,732 of 2,840 Present</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-calendar-check-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
-      <div class="kpi-info">
-        <h6>Absenteeism</h6>
-        <div class="kpi-value">119 Students</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> SMS Sent to Parents</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-person-x-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-person-check-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Staff Attendance</h6>
-        <div class="kpi-value">186 / 190</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 97.9% On Duty</div>
+        <h6>Staff & Faculty Present</h6>
+        <div class="kpi-value">142 / 146</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 97.2% Staff Turnout</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-person-badge-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-info">
+    <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>RFID Sync Health</h6>
-        <div class="kpi-value">100% Online</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> 16 Gate Turnstiles Live</div>
+        <h6>Late Arrivals Today</h6>
+        <div class="kpi-value">24 Scholars</div>
+        <div class="kpi-trend neutral"><i class="bi bi-stopwatch"></i> 18 Excused (Bus Delay)</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-wifi"></i></div>
+      <div class="kpi-icon"><i class="bi bi-stopwatch-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-danger">
+      <div class="kpi-info">
+        <h6>Risk Shortfall (<75%)</h6>
+        <div class="kpi-value">14 Scholars</div>
+        <div class="kpi-trend negative"><i class="bi bi-exclamation-triangle"></i> CBSE Board Risk</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-exclamation-octagon-fill"></i></div>
     </div>
   </div>
 </div>
 
-<!-- Domain Table Filter Bar -->
-<div class="table-filter-bar mb-3">
-  <div class="table-filter-left">
-    <div class="table-search-input">
-      <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search attendance by roll, student name, class...">
+<!-- Wing Attendance Breakdown & Real-Time RFID Stream -->
+<div class="row g-4 mb-4">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm p-4 h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-pie-chart text-primary me-2"></i>Wing-wise Daily Attendance Performance</h5>
+        <span class="badge bg-light text-primary border">Today: 28 Oct 2024</span>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 font-size-13">
+          <thead class="table-light">
+            <tr>
+              <th>School Wing</th>
+              <th>Enrolled</th>
+              <th>Present Today</th>
+              <th>Absent</th>
+              <th>Attendance %</th>
+              <th>Performance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-circle-fill text-primary me-2 font-size-10"></i>Pre-Primary (Nursery-Prep)</td>
+              <td>340</td>
+              <td>330</td>
+              <td>10</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress-bar bg-success" style="width: 97.1%;"></div>
+                  </div>
+                  <span class="fw-bold">97.1%</span>
+                </div>
+              </td>
+              <td><span class="badge bg-success-subtle text-success">Excellent</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-circle-fill text-success me-2 font-size-10"></i>Primary Wing (Classes 1-5)</td>
+              <td>820</td>
+              <td>794</td>
+              <td>26</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress-bar bg-success" style="width: 96.8%;"></div>
+                  </div>
+                  <span class="fw-bold">96.8%</span>
+                </div>
+              </td>
+              <td><span class="badge bg-success-subtle text-success">Excellent</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-circle-fill text-info me-2 font-size-10"></i>Middle Wing (Classes 6-8)</td>
+              <td>680</td>
+              <td>653</td>
+              <td>27</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress-bar bg-info" style="width: 96.0%;"></div>
+                  </div>
+                  <span class="fw-bold">96.0%</span>
+                </div>
+              </td>
+              <td><span class="badge bg-success-subtle text-success">High Turnout</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-circle-fill text-warning me-2 font-size-10"></i>Secondary Wing (Classes 9-10)</td>
+              <td>560</td>
+              <td>536</td>
+              <td>24</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress-bar bg-warning" style="width: 95.7%;"></div>
+                  </div>
+                  <span class="fw-bold">95.7%</span>
+                </div>
+              </td>
+              <td><span class="badge bg-success-subtle text-success">High Turnout</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-circle-fill text-purple me-2 font-size-10" style="color: #6f42c1;"></i>Senior Secondary (Classes 11-12)</td>
+              <td>440</td>
+              <td>419</td>
+              <td>21</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress-bar bg-purple" style="width: 95.2%; background-color: #6f42c1;"></div>
+                  </div>
+                  <span class="fw-bold">95.2%</span>
+                </div>
+              </td>
+              <td><span class="badge bg-success-subtle text-success">High Turnout</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Status</option>
-      <option >Present (RFID In)</option>
-      <option >Absent / Unexcused</option>
-      <option >Leave with Approval</option>
-      <option >Late Arrival</option>
-      <option >Half Day Dispatched</option>
-    </select>
-    <select class="form-select" style="max-width: 150px;">
-      <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
-    </select>
   </div>
-  <div class="table-filter-right">
-    <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> verified records</span>
+
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm p-4 h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-broadcast text-primary me-2"></i>Live RFID Gate Taps</h5>
+        <span class="badge bg-success text-white font-size-11"><i class="bi bi-circle-fill me-1 font-size-8"></i>Live Sync</span>
+      </div>
+      <ul class="list-group list-group-flush font-size-13">
+        <li class="list-group-item px-0">
+          <div class="d-flex justify-content-between">
+            <strong class="text-dark">Aarav Sharma (10-A)</strong>
+            <span class="badge bg-success-subtle text-success">07:32 AM</span>
+          </div>
+          <small class="text-muted">Gate 1 Pedestrian Turnstile &bull; Tap #8491</small>
+        </li>
+        <li class="list-group-item px-0">
+          <div class="d-flex justify-content-between">
+            <strong class="text-dark">Diya Patel (10-A)</strong>
+            <span class="badge bg-success-subtle text-success">07:34 AM</span>
+          </div>
+          <small class="text-muted">Gate 1 Pedestrian Turnstile &bull; Tap #8492</small>
+        </li>
+        <li class="list-group-item px-0">
+          <div class="d-flex justify-content-between">
+            <strong class="text-dark">Dr. K. L. Sharma (Faculty)</strong>
+            <span class="badge bg-primary-subtle text-primary">07:14 AM</span>
+          </div>
+          <small class="text-muted">Main Staff Biometric Terminal &bull; Facial OK</small>
+        </li>
+        <li class="list-group-item px-0">
+          <div class="d-flex justify-content-between">
+            <strong class="text-dark">Ishaan Verma (12-PCB)</strong>
+            <span class="badge bg-warning-subtle text-warning">07:52 AM</span>
+          </div>
+          <small class="text-muted">Gate 1 Pedestrian &bull; Late Entry Slip Issued</small>
+        </li>
+      </ul>
+      <div class="mt-auto pt-3">
+        <a href="<?php echo base_url('modules/attendance/rfid-integration.php'); ?>" class="btn btn-outline-primary btn-sm w-100 fw-bold">
+          <i class="bi bi-broadcast-pin me-1"></i> Open Gate Readers Terminal
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Domain Data Table -->
-<div class="erp-table-responsive mb-0">
-  <table class="erp-table" id="mainDataTable">
-    <thead>
-      <tr>
-        <th>Punch / Ref #</th>
-        <th>Student / Staff Name</th>
-        <th>Class & Section</th>
-        <th>In-Time (Turnstile)</th>
-        <th>Out-Time</th>
-        <th>Logging Mode</th>
-        <th>SMS Notification</th>
-        <th>Status</th>
-        <th class="text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-091</td>
-        <td>
-          <div class="fw-semibold text-dark">Aarav Sharma</div>
-          <small class="text-muted font-size-11">Roll: 14</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">07:38 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">RFID Smart Card</span></td>
-        <td><small class="text-muted">Parent Alert Delivered</small></td>
-        <td><span class="badge-status badge-active">Present</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Attendance Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-092</td>
-        <td>
-          <div class="fw-semibold text-dark">Diya Patel</div>
-          <small class="text-muted font-size-11">Roll: 02</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">07:41 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">RFID Smart Card</span></td>
-        <td><small class="text-muted">Parent Alert Delivered</small></td>
-        <td><span class="badge-status badge-active">Present</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Attendance Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-093</td>
-        <td>
-          <div class="fw-semibold text-dark">Vihaan Singh</div>
-          <small class="text-muted font-size-11">Roll: 01</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section B</span></td>
-        <td><small class="text-dark">07:44 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Facial Recognition</span></td>
-        <td><small class="text-muted">Parent Alert Delivered</small></td>
-        <td><span class="badge-status badge-active">Present</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Attendance Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-094</td>
-        <td>
-          <div class="fw-semibold text-dark">Karan Malhotra</div>
-          <small class="text-muted font-size-11">Roll: 19</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section B</span></td>
-        <td><small class="text-dark">--</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Absentee Scan</span></td>
-        <td><small class="text-muted">Absent SMS Sent @ 08:30</small></td>
-        <td><span class="badge-status badge-inactive">Absent</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Attendance Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-095</td>
-        <td>
-          <div class="fw-semibold text-dark">Rohan Gupta</div>
-          <small class="text-muted font-size-11">Roll: 14</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">07:35 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">RFID Smart Card</span></td>
-        <td><small class="text-muted">Parent Alert Delivered</small></td>
-        <td><span class="badge-status badge-active">Present</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Attendance Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-096</td>
-        <td>
-          <div class="fw-semibold text-dark">Ishaan Verma</div>
-          <small class="text-muted font-size-11">Roll: 08</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science B</span></td>
-        <td><small class="text-dark">08:02 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Gate Guard Manual</span></td>
-        <td><small class="text-muted">Late In SMS Sent</small></td>
-        <td><span class="badge-status badge-pending">Late Arrival</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Attendance Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-097</td>
-        <td>
-          <div class="fw-semibold text-dark">Meera Reddy</div>
-          <small class="text-muted font-size-11">Roll: 11</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 8 - Section A</span></td>
-        <td><small class="text-dark">07:40 AM</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">RFID Smart Card</span></td>
-        <td><small class="text-muted">Parent Alert Delivered</small></td>
-        <td><span class="badge-status badge-active">Present</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Attendance Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ATT-1028-098</td>
-        <td>
-          <div class="fw-semibold text-dark">Tanvi Saxena</div>
-          <small class="text-muted font-size-11">Roll: 23</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 9 - Section A</span></td>
-        <td><small class="text-dark">--</small></td>
-        <td><small class="text-muted font-mono font-size-12">--</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Medical Leave Portal</span></td>
-        <td><small class="text-muted">Approved Medical Leave</small></td>
-        <td><span class="badge-status badge-pending">Excused Leave</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Attendance Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-    </tbody>
-  </table>
-</div>
-
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>
