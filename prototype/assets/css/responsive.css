@@ -1,0 +1,103 @@
+/* ==========================================================================
+   EDUSYS PRO - RESPONSIVE STYLES
+   Breakpoints and Mobile Optimizations
+   ========================================================================== */
+
+/* Tablet & Mobile Breakpoints */
+@media (max-width: 991.98px) {
+  .erp-sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    bottom: 0;
+    z-index: 1050;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .erp-sidebar.show-mobile {
+    left: 0;
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1040;
+    display: none;
+  }
+
+  .sidebar-backdrop.show {
+    display: block;
+  }
+
+  .erp-header {
+    padding: 0 1rem;
+  }
+
+  .header-search-btn {
+    width: 180px;
+  }
+
+  .erp-content {
+    padding: 1rem;
+  }
+
+  .page-header-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-actions-group {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .table-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .table-filter-left, .table-filter-right {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .table-search-input {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .user-menu-info, .session-badge-wrap span {
+    display: none;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .header-search-btn {
+    display: none;
+  }
+
+  .kpi-card {
+    padding: 1rem;
+  }
+
+  .kpi-info .kpi-value {
+    font-size: 1.35rem;
+  }
+
+  .kpi-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .erp-pagination-bar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
