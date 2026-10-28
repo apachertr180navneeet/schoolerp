@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Worksheets & Practice Papers
+ * EDUSYS PRO - WORKSHEETS & PRACTICE PAPERS
+ * Dedicated operational interface & records management for Worksheets & Practice Papers
  */
 $page_title = "Worksheets & Practice Papers";
-$page_desc = "Dedicated operational interface & records management for Worksheets & Practice Papers";
+$page_desc = "Competency-based question banks, Assertion-Reasoning sheets, and CBSE past 10-year board solutions";
 $active_module = "academics";
 $active_submodule = "worksheets.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/academics/dashboard.php'); ?>">Academic Management</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -28,7 +29,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-file-earmark-text-fill text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
@@ -39,52 +40,51 @@ require_once __DIR__ . '/../../includes/topbar.php';
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
     <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
+      <i class="bi bi-cloud-upload-fill me-1"></i> Upload Practice Sheet
     </button>
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
+    <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Syllabus Coverage</h6>
-        <div class="kpi-value">74.8% Done</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> CBSE Term 2 On Track</div>
+        <h6>Worksheets Vault</h6>
+        <div class="kpi-value">248 Sheets</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> PDF Format with Solutions</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-journal-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-file-earmark-pdf-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-primary">
+    <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Weekly Periods</h6>
-        <div class="kpi-value">560 Periods</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 38 Classrooms Active</div>
+        <h6>CBSE Competency Ready</h6>
+        <div class="kpi-value">100% NEP Aligned</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Assertion-Reasoning & Case</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Lesson Plans Submitted</h6>
-        <div class="kpi-value">142 / 148</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 96% Weekly Compliance</div>
+        <h6>Student Downloads</h6>
+        <div class="kpi-value">14,820 Downloads</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> High Revision Activity</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-file-earmark-ruled-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-download"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Proxy Substitutions</h6>
-        <div class="kpi-value">3 Active</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> All Classes Covered</div>
+        <h6>Past 10-Year Papers</h6>
+        <div class="kpi-value">Full Archives</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> 2014 to 2024 Solved</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-person-switch"></i></div>
+      <div class="kpi-icon"><i class="bi bi-archive-fill"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +94,22 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search timetable, subject, teacher, class...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search worksheet title, subject, grade, difficulty...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Grades</option>
-      <option >Class 12 - Senior Sec</option>
-      <option >Class 11 - Senior Sec</option>
-      <option >Class 10 - Secondary</option>
-      <option >Class 9 - Secondary</option>
-      <option >Classes 6-8 - Middle</option>
+    <select class="form-select" style="max-width: 220px;">
+      <option selected>All Subjects</option>
+      <option >Mathematics (041)</option>
+      <option >Physics (042)</option>
+      <option >Chemistry (043)</option>
+      <option >Biology (044)</option>
+      <option >Social Science (087)</option>
+      <option >English (301)</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Active Download</option>
+      <option >Verified Key Included</option>
+      <option >Draft</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +122,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Slot / Lesson Code</th>
-        <th>Subject & Curriculum Code</th>
-        <th>Grade & Section</th>
-        <th>Assigned Faculty</th>
-        <th>Classroom / Lab</th>
-        <th>Period Time Slot</th>
-        <th>Weekly Sessions</th>
+        <th>Sheet UID</th>
+        <th>Worksheet Title</th>
+        <th>Subject & Grade</th>
+        <th>Difficulty Level</th>
+        <th>Questions Count</th>
+        <th>Solution Key Attached</th>
+        <th>Downloads Count</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,16 +136,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">WS-MATH-10-04</td>
         <td>
-          <div class="fw-semibold text-dark">Mathematics (041)</div>
-          <small class="text-muted font-size-11">Chapter 8: Trigo</small>
+          <div class="fw-semibold text-dark">Trigonometric Identities Mastery Sheet</div>
+          <small class="text-muted font-size-11">Assertion-Reasoning + Case Studies</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mr. S. K. Rastogi</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 304, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">6 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Maths - Class 10</span></td>
+        <td><small class="text-dark">Advanced Level</small></td>
+        <td><small class="text-muted font-mono font-size-12">25 Questions</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Step-by-Step PDF Key</span></td>
+        <td><small class="text-muted">482 Downloads</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -156,16 +157,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-02</td>
+        <td class="fw-bold text-primary font-mono font-size-13">WS-PHY-12-08</td>
         <td>
-          <div class="fw-semibold text-dark">Science (086)</div>
-          <small class="text-muted font-size-11">Chapter 4: Carbon</small>
+          <div class="fw-semibold text-dark">Electromagnetic Induction Derivations Sheet</div>
+          <small class="text-muted font-size-11">Faraday Law & Lenz Law Problems</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mr. Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">Physics Lab 1</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 2 (08:30–09:15)</span></td>
-        <td><small class="text-muted">6 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Physics - Class 12</span></td>
+        <td><small class="text-dark">Board Exam Standard</small></td>
+        <td><small class="text-muted font-mono font-size-12">20 Problems</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Complete Derivations Key</span></td>
+        <td><small class="text-muted">394 Downloads</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -177,16 +178,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-03</td>
+        <td class="fw-bold text-primary font-mono font-size-13">WS-CHEM-12-05</td>
         <td>
-          <div class="fw-semibold text-dark">English Core (301)</div>
-          <small class="text-muted font-size-11">First Flight: Prose</small>
+          <div class="fw-semibold text-dark">Coordination Compounds Nomenclature & Isomers</div>
+          <small class="text-muted font-size-11">IUPAC Rule Drills</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 304, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 3 (09:15–10:00)</span></td>
-        <td><small class="text-muted">5 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Chemistry - Class 12</span></td>
+        <td><small class="text-dark">Medium to Advanced</small></td>
+        <td><small class="text-muted font-mono font-size-12">30 Questions</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Complete Nomenclature Key</span></td>
+        <td><small class="text-muted">340 Downloads</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -198,16 +199,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12A-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">WS-BIO-12-07</td>
         <td>
-          <div class="fw-semibold text-dark">Physics (042)</div>
-          <small class="text-muted font-size-11">Wave Optics</small>
+          <div class="fw-semibold text-dark">Immunity & Vaccines Diagrammatic Practice</div>
+          <small class="text-muted font-size-11">Antibody Structure & Life Cycle of HIV</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">Mr. Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 401, Block C</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Biology - Class 12</span></td>
+        <td><small class="text-dark">High Yield Board</small></td>
+        <td><small class="text-muted font-mono font-size-12">15 Long Questions</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Labelled Answer Key</span></td>
+        <td><small class="text-muted">312 Downloads</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -219,16 +220,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12A-02</td>
+        <td class="fw-bold text-primary font-mono font-size-13">WS-ENG-10-03</td>
         <td>
-          <div class="fw-semibold text-dark">Chemistry (043)</div>
-          <small class="text-muted font-size-11">Electrochemistry</small>
+          <div class="fw-semibold text-dark">Integrated Grammar: Editing & Omission</div>
+          <small class="text-muted font-size-11">Error Correction Drills</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">Dr. Anuj Jha</small></td>
-        <td><small class="text-muted font-mono font-size-12">Chemistry Lab 2</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 2 (08:30–09:15)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">English - Class 10</span></td>
+        <td><small class="text-dark">Standard Level</small></td>
+        <td><small class="text-muted font-mono font-size-12">40 Sentences</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Verified Solution Key</span></td>
+        <td><small class="text-muted">520 Downloads</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -240,16 +241,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12C-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">WS-SST-10-06</td>
         <td>
-          <div class="fw-semibold text-dark">Accountancy (055)</div>
-          <small class="text-muted font-size-11">Partnership Dissolution</small>
+          <div class="fw-semibold text-dark">History Map Pointing: Nationalism in India</div>
+          <small class="text-muted font-size-11">INC Sessions & Satyagraha Centers</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Commerce</span></td>
-        <td><small class="text-dark">Mr. M. K. Aggarwal</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 403, Block C</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Social - Class 10</span></td>
+        <td><small class="text-dark">Standard Level</small></td>
+        <td><small class="text-muted font-mono font-size-12">15 Map Items</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Annotated Map Key</span></td>
+        <td><small class="text-muted">490 Downloads</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -261,16 +262,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10B-04</td>
+        <td class="fw-bold text-primary font-mono font-size-13">WS-CS-12-04</td>
         <td>
-          <div class="fw-semibold text-dark">Social Science (087)</div>
-          <small class="text-muted font-size-11">Nationalism in India</small>
+          <div class="fw-semibold text-dark">SQL Table Queries & Aggregate Functions</div>
+          <small class="text-muted font-size-11">SELECT with GROUP BY, HAVING</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section B</span></td>
-        <td><small class="text-dark">Mrs. Rashmi Sen</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 305, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 4 (10:15–11:00)</span></td>
-        <td><small class="text-muted">5 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">CS - Class 12</span></td>
+        <td><small class="text-dark">Practical Exam Focus</small></td>
+        <td><small class="text-muted font-mono font-size-12">20 Database Queries</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Tested SQL Script Key</span></td>
+        <td><small class="text-muted">285 Downloads</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -282,16 +283,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-09A-03</td>
+        <td class="fw-bold text-primary font-mono font-size-13">WS-ACC-12-05</td>
         <td>
-          <div class="fw-semibold text-dark">Artificial Intelligence (843)</div>
-          <small class="text-muted font-size-11">Python Data Science</small>
+          <div class="fw-semibold text-dark">Issue & Forfeiture of Shares Comprehensive</div>
+          <small class="text-muted font-size-11">Pro-Rata Allotment Scenarios</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 9 - Section A</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">AI & Robotics Lab</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 3 (09:15–10:00)</span></td>
-        <td><small class="text-muted">3 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Accounts - Class 12</span></td>
+        <td><small class="text-dark">Advanced Board Level</small></td>
+        <td><small class="text-muted font-mono font-size-12">12 Comprehensive Cases</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Detailed Working Notes</span></td>
+        <td><small class="text-muted">315 Downloads</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -306,5 +307,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

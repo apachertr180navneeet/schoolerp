@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Academic Dashboard
+ * EDUSYS PRO - ACADEMIC MANAGEMENT COMMAND CENTER (DASHBOARD)
+ * Real-time academic oversight: Syllabus tracking, timetable periods, faculty workload, and substitutions
  */
 $page_title = "Academic Dashboard";
-$page_desc = "Dedicated operational interface & records management for Academic Dashboard";
+$page_desc = "Central pedagogical command: Syllabus coverage, timetable periods, faculty allocations, and NEP 2020 progress";
 $active_module = "academics";
 $active_submodule = "dashboard.php";
 $depth = 2;
@@ -19,8 +20,8 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
-      <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/academics/dashboard.php'); ?>">Academic Management</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Academic Dashboard</li>
     </ol>
   </nav>
 </div>
@@ -28,31 +29,30 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-mortarboard-fill text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
-    <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
-      <i class="bi bi-printer me-1"></i> Print
-    </button>
-    <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', 'dashboard_export.csv')" title="Export Table as CSV">
-      <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
-    </button>
-    <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
-    </button>
+    <a href="<?php echo base_url('modules/academics/class-timetable.php'); ?>" class="btn btn-light border">
+      <i class="bi bi-table me-1"></i> Class Timetable
+    </a>
+    <a href="<?php echo base_url('modules/academics/substitute-teachers.php'); ?>" class="btn btn-warning text-dark fw-bold">
+      <i class="bi bi-person-switch me-1"></i> Substitutions (4 Today)
+    </a>
+    <a href="<?php echo base_url('modules/academics/timetable-builder.php'); ?>" class="btn btn-primary fw-bold">
+      <i class="bi bi-calendar3-week me-1"></i> Timetable Builder
+    </a>
   </div>
 </div>
-
 
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Syllabus Coverage</h6>
-        <div class="kpi-value">74.8% Done</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> CBSE Term 2 On Track</div>
+        <h6>Overall Syllabus Completion</h6>
+        <div class="kpi-value">76.4%</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> +3.2% Ahead of Benchmark</div>
       </div>
       <div class="kpi-icon"><i class="bi bi-journal-check"></i></div>
     </div>
@@ -60,251 +60,186 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Weekly Periods</h6>
-        <div class="kpi-value">560 Periods</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 38 Classrooms Active</div>
+        <h6>Active Class Sections</h6>
+        <div class="kpi-value">72 Sections</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 2,840 Scholars Mapped</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-diagram-3-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Lesson Plans Submitted</h6>
-        <div class="kpi-value">142 / 148</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 96% Weekly Compliance</div>
+        <h6>Periods Today</h6>
+        <div class="kpi-value">576 Slots</div>
+        <div class="kpi-trend positive"><i class="bi bi-clock-history"></i> 8 Periods per Section</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-file-earmark-ruled-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-calendar3"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Proxy Substitutions</h6>
-        <div class="kpi-value">3 Active</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> All Classes Covered</div>
+        <h6>Faculty on Duty</h6>
+        <div class="kpi-value">108 / 112</div>
+        <div class="kpi-trend neutral"><i class="bi bi-shield-check"></i> 4 Substitutions Active</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-person-switch"></i></div>
+      <div class="kpi-icon"><i class="bi bi-person-workspace"></i></div>
     </div>
   </div>
 </div>
 
-<!-- Domain Table Filter Bar -->
-<div class="table-filter-bar mb-3">
-  <div class="table-filter-left">
-    <div class="table-search-input">
-      <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search timetable, subject, teacher, class...">
+<!-- Department Progress & Today's Substitution Feed -->
+<div class="row g-4 mb-4">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm p-4 h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-bar-chart-line text-primary me-2"></i>Department-wise Syllabus Velocity & Progress</h5>
+        <span class="badge bg-light text-primary border">Target: 15 Jan 2025</span>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 font-size-13">
+          <thead class="table-light">
+            <tr>
+              <th>Academic Department</th>
+              <th>HOD Faculty</th>
+              <th>Courses</th>
+              <th>Completed / Total</th>
+              <th>Progress %</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-atom text-primary me-2"></i>Science (Physics, Chem, Bio)</td>
+              <td>Dr. K. L. Sharma</td>
+              <td>12 Courses</td>
+              <td>112 / 144 Units</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress-bar bg-success" style="width: 77.7%;"></div>
+                  </div>
+                  <span class="fw-bold">77.7%</span>
+                </div>
+              </td>
+              <td><span class="badge bg-success-subtle text-success">On Schedule</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-calculator text-info me-2"></i>Mathematics & Statistics</td>
+              <td>Mrs. Sunita Kaul</td>
+              <td>8 Courses</td>
+              <td>68 / 88 Units</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress-bar bg-info" style="width: 77.2%;"></div>
+                  </div>
+                  <span class="fw-bold">77.2%</span>
+                </div>
+              </td>
+              <td><span class="badge bg-success-subtle text-success">On Schedule</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-briefcase text-success me-2"></i>Commerce & Business Studies</td>
+              <td>Mr. M. K. Chawla</td>
+              <td>6 Courses</td>
+              <td>42 / 52 Units</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress-bar bg-success" style="width: 80.7%;"></div>
+                  </div>
+                  <span class="fw-bold">80.7%</span>
+                </div>
+              </td>
+              <td><span class="badge bg-success-subtle text-success">Ahead (+4%)</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-globe-americas text-warning me-2"></i>Humanities & Social Sciences</td>
+              <td>Mrs. Shalini Verma</td>
+              <td>10 Courses</td>
+              <td>72 / 98 Units</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress-bar bg-warning" style="width: 73.4%;"></div>
+                  </div>
+                  <span class="fw-bold">73.4%</span>
+                </div>
+              </td>
+              <td><span class="badge bg-warning-subtle text-warning">Pace Review</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-dark"><i class="bi bi-translate text-purple me-2" style="color: #6f42c1;"></i>Languages (Eng, Hin, Skt)</td>
+              <td>Mr. Deepak Rawat</td>
+              <td>8 Courses</td>
+              <td>66 / 82 Units</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress-bar bg-purple" style="width: 80.4%; background-color: #6f42c1;"></div>
+                  </div>
+                  <span class="fw-bold">80.4%</span>
+                </div>
+              </td>
+              <td><span class="badge bg-success-subtle text-success">On Schedule</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Grades</option>
-      <option >Class 12 - Senior Sec</option>
-      <option >Class 11 - Senior Sec</option>
-      <option >Class 10 - Secondary</option>
-      <option >Class 9 - Secondary</option>
-      <option >Classes 6-8 - Middle</option>
-    </select>
-    <select class="form-select" style="max-width: 150px;">
-      <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
-    </select>
   </div>
-  <div class="table-filter-right">
-    <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> verified records</span>
+
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm p-4 h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-person-switch text-warning me-2"></i>Active Substitutions</h5>
+        <span class="badge bg-warning text-dark font-size-11">Today (4 Active)</span>
+      </div>
+      <ul class="list-group list-group-flush font-size-13">
+        <li class="list-group-item px-0">
+          <div class="d-flex justify-content-between">
+            <strong class="text-dark">Class 10-A &bull; Period 2</strong>
+            <span class="badge bg-success-subtle text-success">Covered</span>
+          </div>
+          <small class="text-muted d-block">Absent: Mrs. Meenakshi Soni (Hindi)</small>
+          <small class="text-primary fw-semibold"><i class="bi bi-arrow-return-right me-1"></i>Covered by: Mr. Deepak Rawat</small>
+        </li>
+        <li class="list-group-item px-0">
+          <div class="d-flex justify-content-between">
+            <strong class="text-dark">Class 10-B &bull; Period 6</strong>
+            <span class="badge bg-success-subtle text-success">Covered</span>
+          </div>
+          <small class="text-muted d-block">Absent: Mrs. Meenakshi Soni (Hindi)</small>
+          <small class="text-primary fw-semibold"><i class="bi bi-arrow-return-right me-1"></i>Covered by: Mrs. Shalini Verma</small>
+        </li>
+        <li class="list-group-item px-0">
+          <div class="d-flex justify-content-between">
+            <strong class="text-dark">Class 12-PCM &bull; Period 7</strong>
+            <span class="badge bg-success-subtle text-success">Covered</span>
+          </div>
+          <small class="text-muted d-block">Absent: Mr. Kunal Bansal (CS)</small>
+          <small class="text-primary fw-semibold"><i class="bi bi-arrow-return-right me-1"></i>Covered by: Dr. K. L. Sharma</small>
+        </li>
+        <li class="list-group-item px-0">
+          <div class="d-flex justify-content-between">
+            <strong class="text-dark">Class 11-PCM &bull; Period 8</strong>
+            <span class="badge bg-success-subtle text-success">Covered</span>
+          </div>
+          <small class="text-muted d-block">Absent: Mr. Kunal Bansal (CS)</small>
+          <small class="text-primary fw-semibold"><i class="bi bi-arrow-return-right me-1"></i>Covered by: Mrs. Sunita Kaul</small>
+        </li>
+      </ul>
+      <div class="mt-auto pt-3">
+        <a href="<?php echo base_url('modules/academics/substitute-teachers.php'); ?>" class="btn btn-outline-warning text-dark btn-sm w-100 fw-bold">
+          <i class="bi bi-person-lines-fill me-1"></i> View Full Substitution Ledger
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Domain Data Table -->
-<div class="erp-table-responsive mb-0">
-  <table class="erp-table" id="mainDataTable">
-    <thead>
-      <tr>
-        <th>Slot / Lesson Code</th>
-        <th>Subject & Curriculum Code</th>
-        <th>Grade & Section</th>
-        <th>Assigned Faculty</th>
-        <th>Classroom / Lab</th>
-        <th>Period Time Slot</th>
-        <th>Weekly Sessions</th>
-        <th>Status</th>
-        <th class="text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-01</td>
-        <td>
-          <div class="fw-semibold text-dark">Mathematics (041)</div>
-          <small class="text-muted font-size-11">Chapter 8: Trigo</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mr. S. K. Rastogi</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 304, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">6 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Academic Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-02</td>
-        <td>
-          <div class="fw-semibold text-dark">Science (086)</div>
-          <small class="text-muted font-size-11">Chapter 4: Carbon</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mr. Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">Physics Lab 1</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 2 (08:30–09:15)</span></td>
-        <td><small class="text-muted">6 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Academic Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-03</td>
-        <td>
-          <div class="fw-semibold text-dark">English Core (301)</div>
-          <small class="text-muted font-size-11">First Flight: Prose</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 304, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 3 (09:15–10:00)</span></td>
-        <td><small class="text-muted">5 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Academic Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12A-01</td>
-        <td>
-          <div class="fw-semibold text-dark">Physics (042)</div>
-          <small class="text-muted font-size-11">Wave Optics</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">Mr. Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 401, Block C</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Academic Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12A-02</td>
-        <td>
-          <div class="fw-semibold text-dark">Chemistry (043)</div>
-          <small class="text-muted font-size-11">Electrochemistry</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">Dr. Anuj Jha</small></td>
-        <td><small class="text-muted font-mono font-size-12">Chemistry Lab 2</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 2 (08:30–09:15)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Academic Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12C-01</td>
-        <td>
-          <div class="fw-semibold text-dark">Accountancy (055)</div>
-          <small class="text-muted font-size-11">Partnership Dissolution</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Commerce</span></td>
-        <td><small class="text-dark">Mr. M. K. Aggarwal</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 403, Block C</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Academic Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10B-04</td>
-        <td>
-          <div class="fw-semibold text-dark">Social Science (087)</div>
-          <small class="text-muted font-size-11">Nationalism in India</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section B</span></td>
-        <td><small class="text-dark">Mrs. Rashmi Sen</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 305, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 4 (10:15–11:00)</span></td>
-        <td><small class="text-muted">5 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Academic Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-09A-03</td>
-        <td>
-          <div class="fw-semibold text-dark">Artificial Intelligence (843)</div>
-          <small class="text-muted font-size-11">Python Data Science</small>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 9 - Section A</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">AI & Robotics Lab</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 3 (09:15–10:00)</span></td>
-        <td><small class="text-muted">3 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Academic Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      
-    </tbody>
-  </table>
-</div>
-
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Learning Outcomes
+ * EDUSYS PRO - LEARNING OUTCOMES
+ * Dedicated operational interface & records management for Learning Outcomes
  */
 $page_title = "Learning Outcomes";
-$page_desc = "Dedicated operational interface & records management for Learning Outcomes";
+$page_desc = "NEP 2020 competency benchmarks, Bloom taxonomy mappings, rubrics, and cohort mastery levels";
 $active_module = "academics";
 $active_submodule = "learning-outcomes.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/academics/dashboard.php'); ?>">Academic Management</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -28,7 +29,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-bullseye text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
@@ -39,52 +40,51 @@ require_once __DIR__ . '/../../includes/topbar.php';
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
     <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
+      <i class="bi bi-plus-lg me-1"></i> Define Learning Outcome
     </button>
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
+    <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Syllabus Coverage</h6>
-        <div class="kpi-value">74.8% Done</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> CBSE Term 2 On Track</div>
+        <h6>Outcomes Defined</h6>
+        <div class="kpi-value">184 Competencies</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Mapped across All Subjects</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-journal-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-bullseye"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-primary">
+    <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Weekly Periods</h6>
-        <div class="kpi-value">560 Periods</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 38 Classrooms Active</div>
+        <h6>Cohort Mastery</h6>
+        <div class="kpi-value">82.4% Achieved</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Exceeds 75% CBSE Benchmark</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-check2-circle"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Lesson Plans Submitted</h6>
-        <div class="kpi-value">142 / 148</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 96% Weekly Compliance</div>
+        <h6>Blooms Taxonomy</h6>
+        <div class="kpi-value">6 Cognitive Levels</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Remembering to Creating</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-file-earmark-ruled-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-diagram-3"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Proxy Substitutions</h6>
-        <div class="kpi-value">3 Active</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> All Classes Covered</div>
+        <h6>Remedial Focus</h6>
+        <div class="kpi-value">14 Outcomes</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Targeted in Doubt Clinics</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-person-switch"></i></div>
+      <div class="kpi-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +94,21 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search timetable, subject, teacher, class...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search outcome code, competency, subject, Bloom level...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Grades</option>
-      <option >Class 12 - Senior Sec</option>
-      <option >Class 11 - Senior Sec</option>
-      <option >Class 10 - Secondary</option>
-      <option >Class 9 - Secondary</option>
-      <option >Classes 6-8 - Middle</option>
+    <select class="form-select" style="max-width: 220px;">
+      <option selected>All Bloom Taxonomy Levels</option>
+      <option >Level 1: Remembering & Recall</option>
+      <option >Level 2: Understanding & Explain</option>
+      <option >Level 3: Applying & Problem Solving</option>
+      <option >Level 4: Analyzing & Deconstructing</option>
+      <option >Level 5: Evaluating & Creating</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Mastery Achieved (>80%)</option>
+      <option >Progressing (70-79%)</option>
+      <option >Needs Intervention (<70%)</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +121,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Slot / Lesson Code</th>
-        <th>Subject & Curriculum Code</th>
-        <th>Grade & Section</th>
-        <th>Assigned Faculty</th>
-        <th>Classroom / Lab</th>
-        <th>Period Time Slot</th>
-        <th>Weekly Sessions</th>
+        <th>Outcome Code</th>
+        <th>Competency Description</th>
+        <th>Subject & Grade</th>
+        <th>Blooms Taxonomy Level</th>
+        <th>Assessment Tool</th>
+        <th>Mastery % Target</th>
+        <th>Current Cohort %</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,17 +135,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">LO-MATH-10-01</td>
         <td>
-          <div class="fw-semibold text-dark">Mathematics (041)</div>
-          <small class="text-muted font-size-11">Chapter 8: Trigo</small>
+          <div class="fw-semibold text-dark">Apply trigonometric ratios to compute indirect heights & distances</div>
+          <small class="text-muted font-size-11">Trigonometry Competency</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mr. S. K. Rastogi</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 304, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">6 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Mathematics (041) - Cl 10</span></td>
+        <td><small class="text-dark">Level 3: Applying</small></td>
+        <td><small class="text-muted font-mono font-size-12">Case-based Worksheet & PT</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">80.0%</span></td>
+        <td><small class="text-muted">84.6% Mastered</small></td>
+        <td><span class="badge-status badge-active">Mastered</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +156,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-02</td>
+        <td class="fw-bold text-primary font-mono font-size-13">LO-PHY-12-01</td>
         <td>
-          <div class="fw-semibold text-dark">Science (086)</div>
-          <small class="text-muted font-size-11">Chapter 4: Carbon</small>
+          <div class="fw-semibold text-dark">Analyze Faraday and Lenz laws in electromagnetic induction circuits</div>
+          <small class="text-muted font-size-11">Electromagnetism Competency</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mr. Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">Physics Lab 1</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 2 (08:30–09:15)</span></td>
-        <td><small class="text-muted">6 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Physics (042) - Cl 12</span></td>
+        <td><small class="text-dark">Level 4: Analyzing</small></td>
+        <td><small class="text-muted font-mono font-size-12">Lab Practical & Numerical Exam</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">75.0%</span></td>
+        <td><small class="text-muted">78.2% Mastered</small></td>
+        <td><span class="badge-status badge-active">Mastered</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +177,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-03</td>
+        <td class="fw-bold text-primary font-mono font-size-13">LO-CHEM-12-01</td>
         <td>
-          <div class="fw-semibold text-dark">English Core (301)</div>
-          <small class="text-muted font-size-11">First Flight: Prose</small>
+          <div class="fw-semibold text-dark">Differentiate coordination complexes using Crystal Field Theory</div>
+          <small class="text-muted font-size-11">Inorganic Chemistry</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 304, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 3 (09:15–10:00)</span></td>
-        <td><small class="text-muted">5 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Chemistry (043) - Cl 12</span></td>
+        <td><small class="text-dark">Level 4: Analyzing</small></td>
+        <td><small class="text-muted font-mono font-size-12">Conceptual Objective Tests</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">75.0%</span></td>
+        <td><small class="text-muted">74.8% Progressing</small></td>
+        <td><span class="badge-status badge-pending">Progressing</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +198,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12A-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">LO-BIO-12-01</td>
         <td>
-          <div class="fw-semibold text-dark">Physics (042)</div>
-          <small class="text-muted font-size-11">Wave Optics</small>
+          <div class="fw-semibold text-dark">Evaluate role of innate and acquired immunity in disease defense</div>
+          <small class="text-muted font-size-11">Immunology Competency</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">Mr. Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 401, Block C</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Biology (044) - Cl 12</span></td>
+        <td><small class="text-dark">Level 5: Evaluating</small></td>
+        <td><small class="text-muted font-mono font-size-12">Case Scenario Analysis</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">80.0%</span></td>
+        <td><small class="text-muted">82.4% Mastered</small></td>
+        <td><span class="badge-status badge-active">Mastered</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +219,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12A-02</td>
+        <td class="fw-bold text-primary font-mono font-size-13">LO-ENG-10-01</td>
         <td>
-          <div class="fw-semibold text-dark">Chemistry (043)</div>
-          <small class="text-muted font-size-11">Electrochemistry</small>
+          <div class="fw-semibold text-dark">Deconstruct poetic devices and thematic symbolism in modern poetry</div>
+          <small class="text-muted font-size-11">Literary Analysis</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">Dr. Anuj Jha</small></td>
-        <td><small class="text-muted font-mono font-size-12">Chemistry Lab 2</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 2 (08:30–09:15)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">English (184) - Cl 10</span></td>
+        <td><small class="text-dark">Level 4: Analyzing</small></td>
+        <td><small class="text-muted font-mono font-size-12">Critical Appreciation Essay</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">80.0%</span></td>
+        <td><small class="text-muted">86.0% Mastered</small></td>
+        <td><span class="badge-status badge-active">Mastered</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +240,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12C-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">LO-SST-10-01</td>
         <td>
-          <div class="fw-semibold text-dark">Accountancy (055)</div>
-          <small class="text-muted font-size-11">Partnership Dissolution</small>
+          <div class="fw-semibold text-dark">Evaluate economic and social impacts of anti-colonial movements in India</div>
+          <small class="text-muted font-size-11">Historical Inquiry</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Commerce</span></td>
-        <td><small class="text-dark">Mr. M. K. Aggarwal</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 403, Block C</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Social Science (087) - Cl 10</span></td>
+        <td><small class="text-dark">Level 5: Evaluating</small></td>
+        <td><small class="text-muted font-mono font-size-12">DBQ Document-Based Questions</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">75.0%</span></td>
+        <td><small class="text-muted">79.4% Mastered</small></td>
+        <td><span class="badge-status badge-active">Mastered</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +261,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10B-04</td>
+        <td class="fw-bold text-primary font-mono font-size-13">LO-CS-12-01</td>
         <td>
-          <div class="fw-semibold text-dark">Social Science (087)</div>
-          <small class="text-muted font-size-11">Nationalism in India</small>
+          <div class="fw-semibold text-dark">Construct complex relational SQL queries involving grouping and joins</div>
+          <small class="text-muted font-size-11">Database Engineering</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section B</span></td>
-        <td><small class="text-dark">Mrs. Rashmi Sen</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 305, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 4 (10:15–11:00)</span></td>
-        <td><small class="text-muted">5 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Computer Science (083) - Cl 12</span></td>
+        <td><small class="text-dark">Level 6: Creating</small></td>
+        <td><small class="text-muted font-mono font-size-12">Lab Terminal Practical Exam</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">85.0%</span></td>
+        <td><small class="text-muted">88.5% Mastered</small></td>
+        <td><span class="badge-status badge-active">Mastered</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +282,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-09A-03</td>
+        <td class="fw-bold text-primary font-mono font-size-13">LO-ACC-12-01</td>
         <td>
-          <div class="fw-semibold text-dark">Artificial Intelligence (843)</div>
-          <small class="text-muted font-size-11">Python Data Science</small>
+          <div class="fw-semibold text-dark">Compute and journalize company share capital forfeiture transactions</div>
+          <small class="text-muted font-size-11">Corporate Accounting</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 9 - Section A</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">AI & Robotics Lab</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 3 (09:15–10:00)</span></td>
-        <td><small class="text-muted">3 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Accountancy (055) - Cl 12</span></td>
+        <td><small class="text-dark">Level 3: Applying</small></td>
+        <td><small class="text-muted font-mono font-size-12">Problem Solving Ledger Exam</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">80.0%</span></td>
+        <td><small class="text-muted">81.2% Mastered</small></td>
+        <td><span class="badge-status badge-active">Mastered</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +306,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

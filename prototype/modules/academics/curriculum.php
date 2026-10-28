@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Curriculum Management
+ * EDUSYS PRO - CURRICULUM MANAGEMENT
+ * Dedicated operational interface & records management for Curriculum Management
  */
 $page_title = "Curriculum Management";
-$page_desc = "Dedicated operational interface & records management for Curriculum Management";
+$page_desc = "Master academic syllabi architectures, pedagogical models, and board integration guidelines";
 $active_module = "academics";
 $active_submodule = "curriculum.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/academics/dashboard.php'); ?>">Academic Management</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -28,7 +29,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-journal-bookmark-fill text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
@@ -39,52 +40,51 @@ require_once __DIR__ . '/../../includes/topbar.php';
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
     <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
+      <i class="bi bi-plus-lg me-1"></i> Add Curriculum Framework
     </button>
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-success">
+    <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Syllabus Coverage</h6>
-        <div class="kpi-value">74.8% Done</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> CBSE Term 2 On Track</div>
+        <h6>Curriculum Tracks</h6>
+        <div class="kpi-value">5 Active Tracks</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> CBSE & NEP 2020 Integrated</div>
       </div>
       <div class="kpi-icon"><i class="bi bi-journal-check"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-primary">
+    <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Weekly Periods</h6>
-        <div class="kpi-value">560 Periods</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 38 Classrooms Active</div>
+        <h6>Subjects Catalog</h6>
+        <div class="kpi-value">48 Subjects</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Core & Skill Electives</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-book-half"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Lesson Plans Submitted</h6>
-        <div class="kpi-value">142 / 148</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 96% Weekly Compliance</div>
+        <h6>NCF 2023 Aligned</h6>
+        <div class="kpi-value">100% Compliant</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Foundational to Secondary</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-file-earmark-ruled-fill"></i></div>
+      <div class="kpi-icon"><i class="bi bi-check2-all"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-warning">
       <div class="kpi-info">
-        <h6>Proxy Substitutions</h6>
-        <div class="kpi-value">3 Active</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> All Classes Covered</div>
+        <h6>Annual Reviews</h6>
+        <div class="kpi-value">Completed</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Board Academic Council</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-person-switch"></i></div>
+      <div class="kpi-icon"><i class="bi bi-calendar-check-fill"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +94,21 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search timetable, subject, teacher, class...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search framework, subject, board, classes...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Grades</option>
-      <option >Class 12 - Senior Sec</option>
-      <option >Class 11 - Senior Sec</option>
-      <option >Class 10 - Secondary</option>
-      <option >Class 9 - Secondary</option>
-      <option >Classes 6-8 - Middle</option>
+    <select class="form-select" style="max-width: 220px;">
+      <option selected>All Frameworks</option>
+      <option >CBSE Secondary Framework (9-10)</option>
+      <option >CBSE Senior Secondary (11-12)</option>
+      <option >NEP Preparatory (3-5)</option>
+      <option >NEP Middle Stage (6-8)</option>
+      <option >Foundational Stage (Nursery-2)</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Active & Adopted</option>
+      <option >Under Annual Review</option>
+      <option >Archived</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +121,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Slot / Lesson Code</th>
-        <th>Subject & Curriculum Code</th>
-        <th>Grade & Section</th>
-        <th>Assigned Faculty</th>
-        <th>Classroom / Lab</th>
-        <th>Period Time Slot</th>
-        <th>Weekly Sessions</th>
+        <th>Framework Code</th>
+        <th>Curriculum Title</th>
+        <th>Affiliation Authority</th>
+        <th>Target Wings</th>
+        <th>Academic Session</th>
+        <th>NEP 2020 Compliance</th>
+        <th>Revision Date</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,16 +135,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUR-CBSE-SEC</td>
         <td>
-          <div class="fw-semibold text-dark">Mathematics (041)</div>
-          <small class="text-muted font-size-11">Chapter 8: Trigo</small>
+          <div class="fw-semibold text-dark">CBSE Secondary Curriculum</div>
+          <small class="text-muted font-size-11">Core 5 Subjects + 1 Skill</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mr. S. K. Rastogi</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 304, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">6 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Central Board (CBSE)</span></td>
+        <td><small class="text-dark">Classes 9 & 10</small></td>
+        <td><small class="text-muted font-mono font-size-12">2024-2025</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">100% NCF-SE Aligned</span></td>
+        <td><small class="text-muted">15 Apr 2024</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -156,16 +156,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-02</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUR-CBSE-SR</td>
         <td>
-          <div class="fw-semibold text-dark">Science (086)</div>
-          <small class="text-muted font-size-11">Chapter 4: Carbon</small>
+          <div class="fw-semibold text-dark">CBSE Senior Secondary</div>
+          <small class="text-muted font-size-11">Science, Commerce, Humanities</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mr. Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">Physics Lab 1</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 2 (08:30–09:15)</span></td>
-        <td><small class="text-muted">6 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Central Board (CBSE)</span></td>
+        <td><small class="text-dark">Classes 11 & 12</small></td>
+        <td><small class="text-muted font-mono font-size-12">2024-2025</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">100% NCF-SE Aligned</span></td>
+        <td><small class="text-muted">15 Apr 2024</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -177,16 +177,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-03</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUR-NEP-MID</td>
         <td>
-          <div class="fw-semibold text-dark">English Core (301)</div>
-          <small class="text-muted font-size-11">First Flight: Prose</small>
+          <div class="fw-semibold text-dark">NEP Middle Stage Framework</div>
+          <small class="text-muted font-size-11">Experiential & Vocational Skills</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 304, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 3 (09:15–10:00)</span></td>
-        <td><small class="text-muted">5 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">NCERT / CBSE</span></td>
+        <td><small class="text-dark">Classes 6 to 8</small></td>
+        <td><small class="text-muted font-mono font-size-12">2024-2025</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">10-Bagless Days Included</span></td>
+        <td><small class="text-muted">10 May 2024</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -198,16 +198,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12A-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUR-NEP-PREP</td>
         <td>
-          <div class="fw-semibold text-dark">Physics (042)</div>
-          <small class="text-muted font-size-11">Wave Optics</small>
+          <div class="fw-semibold text-dark">NEP Preparatory Stage</div>
+          <small class="text-muted font-size-11">Activity & Inquiry Based</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">Mr. Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 401, Block C</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">NCERT / CBSE</span></td>
+        <td><small class="text-dark">Classes 3 to 5</small></td>
+        <td><small class="text-muted font-mono font-size-12">2024-2025</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Toy-Based Pedagogy</span></td>
+        <td><small class="text-muted">20 May 2024</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -219,16 +219,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12A-02</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUR-NCF-FS</td>
         <td>
-          <div class="fw-semibold text-dark">Chemistry (043)</div>
-          <small class="text-muted font-size-11">Electrochemistry</small>
+          <div class="fw-semibold text-dark">Foundational Stage (Panchakosha)</div>
+          <small class="text-muted font-size-11">Play, Physical & Emotional</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">Dr. Anuj Jha</small></td>
-        <td><small class="text-muted font-mono font-size-12">Chemistry Lab 2</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 2 (08:30–09:15)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">NCF-FS / MoE</span></td>
+        <td><small class="text-dark">Nursery, KG, Prep, Cl 1-2</small></td>
+        <td><small class="text-muted font-mono font-size-12">2024-2025</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">100% Jaadui Pitara Mapped</span></td>
+        <td><small class="text-muted">01 Jun 2024</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -240,16 +240,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12C-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUR-SKILL-AI</td>
         <td>
-          <div class="fw-semibold text-dark">Accountancy (055)</div>
-          <small class="text-muted font-size-11">Partnership Dissolution</small>
+          <div class="fw-semibold text-dark">CBSE Artificial Intelligence & Coding</div>
+          <small class="text-muted font-size-11">Intel & IBM Supported</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Commerce</span></td>
-        <td><small class="text-dark">Mr. M. K. Aggarwal</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 403, Block C</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">CBSE Skill Dept</span></td>
+        <td><small class="text-dark">Classes 8 to 11</small></td>
+        <td><small class="text-muted font-mono font-size-12">2024-2025</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Skill Elective #417</span></td>
+        <td><small class="text-muted">10 Jul 2024</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -261,16 +261,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10B-04</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUR-FIN-LIT</td>
         <td>
-          <div class="fw-semibold text-dark">Social Science (087)</div>
-          <small class="text-muted font-size-11">Nationalism in India</small>
+          <div class="fw-semibold text-dark">Financial Literacy & Entrepreneurship</div>
+          <small class="text-muted font-size-11">SEBI / NISM Collaboration</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section B</span></td>
-        <td><small class="text-dark">Mrs. Rashmi Sen</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 305, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 4 (10:15–11:00)</span></td>
-        <td><small class="text-muted">5 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">CBSE Skill Dept</span></td>
+        <td><small class="text-dark">Classes 9 to 12</small></td>
+        <td><small class="text-muted font-mono font-size-12">2024-2025</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Practical Banking Lab</span></td>
+        <td><small class="text-muted">15 Jul 2024</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -282,16 +282,16 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-09A-03</td>
+        <td class="fw-bold text-primary font-mono font-size-13">CUR-REG-HIN</td>
         <td>
-          <div class="fw-semibold text-dark">Artificial Intelligence (843)</div>
-          <small class="text-muted font-size-11">Python Data Science</small>
+          <div class="fw-semibold text-dark">Hindi Course-A & Sanskrit Composite</div>
+          <small class="text-muted font-size-11">Three-Language Formula</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 9 - Section A</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">AI & Robotics Lab</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 3 (09:15–10:00)</span></td>
-        <td><small class="text-muted">3 Periods / Wk</small></td>
+        <td><span class="badge bg-light text-muted border font-size-12">NCERT / CBSE</span></td>
+        <td><small class="text-dark">Classes 6 to 10</small></td>
+        <td><small class="text-muted font-mono font-size-12">2024-2025</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Bilingual Track</span></td>
+        <td><small class="text-muted">20 Jul 2024</small></td>
         <td><span class="badge-status badge-active">Active</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
@@ -306,5 +306,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>

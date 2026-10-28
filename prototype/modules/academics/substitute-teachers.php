@@ -1,9 +1,10 @@
 <?php
 /**
- * EDUSYS PRO - Substitute Teachers
+ * EDUSYS PRO - SUBSTITUTE TEACHERS
+ * Dedicated operational interface & records management for Substitute Teachers
  */
 $page_title = "Substitute Teachers";
-$page_desc = "Dedicated operational interface & records management for Substitute Teachers";
+$page_desc = "Automated staff absence coverage, relief period assignments, workload equity, and teacher push alerts";
 $active_module = "academics";
 $active_submodule = "substitute-teachers.php";
 $depth = 2;
@@ -19,7 +20,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 font-size-13">
       <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item"><a href="<?php echo base_url('modules/academics/dashboard.php'); ?>">Academic Management</a></li>
       <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
     </ol>
   </nav>
@@ -28,7 +29,7 @@ require_once __DIR__ . '/../../includes/topbar.php';
 <!-- Page Header Box -->
 <div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-person-switch text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
   <div class="page-actions-group d-flex flex-wrap gap-2">
@@ -39,52 +40,51 @@ require_once __DIR__ . '/../../includes/topbar.php';
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
     <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
-      <i class="bi bi-plus-lg me-1"></i> Add New Record
+      <i class="bi bi-person-plus me-1"></i> Assign Substitution
     </button>
   </div>
 </div>
 
-
 <!-- Domain KPI Row -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Absences Today</h6>
+        <div class="kpi-value">4 Faculty on Leave</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> Medical & Casual Leaves</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-person-x-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
     <div class="kpi-card kpi-success">
       <div class="kpi-info">
-        <h6>Syllabus Coverage</h6>
-        <div class="kpi-value">74.8% Done</div>
-        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> CBSE Term 2 On Track</div>
+        <h6>Periods Covered</h6>
+        <div class="kpi-value">18 of 18 Periods</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 100% Zero Free Periods</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-journal-check"></i></div>
+      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-primary">
       <div class="kpi-info">
-        <h6>Weekly Periods</h6>
-        <div class="kpi-value">560 Periods</div>
-        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 38 Classrooms Active</div>
+        <h6>Automated SMS/App</h6>
+        <div class="kpi-value">Sent to Faculty</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Within 30 Secs of Leave</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-icon"><i class="bi bi-bell-fill"></i></div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="kpi-card kpi-info">
       <div class="kpi-info">
-        <h6>Lesson Plans Submitted</h6>
-        <div class="kpi-value">142 / 148</div>
-        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> 96% Weekly Compliance</div>
+        <h6>Relief Balance</h6>
+        <div class="kpi-value">Equitable Rota</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> Max 1 Substitution / Teacher</div>
       </div>
-      <div class="kpi-icon"><i class="bi bi-file-earmark-ruled-fill"></i></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="kpi-card kpi-warning">
-      <div class="kpi-info">
-        <h6>Proxy Substitutions</h6>
-        <div class="kpi-value">3 Active</div>
-        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> All Classes Covered</div>
-      </div>
-      <div class="kpi-icon"><i class="bi bi-person-switch"></i></div>
+      <div class="kpi-icon"><i class="bi bi-sliders"></i></div>
     </div>
   </div>
 </div>
@@ -94,21 +94,20 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <div class="table-filter-left">
     <div class="table-search-input">
       <i class="bi bi-search"></i>
-      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search timetable, subject, teacher, class...">
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search absent teacher, substitute, period, class...">
     </div>
-    <select class="form-select" style="max-width: 200px;">
-      <option selected>All Grades</option>
-      <option >Class 12 - Senior Sec</option>
-      <option >Class 11 - Senior Sec</option>
-      <option >Class 10 - Secondary</option>
-      <option >Class 9 - Secondary</option>
-      <option >Classes 6-8 - Middle</option>
+    <select class="form-select" style="max-width: 220px;">
+      <option selected>All Substitution Logs</option>
+      <option >Today's Active Substitutions</option>
+      <option >Yesterday's Coverage</option>
+      <option >Weekly Substitution Audit</option>
+      <option >Monthly Department Summary</option>
     </select>
-    <select class="form-select" style="max-width: 150px;">
+    <select class="form-select" style="max-width: 170px;">
       <option selected>All Status</option>
-      <option>Active / Verified</option>
-      <option>In Review</option>
-      <option>Approved</option>
+      <option >Confirmed & Accepted</option>
+      <option >In Progress</option>
+      <option >Completed</option>
     </select>
   </div>
   <div class="table-filter-right">
@@ -121,13 +120,13 @@ require_once __DIR__ . '/../../includes/topbar.php';
   <table class="erp-table" id="mainDataTable">
     <thead>
       <tr>
-        <th>Slot / Lesson Code</th>
-        <th>Subject & Curriculum Code</th>
-        <th>Grade & Section</th>
-        <th>Assigned Faculty</th>
-        <th>Classroom / Lab</th>
-        <th>Period Time Slot</th>
-        <th>Weekly Sessions</th>
+        <th>Sub Log #</th>
+        <th>Absent Teacher</th>
+        <th>Period # & Time</th>
+        <th>Class & Section</th>
+        <th>Substitute Teacher Assigned</th>
+        <th>Subject Covered</th>
+        <th>SMS / App Alert</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -135,17 +134,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
     <tbody>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SUB-TODAY-01</td>
         <td>
-          <div class="fw-semibold text-dark">Mathematics (041)</div>
-          <small class="text-muted font-size-11">Chapter 8: Trigo</small>
+          <div class="fw-semibold text-dark">Mrs. Meenakshi Soni (Hindi)</div>
+          <small class="text-muted font-size-11">Casual Leave Today</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mr. S. K. Rastogi</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 304, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">6 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Period 2 (08:30 AM)</span></td>
+        <td><small class="text-dark">Class 10 - Section A</small></td>
+        <td><small class="text-muted font-mono font-size-12">Mr. Deepak Rawat (English)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">English Grammar & Reading Session</span></td>
+        <td><small class="text-muted">Accepted via Mobile App</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -156,17 +155,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-02</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SUB-TODAY-02</td>
         <td>
-          <div class="fw-semibold text-dark">Science (086)</div>
-          <small class="text-muted font-size-11">Chapter 4: Carbon</small>
+          <div class="fw-semibold text-dark">Mrs. Meenakshi Soni (Hindi)</div>
+          <small class="text-muted font-size-11">Casual Leave Today</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mr. Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">Physics Lab 1</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 2 (08:30–09:15)</span></td>
-        <td><small class="text-muted">6 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Period 6 (12:15 PM)</span></td>
+        <td><small class="text-dark">Class 10 - Section B</small></td>
+        <td><small class="text-muted font-mono font-size-12">Mrs. Shalini Verma (Social)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Social Science Quiz & Map Work</span></td>
+        <td><small class="text-muted">Accepted via Mobile App</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -177,17 +176,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10A-03</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SUB-TODAY-03</td>
         <td>
-          <div class="fw-semibold text-dark">English Core (301)</div>
-          <small class="text-muted font-size-11">First Flight: Prose</small>
+          <div class="fw-semibold text-dark">Mr. Kunal Bansal (CS)</div>
+          <small class="text-muted font-size-11">Medical Leave (Fever)</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 304, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 3 (09:15–10:00)</span></td>
-        <td><small class="text-muted">5 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Period 7 (12:55 PM)</span></td>
+        <td><small class="text-dark">Class 12 - Science (PCM)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Dr. K. L. Sharma (Physics)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">JEE Physics Problem Solving Session</span></td>
+        <td><small class="text-muted">Accepted via Mobile App</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -198,17 +197,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12A-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SUB-TODAY-04</td>
         <td>
-          <div class="fw-semibold text-dark">Physics (042)</div>
-          <small class="text-muted font-size-11">Wave Optics</small>
+          <div class="fw-semibold text-dark">Mr. Kunal Bansal (CS)</div>
+          <small class="text-muted font-size-11">Medical Leave (Fever)</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">Mr. Vikram Rathore</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 401, Block C</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Period 8 (01:35 PM)</span></td>
+        <td><small class="text-dark">Class 11 - Science (PCM)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Mrs. Sunita Kaul (Maths)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Calculus Doubt Clearing Desk</span></td>
+        <td><small class="text-muted">Accepted via Mobile App</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -219,17 +218,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12A-02</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SUB-TODAY-05</td>
         <td>
-          <div class="fw-semibold text-dark">Chemistry (043)</div>
-          <small class="text-muted font-size-11">Electrochemistry</small>
+          <div class="fw-semibold text-dark">Mr. Harish Chawla (Sports)</div>
+          <small class="text-muted font-size-11">Inter-School Tournament</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science A</span></td>
-        <td><small class="text-dark">Dr. Anuj Jha</small></td>
-        <td><small class="text-muted font-mono font-size-12">Chemistry Lab 2</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 2 (08:30–09:15)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Period 3 (09:30 AM)</span></td>
+        <td><small class="text-dark">Class 8 - Section C</small></td>
+        <td><small class="text-muted font-mono font-size-12">Mr. S. K. Rastogi (Maths)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Indoor Chess & Mental Math Drills</span></td>
+        <td><small class="text-muted">Accepted via Mobile App</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -240,17 +239,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-12C-01</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SUB-TODAY-06</td>
         <td>
-          <div class="fw-semibold text-dark">Accountancy (055)</div>
-          <small class="text-muted font-size-11">Partnership Dissolution</small>
+          <div class="fw-semibold text-dark">Mrs. Anjali Saxena (Commerce)</div>
+          <small class="text-muted font-size-11">Official Duty</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Commerce</span></td>
-        <td><small class="text-dark">Mr. M. K. Aggarwal</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 403, Block C</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 1 (07:45–08:30)</span></td>
-        <td><small class="text-muted">7 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Period 4 (10:15 AM)</span></td>
+        <td><small class="text-dark">Class 11 - Commerce</small></td>
+        <td><small class="text-muted font-mono font-size-12">Mr. M. K. Chawla (Accounts)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Business Studies Case Studies</span></td>
+        <td><small class="text-muted">Accepted via Mobile App</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -261,17 +260,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-10B-04</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SUB-TODAY-07</td>
         <td>
-          <div class="fw-semibold text-dark">Social Science (087)</div>
-          <small class="text-muted font-size-11">Nationalism in India</small>
+          <div class="fw-semibold text-dark">Ms. Kavita Joshi (PRT)</div>
+          <small class="text-muted font-size-11">Half-Day Leave</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section B</span></td>
-        <td><small class="text-dark">Mrs. Rashmi Sen</small></td>
-        <td><small class="text-muted font-mono font-size-12">Room 305, Block B</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 4 (10:15–11:00)</span></td>
-        <td><small class="text-muted">5 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Period 5 (11:35 AM)</span></td>
+        <td><small class="text-dark">Class 4 - Section A</small></td>
+        <td><small class="text-muted font-mono font-size-12">Mrs. Ritu Sharma (PRT)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Science Activity Demonstration</span></td>
+        <td><small class="text-muted">Accepted via Mobile App</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -282,17 +281,17 @@ require_once __DIR__ . '/../../includes/topbar.php';
       </tr>
       
       <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">TT-09A-03</td>
+        <td class="fw-bold text-primary font-mono font-size-13">SUB-TODAY-08</td>
         <td>
-          <div class="fw-semibold text-dark">Artificial Intelligence (843)</div>
-          <small class="text-muted font-size-11">Python Data Science</small>
+          <div class="fw-semibold text-dark">Mrs. Sunita Kapoor (Psych)</div>
+          <small class="text-muted font-size-11">Counselling Workshop</small>
         </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 9 - Section A</span></td>
-        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
-        <td><small class="text-muted font-mono font-size-12">AI & Robotics Lab</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">Period 3 (09:15–10:00)</span></td>
-        <td><small class="text-muted">3 Periods / Wk</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
+        <td><span class="badge bg-light text-muted border font-size-12">Period 6 (12:15 PM)</span></td>
+        <td><small class="text-dark">Class 12 - Humanities</small></td>
+        <td><small class="text-muted font-mono font-size-12">Mrs. Radhika Iyer (Bio)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">Career Guidance & Research Discussion</span></td>
+        <td><small class="text-muted">Accepted via Mobile App</small></td>
+        <td><span class="badge-status badge-active">Completed</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
             <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
@@ -306,5 +305,6 @@ require_once __DIR__ . '/../../includes/topbar.php';
   </table>
 </div>
 
-
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/footer.php';
+?>
