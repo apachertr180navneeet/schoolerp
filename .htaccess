@@ -1,7 +1,5 @@
-<IfModule mod_rewrite.c>
-RewriteEngine On
+# EDUSYS PRO - Enterprise School ERP
+# ZERO mod_rewrite dependency. Works on any web server out of the box.
+# All application links and routes map directly to physical .php files.
 
-# Direct root access to prototype/
-RewriteRule ^$ prototype/ [R=301,L]
-RewriteRule ^index(?:\.php)?$ prototype/ [R=301,L]
-</IfModule>
+DirectoryIndex index.php

@@ -4,7 +4,7 @@
  */
 
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+    @session_start();
 }
 
 // Depth determination for relative paths
@@ -13,31 +13,43 @@ if (!isset($depth)) {
 }
 $root_prefix = str_repeat('../', $depth);
 
-// Dynamic web base URL detection (supports localhost, live production server, and custom domains)
-if (!empty($_SERVER['SCRIPT_NAME']) && preg_match('#^(.*?/gsgwebsoft/schoolerp)(/|$)#i', $_SERVER['SCRIPT_NAME'], $matches)) {
-    $app_base_url = rtrim($matches[1], '/') . '/';
-} elseif (!empty($_SERVER['SCRIPT_NAME']) && preg_match('#^(.*?/schoolerp)(/|$)#i', $_SERVER['SCRIPT_NAME'], $matches)) {
-    $app_base_url = rtrim($matches[1], '/') . '/';
-} elseif (!empty($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'dspremierlogistics.co.uk') !== false) {
-    $app_base_url = '/schoolerp/';
-} elseif (!empty($_SERVER['SCRIPT_NAME']) && dirname($_SERVER['SCRIPT_NAME']) !== '.') {
-    $script_dir = dirname($_SERVER['SCRIPT_NAME']);
-    $app_base_url = ($script_dir === '/' || $script_dir === '\\') ? '/' : rtrim(str_replace('\\', '/', $script_dir), '/') . '/';
+// Dynamic web base URL detection (supports localhost, subdirectory, root, and live production server)
+if (!empty($_SERVER['SCRIPT_NAME'])) {
+    if (preg_match('#^(.*?/gsgwebsoft/schoolerp)(/|$)#i', $_SERVER['SCRIPT_NAME'], $matches)) {
+        $app_base_url = rtrim($matches[1], '/') . '/';
+    } elseif (preg_match('#^(.*?/schoolerp)(/|$)#i', $_SERVER['SCRIPT_NAME'], $matches)) {
+        $app_base_url = rtrim($matches[1], '/') . '/';
+    } elseif (!empty($_SERVER['DOCUMENT_ROOT'])) {
+        $doc_root = str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT']));
+        $app_dir = str_replace('\\', '/', realpath(__DIR__ . '/../..'));
+        if ($doc_root && strpos($app_dir, $doc_root) === 0) {
+            $rel = substr($app_dir, strlen($doc_root));
+            $app_base_url = '/' . trim($rel, '/') . '/';
+            if ($app_base_url === '//') $app_base_url = '/';
+        } else {
+            $app_base_url = '/gsgwebsoft/schoolerp/';
+        }
+    } else {
+        $app_base_url = '/gsgwebsoft/schoolerp/';
+    }
 } else {
     $app_base_url = '/gsgwebsoft/schoolerp/';
 }
 
-function base_url($path = '') {
-    global $app_base_url, $root_prefix;
-    $path = ltrim($path, '/');
-    if ($path === '' || $path === 'index.php' || $path === 'index') {
-        return $app_base_url;
+if (!function_exists('base_url')) {
+    function base_url($path = '') {
+        global $app_base_url;
+        $path = ltrim($path, '/');
+        if ($path === '' || $path === 'index' || $path === 'index.php') {
+            return $app_base_url . 'index.php';
+        }
+        // If path is a page route without extension (and not an asset), ensure .php
+        $ext = pathinfo($path, PATHINFO_EXTENSION);
+        if ($ext === '') {
+            $path .= '.php';
+        }
+        return $app_base_url . $path;
     }
-    // Remove .php extension from page routes (keep for assets like .css, .js, .png, etc.)
-    if (substr($path, -4) === '.php') {
-        $path = substr($path, 0, -4);
-    }
-    return $app_base_url . $path;
 }
 
 // School Information
