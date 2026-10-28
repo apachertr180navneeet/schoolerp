@@ -3,7 +3,7 @@
  * EDUSYS PRO - Issued Library Books
  */
 $page_title = "Issued Library Books";
-$page_desc = "Books currently in possession and renewal options";
+$page_desc = "Dedicated operational interface & records management for Issued Library Books";
 $active_module = "student-portal";
 $active_submodule = "library-books.php";
 $depth = 2;
@@ -14,309 +14,297 @@ require_once __DIR__ . '/../../includes/sidebar.php';
 require_once __DIR__ . '/../../includes/topbar.php';
 ?>
 
+<!-- Breadcrumb Navigation -->
+<div class="breadcrumb-wrapper mb-3">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0 font-size-13">
+      <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
+      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
+    </ol>
+  </nav>
+</div>
+
 <!-- Page Header Box -->
-<div class="page-header-box">
+<div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-check2-circle text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
-  <div class="page-actions-group">
+  <div class="page-actions-group d-flex flex-wrap gap-2">
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
     <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', 'library-books_export.csv')" title="Export Table as CSV">
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
+    <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
       <i class="bi bi-plus-lg me-1"></i> Add New Record
     </button>
   </div>
 </div>
 
-<div class="row g-3 mb-4">
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-primary">
-          <div class="kpi-info">
-            <h6>Total Entries</h6>
-            <div class="kpi-value">1,482</div>
-            <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Synced</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-success">
-          <div class="kpi-info">
-            <h6>Active / Verified</h6>
-            <div class="kpi-value">1,390</div>
-            <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 94% Approved</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-warning">
-          <div class="kpi-info">
-            <h6>Pending Review</h6>
-            <div class="kpi-value">68</div>
-            <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> In Workflow</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-hourglass-split"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-info">
-          <div class="kpi-info">
-            <h6>Board Compliant</h6>
-            <div class="kpi-value">100%</div>
-            <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE Validated</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
-        </div>
-      </div>
-    </div>
-  
-    
-    
-    <div class="table-filter-bar">
-      <div class="table-filter-left">
-        <div class="table-search-input">
-          <i class="bi bi-search"></i>
-          <input type="text" class="form-control" id="tableSearchInput" placeholder="Search by name, code, reference ID, category...">
-        </div>
-        <select class="form-select" style="max-width: 170px;">
-          <option selected>All Classes</option>
-          <option>Class 10-A</option>
-          <option>Class 10-B</option>
-          <option>Class 12-A (PCM)</option>
-          <option>Class 12-B (PCB)</option>
-          <option>Class 12-C (Comm)</option>
-        </select>
-        <select class="form-select" style="max-width: 150px;">
-          <option selected>All Status</option>
-          <option>Active / Paid</option>
-          <option>Pending</option>
-          <option>Approved</option>
-        </select>
-      </div>
 
-      <div class="table-filter-right">
-        <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> records</span>
+<!-- Domain KPI Row -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-primary">
+      <div class="kpi-info">
+        <h6>Total Records</h6>
+        <div class="kpi-value">1,248 Items</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Up to Date</div>
       </div>
+      <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
     </div>
-  
-    
-    <div class="erp-table-responsive mb-0">
-      <table class="erp-table" id="mainDataTable">
-        <thead>
-          
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-success">
+      <div class="kpi-info">
+        <h6>Verified & Active</h6>
+        <div class="kpi-value">1,190 Entries</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 95.3% Verified</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Under Scrutiny</h6>
+        <div class="kpi-value">58 Pending</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Workflow Assigned</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-info">
+      <div class="kpi-info">
+        <h6>Audit Compliant</h6>
+        <div class="kpi-value">100%</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE & Statutory Validated</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- Domain Table Filter Bar -->
+<div class="table-filter-bar mb-3">
+  <div class="table-filter-left">
+    <div class="table-search-input">
+      <i class="bi bi-search"></i>
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search issued library books by code, title, category...">
+    </div>
+    <select class="form-select" style="max-width: 200px;">
+      <option selected>All Categories</option>
+      <option >Primary Wing</option>
+      <option >Middle Wing</option>
+      <option >Secondary Wing</option>
+      <option >Senior Secondary Wing</option>
+      <option >General Administration</option>
+    </select>
+    <select class="form-select" style="max-width: 150px;">
+      <option selected>All Status</option>
+      <option>Active / Verified</option>
+      <option>In Review</option>
+      <option>Approved</option>
+    </select>
+  </div>
+  <div class="table-filter-right">
+    <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> verified records</span>
+  </div>
+</div>
+
+<!-- Domain Data Table -->
+<div class="erp-table-responsive mb-0">
+  <table class="erp-table" id="mainDataTable">
+    <thead>
       <tr>
-        <th class="sortable">Accession #</th>
-        <th class="sortable">Book Title & Subtitle</th>
-        <th>Author</th>
-        <th>Category / Dewey Class</th>
-        <th>Shelf Location</th>
-        <th>Total Copies</th>
-        <th>Issued</th>
-        <th>Available</th>
+        <th>Record Code</th>
+        <th>Issued Library Books Title</th>
+        <th>Operational Scope</th>
+        <th>Assigned Incharge</th>
+        <th>Reference / Contact</th>
+        <th>Last Updated</th>
+        <th>Session</th>
+        <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
-    
-        </thead>
-        <tbody>
-          
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ACC-10821</td>
-        <td>
-          <div class="fw-semibold text-dark dark-text-white">NCERT Exemplar Problems - Mathematics X</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
-        </td>
-        <td><small class="text-muted">NCERT Editorial Group</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Mathematics (510)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack S-14 / Shelf 2</span></td>
-        <td class="fw-semibold">25</td>
-        <td class="text-warning fw-semibold">18</td>
-        <td class="text-success fw-bold">7</td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ACC-10822</td>
-        <td>
-          <div class="fw-semibold text-dark dark-text-white">Concepts of Physics (Vol 1 & 2)</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
-        </td>
-        <td><small class="text-muted">Dr. H. C. Verma</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Physics (530)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack P-02 / Shelf 1</span></td>
-        <td class="fw-semibold">30</td>
-        <td class="text-warning fw-semibold">26</td>
-        <td class="text-success fw-bold">4</td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ACC-10823</td>
-        <td>
-          <div class="fw-semibold text-dark dark-text-white">Wings of Fire - An Autobiography</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
-        </td>
-        <td><small class="text-muted">Dr. A. P. J. Abdul Kalam</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Biography (920)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack B-05 / Shelf 3</span></td>
-        <td class="fw-semibold">15</td>
-        <td class="text-warning fw-semibold">12</td>
-        <td class="text-success fw-bold">3</td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ACC-10824</td>
-        <td>
-          <div class="fw-semibold text-dark dark-text-white">Comprehensive Chemistry for Class XII</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
-        </td>
-        <td><small class="text-muted">Dr. O. P. Tandon</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Chemistry (540)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack C-08 / Shelf 2</span></td>
-        <td class="fw-semibold">20</td>
-        <td class="text-warning fw-semibold">15</td>
-        <td class="text-success fw-bold">5</td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ACC-10825</td>
-        <td>
-          <div class="fw-semibold text-dark dark-text-white">Together with Science Class 10</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
-        </td>
-        <td><small class="text-muted">Rachna Sagar Editorial</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Science (500)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack G-01 / Shelf 4</span></td>
-        <td class="fw-semibold">40</td>
-        <td class="text-warning fw-semibold">35</td>
-        <td class="text-success fw-bold">5</td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ACC-10826</td>
-        <td>
-          <div class="fw-semibold text-dark dark-text-white">Oxford Advanced Learner's Dictionary</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
-        </td>
-        <td><small class="text-muted">A. S. Hornby</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Reference (420)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack R-01 / Shelf 1</span></td>
-        <td class="fw-semibold">10</td>
-        <td class="text-warning fw-semibold">3</td>
-        <td class="text-success fw-bold">7</td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ACC-10827</td>
-        <td>
-          <div class="fw-semibold text-dark dark-text-white">Discovery of India</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
-        </td>
-        <td><small class="text-muted">Jawaharlal Nehru</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Indian History (954)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack H-04 / Shelf 3</span></td>
-        <td class="fw-semibold">12</td>
-        <td class="text-warning fw-semibold">8</td>
-        <td class="text-success fw-bold">4</td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ACC-10828</td>
-        <td>
-          <div class="fw-semibold text-dark dark-text-white">Computer Science with Python XII</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
-        </td>
-        <td><small class="text-muted">Sumita Arora</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Computer Science (004)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack CS-03 / Shelf 2</span></td>
-        <td class="fw-semibold">35</td>
-        <td class="text-warning fw-semibold">31</td>
-        <td class="text-success fw-bold">4</td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Pagination -->
-    <div class="erp-pagination-bar">
-      <div class="pagination-info">
-        Showing 1 to 8 of 1,482 entries
-      </div>
-      <ul class="pagination-custom">
-        <li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a></li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">...</a></li>
-        <li class="page-item"><a class="page-link" href="#">185</a></li>
-        <li class="page-item"><a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a></li>
-      </ul>
-    </div>
-  
-  
-
+    </thead>
+    <tbody>
       
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8491</td>
+        <td>
+          <div class="fw-semibold text-dark">Issued Library Books Standard Master #01</div>
+          <small class="text-muted font-size-11">High Priority Institutional Record</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">All School Wings</span></td>
+        <td><small class="text-dark">Dr. Sunita Rao</small></td>
+        <td><small class="text-muted font-mono font-size-12">REF/ADM/2024/091</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">28 Oct 2024</span></td>
+        <td><small class="text-muted">2024-2025</small></td>
+        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8492</td>
+        <td>
+          <div class="fw-semibold text-dark">Issued Library Books Policy Schedule #02</div>
+          <small class="text-muted font-size-11">Curriculum Implementation</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Senior Secondary</span></td>
+        <td><small class="text-dark">Vikram Rathore</small></td>
+        <td><small class="text-muted font-mono font-size-12">REF/ACAD/2024/092</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">27 Oct 2024</span></td>
+        <td><small class="text-muted">2024-2025</small></td>
+        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8493</td>
+        <td>
+          <div class="fw-semibold text-dark">Issued Library Books Register Protocol #03</div>
+          <small class="text-muted font-size-11">Mandatory Regulatory Filing</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Secondary Wing</span></td>
+        <td><small class="text-dark">Mrs. Priya Nambiar</small></td>
+        <td><small class="text-muted font-mono font-size-12">REF/COMP/2024/093</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">26 Oct 2024</span></td>
+        <td><small class="text-muted">2024-2025</small></td>
+        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8494</td>
+        <td>
+          <div class="fw-semibold text-dark">Issued Library Books Operation Log #04</div>
+          <small class="text-muted font-size-11">Infrastructure Maintenance</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Campus Estate</span></td>
+        <td><small class="text-dark">Mr. M. K. Sharma</small></td>
+        <td><small class="text-muted font-mono font-size-12">REF/FIN/2024/094</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
+        <td><small class="text-muted">2024-2025</small></td>
+        <td><span class="badge-status badge-pending">In Workflow Review</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8495</td>
+        <td>
+          <div class="fw-semibold text-dark">Issued Library Books Activity Benchmark #05</div>
+          <small class="text-muted font-size-11">Student Welfare Guideline</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Middle Wing</span></td>
+        <td><small class="text-dark">Mrs. Anjali Saxena</small></td>
+        <td><small class="text-muted font-mono font-size-12">REF/HR/2024/095</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">25 Oct 2024</span></td>
+        <td><small class="text-muted">2024-2025</small></td>
+        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8496</td>
+        <td>
+          <div class="fw-semibold text-dark">Issued Library Books Digital Catalog #06</div>
+          <small class="text-muted font-size-11">IT System Resource</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Technology Center</span></td>
+        <td><small class="text-dark">Mr. Rohit Ganguly</small></td>
+        <td><small class="text-muted font-mono font-size-12">REF/IT/2024/096</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">24 Oct 2024</span></td>
+        <td><small class="text-muted">2024-2025</small></td>
+        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8497</td>
+        <td>
+          <div class="fw-semibold text-dark">Issued Library Books Governance Audit #07</div>
+          <small class="text-muted font-size-11">SMC Resolution Archive</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">General Administration</span></td>
+        <td><small class="text-dark">Dr. Sunita Rao</small></td>
+        <td><small class="text-muted font-mono font-size-12">REF/SMC/2024/097</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">23 Oct 2024</span></td>
+        <td><small class="text-muted">2024-2025</small></td>
+        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">REC-2024-8498</td>
+        <td>
+          <div class="fw-semibold text-dark">Issued Library Books Session Directive #08</div>
+          <small class="text-muted font-size-11">Annual Academic Milestone</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Primary Wing</span></td>
+        <td><small class="text-dark">Mrs. Shalini Mehra</small></td>
+        <td><small class="text-muted font-mono font-size-12">REF/PRI/2024/098</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">22 Oct 2024</span></td>
+        <td><small class="text-muted">2024-2025</small></td>
+        <td><span class="badge-status badge-active">Active & Verified</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Issued Library Books')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
 
-<?php
-require_once __DIR__ . '/../../includes/footer.php';
-?>
+
+<?php require_once __DIR__ . '/../../includes/footer.php'; ?>

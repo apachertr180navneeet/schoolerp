@@ -3,7 +3,7 @@
  * EDUSYS PRO - Payroll Processing
  */
 $page_title = "Payroll Processing";
-$page_desc = "Monthly one-click attendance-linked salary computation";
+$page_desc = "Dedicated operational interface & records management for Payroll Processing";
 $active_module = "hr-payroll";
 $active_submodule = "payroll-processing.php";
 $depth = 2;
@@ -14,349 +14,298 @@ require_once __DIR__ . '/../../includes/sidebar.php';
 require_once __DIR__ . '/../../includes/topbar.php';
 ?>
 
+<!-- Breadcrumb Navigation -->
+<div class="breadcrumb-wrapper mb-3">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0 font-size-13">
+      <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
+      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
+    </ol>
+  </nav>
+</div>
+
 <!-- Page Header Box -->
-<div class="page-header-box">
+<div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-check2-circle text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
-  <div class="page-actions-group">
+  <div class="page-actions-group d-flex flex-wrap gap-2">
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
     <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', 'payroll-processing_export.csv')" title="Export Table as CSV">
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
+    <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
       <i class="bi bi-plus-lg me-1"></i> Add New Record
     </button>
   </div>
 </div>
 
-<div class="row g-3 mb-4">
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-primary">
-          <div class="kpi-info">
-            <h6>Total Entries</h6>
-            <div class="kpi-value">1,482</div>
-            <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Synced</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-success">
-          <div class="kpi-info">
-            <h6>Active / Verified</h6>
-            <div class="kpi-value">1,390</div>
-            <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 94% Approved</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-warning">
-          <div class="kpi-info">
-            <h6>Pending Review</h6>
-            <div class="kpi-value">68</div>
-            <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> In Workflow</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-hourglass-split"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-info">
-          <div class="kpi-info">
-            <h6>Board Compliant</h6>
-            <div class="kpi-value">100%</div>
-            <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE Validated</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
-        </div>
-      </div>
-    </div>
-  
-    
-    
-    <div class="table-filter-bar">
-      <div class="table-filter-left">
-        <div class="table-search-input">
-          <i class="bi bi-search"></i>
-          <input type="text" class="form-control" id="tableSearchInput" placeholder="Search by name, code, reference ID, category...">
-        </div>
-        <select class="form-select" style="max-width: 170px;">
-          <option selected>All Classes</option>
-          <option>Class 10-A</option>
-          <option>Class 10-B</option>
-          <option>Class 12-A (PCM)</option>
-          <option>Class 12-B (PCB)</option>
-          <option>Class 12-C (Comm)</option>
-        </select>
-        <select class="form-select" style="max-width: 150px;">
-          <option selected>All Status</option>
-          <option>Active / Paid</option>
-          <option>Pending</option>
-          <option>Approved</option>
-        </select>
-      </div>
 
-      <div class="table-filter-right">
-        <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> records</span>
+<!-- Domain KPI Row -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-primary">
+      <div class="kpi-info">
+        <h6>Total Staff</h6>
+        <div class="kpi-value">190 Members</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 148 Teaching, 42 Support</div>
       </div>
+      <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
     </div>
-  
-    
-    <div class="erp-table-responsive mb-0">
-      <table class="erp-table" id="mainDataTable">
-        <thead>
-          
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-success">
+      <div class="kpi-info">
+        <h6>Monthly Payroll</h6>
+        <div class="kpi-value">₹ 1.18 Cr</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> October Disbursed</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-info">
+      <div class="kpi-info">
+        <h6>PF & ESIC Status</h6>
+        <div class="kpi-value">100% Deposited</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> EPFO Challans Generated</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-shield-check"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Staff On Duty</h6>
+        <div class="kpi-value">186 / 190</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> 4 on Approved Leave</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-person-check-fill"></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- Domain Table Filter Bar -->
+<div class="table-filter-bar mb-3">
+  <div class="table-filter-left">
+    <div class="table-search-input">
+      <i class="bi bi-search"></i>
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search staff name, employee ID, department...">
+    </div>
+    <select class="form-select" style="max-width: 200px;">
+      <option selected>All Departments</option>
+      <option >Science & Technology</option>
+      <option >Mathematics</option>
+      <option >Languages</option>
+      <option >Commerce & Eco</option>
+      <option >Administration</option>
+      <option >Information Technology</option>
+    </select>
+    <select class="form-select" style="max-width: 150px;">
+      <option selected>All Status</option>
+      <option>Active / Verified</option>
+      <option>In Review</option>
+      <option>Approved</option>
+    </select>
+  </div>
+  <div class="table-filter-right">
+    <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> verified records</span>
+  </div>
+</div>
+
+<!-- Domain Data Table -->
+<div class="erp-table-responsive mb-0">
+  <table class="erp-table" id="mainDataTable">
+    <thead>
       <tr>
-        <th class="sortable">Identifier / Code</th>
-        <th class="sortable">Name / Title</th>
-        <th>Category / Class</th>
-        <th>Responsible / Parent</th>
-        <th>Contact / Department</th>
-        <th>Academic Session</th>
-        <th>Updated Date</th>
+        <th>Emp Code</th>
+        <th>Staff Full Name & Title</th>
+        <th>Department</th>
+        <th>Designation</th>
+        <th>Highest Qualification</th>
+        <th>Experience</th>
+        <th>Contact Phone</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
-    
-        </thead>
-        <tbody>
-          
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8491</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">AS</div>
-            <div>
-              <div class="table-user-name">Aarav Sharma</div>
-              <div class="table-user-sub">Class 10 - Section A</div>
-            </div>
-          </div>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-muted">Rajesh Sharma</small></td>
-        <td><small class="text-muted">+91 98112 34567</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">2024-2025</span></td>
-        <td><small class="text-muted">27 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8492</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">DP</div>
-            <div>
-              <div class="table-user-name">Diya Patel</div>
-              <div class="table-user-sub">Class 10 - Section A</div>
-            </div>
-          </div>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section A</span></td>
-        <td><small class="text-muted">Bhavin Patel</small></td>
-        <td><small class="text-muted">+91 98223 45678</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">2024-2025</span></td>
-        <td><small class="text-muted">27 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8493</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">VS</div>
-            <div>
-              <div class="table-user-name">Vihaan Singh</div>
-              <div class="table-user-sub">Class 10 - Section B</div>
-            </div>
-          </div>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section B</span></td>
-        <td><small class="text-muted">Manpreet Singh</small></td>
-        <td><small class="text-muted">+91 98334 56789</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">2024-2025</span></td>
-        <td><small class="text-muted">26 Oct 2024</small></td>
-        <td><span class="badge-status badge-pending">Pending</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8494</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">AI</div>
-            <div>
-              <div class="table-user-name">Ananya Iyer</div>
-              <div class="table-user-sub">Class 10 - Section B</div>
-            </div>
-          </div>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 10 - Section B</span></td>
-        <td><small class="text-muted">R. Venkatesh Iyer</small></td>
-        <td><small class="text-muted">+91 98445 67890</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">2024-2025</span></td>
-        <td><small class="text-muted">25 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8495</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">RG</div>
-            <div>
-              <div class="table-user-name">Rohan Gupta</div>
-              <div class="table-user-sub">Class 12 - Science (PCM)</div>
-            </div>
-          </div>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science (PCM)</span></td>
-        <td><small class="text-muted">Sanjay Gupta</small></td>
-        <td><small class="text-muted">+91 98556 78901</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">2024-2025</span></td>
-        <td><small class="text-muted">25 Oct 2024</small></td>
-        <td><span class="badge-status badge-inactive">Under Review</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8496</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">IV</div>
-            <div>
-              <div class="table-user-name">Ishaan Verma</div>
-              <div class="table-user-sub">Class 12 - Science (PCB)</div>
-            </div>
-          </div>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 12 - Science (PCB)</span></td>
-        <td><small class="text-muted">Dr. Alok Verma</small></td>
-        <td><small class="text-muted">+91 98667 89012</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">2024-2025</span></td>
-        <td><small class="text-muted">24 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8497</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">MR</div>
-            <div>
-              <div class="table-user-name">Meera Reddy</div>
-              <div class="table-user-sub">Class 8 - Section A</div>
-            </div>
-          </div>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 8 - Section A</span></td>
-        <td><small class="text-muted">K. S. Reddy</small></td>
-        <td><small class="text-muted">+91 98778 90123</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">2024-2025</span></td>
-        <td><small class="text-muted">23 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="fw-bold text-primary font-mono font-size-13">ED-8498</td>
-        <td>
-          <div class="table-user-cell">
-            <div class="table-avatar">KS</div>
-            <div>
-              <div class="table-user-name">Kabir Sengupta</div>
-              <div class="table-user-sub">Class 9 - Section C</div>
-            </div>
-          </div>
-        </td>
-        <td><span class="badge bg-light text-muted border font-size-12">Class 9 - Section C</span></td>
-        <td><small class="text-muted">Debashis Sengupta</small></td>
-        <td><small class="text-muted">+91 98889 01234</small></td>
-        <td><span class="badge bg-light text-primary border font-size-12">2024-2025</span></td>
-        <td><small class="text-muted">22 Oct 2024</small></td>
-        <td><span class="badge-status badge-active">Active</span></td>
-        <td class="text-center">
-          <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Pagination -->
-    <div class="erp-pagination-bar">
-      <div class="pagination-info">
-        Showing 1 to 8 of 1,482 entries
-      </div>
-      <ul class="pagination-custom">
-        <li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a></li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">...</a></li>
-        <li class="page-item"><a class="page-link" href="#">185</a></li>
-        <li class="page-item"><a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a></li>
-      </ul>
-    </div>
-  
-  
-
+    </thead>
+    <tbody>
       
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">EMP-1001</td>
+        <td>
+          <div class="fw-semibold text-dark">Dr. Sunita Rao</div>
+          <small class="text-muted font-size-11">Ph.D. Education</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Administration</span></td>
+        <td><small class="text-dark">Principal & Head of School</small></td>
+        <td><small class="text-muted font-mono font-size-12">M.Sc. (Physics), M.Ed., Ph.D.</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">24 Years</span></td>
+        <td><small class="text-muted">+91 11 2893 4005</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">EMP-1002</td>
+        <td>
+          <div class="fw-semibold text-dark">Vikram Rathore</div>
+          <small class="text-muted font-size-11">PGT Physics Lead</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Science & Tech</span></td>
+        <td><small class="text-dark">PGT Physics (Sr Supervisor)</small></td>
+        <td><small class="text-muted font-mono font-size-12">M.Sc. (Physics), B.Ed.</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">21 Years</span></td>
+        <td><small class="text-muted">+91 98711 22334</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">EMP-1003</td>
+        <td>
+          <div class="fw-semibold text-dark">Mrs. Priya Nambiar</div>
+          <small class="text-muted font-size-11">PGT English Lead</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Languages</span></td>
+        <td><small class="text-dark">PGT English (Class 10A Incharge)</small></td>
+        <td><small class="text-muted font-mono font-size-12">M.A. (English), B.Ed.</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">16 Years</span></td>
+        <td><small class="text-muted">+91 99110 55441</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">EMP-1004</td>
+        <td>
+          <div class="fw-semibold text-dark">Mr. S. K. Rastogi</div>
+          <small class="text-muted font-size-11">TGT Mathematics</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Mathematics</span></td>
+        <td><small class="text-dark">TGT Math (Middle Supervisor)</small></td>
+        <td><small class="text-muted font-mono font-size-12">M.Sc. (Math), M.Ed.</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">17 Years</span></td>
+        <td><small class="text-muted">+91 98118 66772</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">EMP-1005</td>
+        <td>
+          <div class="fw-semibold text-dark">Mrs. Nandini Mathur</div>
+          <small class="text-muted font-size-11">PGT Biology</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Science & Tech</span></td>
+        <td><small class="text-dark">Senior Wing Supervisor</small></td>
+        <td><small class="text-muted font-mono font-size-12">M.Sc. (Botany), B.Ed.</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">19 Years</span></td>
+        <td><small class="text-muted">+91 98113 77889</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">EMP-1006</td>
+        <td>
+          <div class="fw-semibold text-dark">Mr. M. K. Sharma</div>
+          <small class="text-muted font-size-11">Chief Accountant</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Administration</span></td>
+        <td><small class="text-dark">Chief Accounts Officer</small></td>
+        <td><small class="text-muted font-mono font-size-12">M.Com, Inter-CA</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">22 Years</span></td>
+        <td><small class="text-muted">+91 11 2893 4022</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">EMP-1007</td>
+        <td>
+          <div class="fw-semibold text-dark">Mrs. Anjali Saxena</div>
+          <small class="text-muted font-size-11">HR Lead & POCSO</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Administration</span></td>
+        <td><small class="text-dark">Human Resources Lead</small></td>
+        <td><small class="text-muted font-mono font-size-12">MBA (HR), PGD-POCSO</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">14 Years</span></td>
+        <td><small class="text-muted">+91 98101 44552</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="fw-bold text-primary font-mono font-size-13">EMP-1008</td>
+        <td>
+          <div class="fw-semibold text-dark">Mr. Rohit Ganguly</div>
+          <small class="text-muted font-size-11">Computer Science</small>
+        </td>
+        <td><span class="badge bg-light text-muted border font-size-12">Information Technology</span></td>
+        <td><small class="text-dark">Head of IT & STEM</small></td>
+        <td><small class="text-muted font-mono font-size-12">M.Tech (Computer Science)</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">14 Years</span></td>
+        <td><small class="text-muted">+91 98714 55663</small></td>
+        <td><span class="badge-status badge-active">Active</span></td>
+        <td class="text-center">
+          <div class="action-btn-group justify-content-center">
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Payroll Processing')" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
 
-<?php
-require_once __DIR__ . '/../../includes/footer.php';
-?>
+
+<?php require_once __DIR__ . '/../../includes/footer.php'; ?>

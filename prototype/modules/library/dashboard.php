@@ -3,7 +3,7 @@
  * EDUSYS PRO - Library Dashboard
  */
 $page_title = "Library Dashboard";
-$page_desc = "Total titles, circulation today, overdue books & fine collections";
+$page_desc = "Dedicated operational interface & records management for Library Dashboard";
 $active_module = "library";
 $active_submodule = "dashboard.php";
 $depth = 2;
@@ -14,309 +14,298 @@ require_once __DIR__ . '/../../includes/sidebar.php';
 require_once __DIR__ . '/../../includes/topbar.php';
 ?>
 
+<!-- Breadcrumb Navigation -->
+<div class="breadcrumb-wrapper mb-3">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0 font-size-13">
+      <li class="breadcrumb-item"><a href="<?php echo base_url('dashboards/admin.php'); ?>"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
+      <li class="breadcrumb-item"><?php echo htmlspecialchars($active_module); ?></li>
+      <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($page_title); ?></li>
+    </ol>
+  </nav>
+</div>
+
 <!-- Page Header Box -->
-<div class="page-header-box">
+<div class="page-header-box mb-4">
   <div class="page-title-group">
-    <h1><i class="bi bi-check2-circle text-primary"></i> <?php echo $page_title; ?></h1>
+    <h1><i class="bi bi-layers text-primary"></i> <?php echo $page_title; ?></h1>
     <p><?php echo $page_desc; ?></p>
   </div>
-  <div class="page-actions-group">
+  <div class="page-actions-group d-flex flex-wrap gap-2">
     <button class="btn btn-light border" onclick="EduTables.print()" title="Print Screen">
       <i class="bi bi-printer me-1"></i> Print
     </button>
     <button class="btn btn-light border" onclick="EduTables.exportCSV('#mainDataTable', 'dashboard_export.csv')" title="Export Table as CSV">
       <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
     </button>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
+    <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addNewRecordModal">
       <i class="bi bi-plus-lg me-1"></i> Add New Record
     </button>
   </div>
 </div>
 
-<div class="row g-3 mb-4">
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-primary">
-          <div class="kpi-info">
-            <h6>Total Entries</h6>
-            <div class="kpi-value">1,482</div>
-            <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Synced</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-collection-fill"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-success">
-          <div class="kpi-info">
-            <h6>Active / Verified</h6>
-            <div class="kpi-value">1,390</div>
-            <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> 94% Approved</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-patch-check-fill"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-warning">
-          <div class="kpi-info">
-            <h6>Pending Review</h6>
-            <div class="kpi-value">68</div>
-            <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> In Workflow</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-hourglass-split"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card kpi-info">
-          <div class="kpi-info">
-            <h6>Board Compliant</h6>
-            <div class="kpi-value">100%</div>
-            <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> CBSE Validated</div>
-          </div>
-          <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
-        </div>
-      </div>
-    </div>
-  
-    
-    
-    <div class="table-filter-bar">
-      <div class="table-filter-left">
-        <div class="table-search-input">
-          <i class="bi bi-search"></i>
-          <input type="text" class="form-control" id="tableSearchInput" placeholder="Search by name, code, reference ID, category...">
-        </div>
-        <select class="form-select" style="max-width: 170px;">
-          <option selected>All Classes</option>
-          <option>Class 10-A</option>
-          <option>Class 10-B</option>
-          <option>Class 12-A (PCM)</option>
-          <option>Class 12-B (PCB)</option>
-          <option>Class 12-C (Comm)</option>
-        </select>
-        <select class="form-select" style="max-width: 150px;">
-          <option selected>All Status</option>
-          <option>Active / Paid</option>
-          <option>Pending</option>
-          <option>Approved</option>
-        </select>
-      </div>
 
-      <div class="table-filter-right">
-        <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> records</span>
+<!-- Domain KPI Row -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-primary">
+      <div class="kpi-info">
+        <h6>Cataloged Titles</h6>
+        <div class="kpi-value">28,450 Volumes</div>
+        <div class="kpi-trend positive"><i class="bi bi-arrow-up-short"></i> 100% Barcode / RFID</div>
       </div>
+      <div class="kpi-icon"><i class="bi bi-book-half"></i></div>
     </div>
-  
-    
-    <div class="erp-table-responsive mb-0">
-      <table class="erp-table" id="mainDataTable">
-        <thead>
-          
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-success">
+      <div class="kpi-info">
+        <h6>Issued Books</h6>
+        <div class="kpi-value">1,840 Books</div>
+        <div class="kpi-trend positive"><i class="bi bi-check-circle"></i> Circulating to Learners</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-arrow-left-right"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-info">
+      <div class="kpi-info">
+        <h6>On Racks Available</h6>
+        <div class="kpi-value">26,610 Books</div>
+        <div class="kpi-trend neutral"><i class="bi bi-clock-history"></i> Across 44 Book Racks</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-journal-bookmark"></i></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="kpi-card kpi-warning">
+      <div class="kpi-info">
+        <h6>Digital E-Books</h6>
+        <div class="kpi-value">12,500 Titles</div>
+        <div class="kpi-trend positive"><i class="bi bi-shield-check"></i> National Digital Library</div>
+      </div>
+      <div class="kpi-icon"><i class="bi bi-laptop"></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- Domain Table Filter Bar -->
+<div class="table-filter-bar mb-3">
+  <div class="table-filter-left">
+    <div class="table-search-input">
+      <i class="bi bi-search"></i>
+      <input type="text" class="form-control" id="tableSearchInput" placeholder="Search accession #, book title, author, ISBN...">
+    </div>
+    <select class="form-select" style="max-width: 200px;">
+      <option selected>All Dewey Classes</option>
+      <option >Science & Technology (500)</option>
+      <option >Mathematics (510)</option>
+      <option >Physics (530)</option>
+      <option >Chemistry (540)</option>
+      <option >Literature & Fiction (800)</option>
+      <option >Indian History (954)</option>
+    </select>
+    <select class="form-select" style="max-width: 150px;">
+      <option selected>All Status</option>
+      <option>Active / Verified</option>
+      <option>In Review</option>
+      <option>Approved</option>
+    </select>
+  </div>
+  <div class="table-filter-right">
+    <span class="font-size-13 text-muted">Showing <strong class="table-visible-count text-primary">8</strong> verified records</span>
+  </div>
+</div>
+
+<!-- Domain Data Table -->
+<div class="erp-table-responsive mb-0">
+  <table class="erp-table" id="mainDataTable">
+    <thead>
       <tr>
-        <th class="sortable">Accession #</th>
-        <th class="sortable">Book Title & Subtitle</th>
-        <th>Author</th>
+        <th>Accession #</th>
+        <th>Book Title & Subtitle</th>
+        <th>Author Name</th>
         <th>Category / Dewey Class</th>
-        <th>Shelf Location</th>
+        <th>Shelf / Rack Location</th>
         <th>Total Copies</th>
         <th>Issued</th>
-        <th>Available</th>
+        <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
-    
-        </thead>
-        <tbody>
-          
+    </thead>
+    <tbody>
+      
       <tr>
         <td class="fw-bold text-primary font-mono font-size-13">ACC-10821</td>
         <td>
-          <div class="fw-semibold text-dark dark-text-white">NCERT Exemplar Problems - Mathematics X</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
+          <div class="fw-semibold text-dark">NCERT Exemplar Problems - Mathematics X</div>
+          <small class="text-muted font-size-11">CBSE Curriculum Reference</small>
         </td>
-        <td><small class="text-muted">NCERT Editorial Group</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Mathematics (510)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack S-14 / Shelf 2</span></td>
-        <td class="fw-semibold">25</td>
-        <td class="text-warning fw-semibold">18</td>
-        <td class="text-success fw-bold">7</td>
+        <td><span class="badge bg-light text-muted border font-size-12">NCERT Editorial Group</span></td>
+        <td><small class="text-dark">Mathematics (510)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Rack S-14 / Shelf 2</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">25 Copies</span></td>
+        <td><small class="text-muted">18 Issued</small></td>
+        <td><span class="badge-status badge-active">7 Available</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
             <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Library Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
-    
+      
       <tr>
         <td class="fw-bold text-primary font-mono font-size-13">ACC-10822</td>
         <td>
-          <div class="fw-semibold text-dark dark-text-white">Concepts of Physics (Vol 1 & 2)</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
+          <div class="fw-semibold text-dark">Concepts of Physics (Vol 1 & 2)</div>
+          <small class="text-muted font-size-11">Senior Secondary Foundation</small>
         </td>
-        <td><small class="text-muted">Dr. H. C. Verma</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Physics (530)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack P-02 / Shelf 1</span></td>
-        <td class="fw-semibold">30</td>
-        <td class="text-warning fw-semibold">26</td>
-        <td class="text-success fw-bold">4</td>
+        <td><span class="badge bg-light text-muted border font-size-12">Dr. H. C. Verma</span></td>
+        <td><small class="text-dark">Physics (530)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Rack P-02 / Shelf 1</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">30 Copies</span></td>
+        <td><small class="text-muted">26 Issued</small></td>
+        <td><span class="badge-status badge-active">4 Available</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
             <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Library Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
-    
+      
       <tr>
         <td class="fw-bold text-primary font-mono font-size-13">ACC-10823</td>
         <td>
-          <div class="fw-semibold text-dark dark-text-white">Wings of Fire - An Autobiography</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
+          <div class="fw-semibold text-dark">Wings of Fire - An Autobiography</div>
+          <small class="text-muted font-size-11">Motivational Biography</small>
         </td>
-        <td><small class="text-muted">Dr. A. P. J. Abdul Kalam</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Biography (920)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack B-05 / Shelf 3</span></td>
-        <td class="fw-semibold">15</td>
-        <td class="text-warning fw-semibold">12</td>
-        <td class="text-success fw-bold">3</td>
+        <td><span class="badge bg-light text-muted border font-size-12">Dr. A. P. J. Abdul Kalam</span></td>
+        <td><small class="text-dark">Biography (920)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Rack B-05 / Shelf 3</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">15 Copies</span></td>
+        <td><small class="text-muted">12 Issued</small></td>
+        <td><span class="badge-status badge-active">3 Available</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
             <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Library Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
-    
+      
       <tr>
         <td class="fw-bold text-primary font-mono font-size-13">ACC-10824</td>
         <td>
-          <div class="fw-semibold text-dark dark-text-white">Comprehensive Chemistry for Class XII</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
+          <div class="fw-semibold text-dark">Comprehensive Chemistry for Class XII</div>
+          <small class="text-muted font-size-11">CBSE & NEET Guide</small>
         </td>
-        <td><small class="text-muted">Dr. O. P. Tandon</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Chemistry (540)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack C-08 / Shelf 2</span></td>
-        <td class="fw-semibold">20</td>
-        <td class="text-warning fw-semibold">15</td>
-        <td class="text-success fw-bold">5</td>
+        <td><span class="badge bg-light text-muted border font-size-12">Dr. O. P. Tandon</span></td>
+        <td><small class="text-dark">Chemistry (540)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Rack C-08 / Shelf 2</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">20 Copies</span></td>
+        <td><small class="text-muted">15 Issued</small></td>
+        <td><span class="badge-status badge-active">5 Available</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
             <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Library Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
-    
+      
       <tr>
         <td class="fw-bold text-primary font-mono font-size-13">ACC-10825</td>
         <td>
-          <div class="fw-semibold text-dark dark-text-white">Together with Science Class 10</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
+          <div class="fw-semibold text-dark">Together with Science Class 10</div>
+          <small class="text-muted font-size-11">Board Examination Practice</small>
         </td>
-        <td><small class="text-muted">Rachna Sagar Editorial</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">General Science (500)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack G-01 / Shelf 4</span></td>
-        <td class="fw-semibold">40</td>
-        <td class="text-warning fw-semibold">35</td>
-        <td class="text-success fw-bold">5</td>
+        <td><span class="badge bg-light text-muted border font-size-12">Rachna Sagar Editorial</span></td>
+        <td><small class="text-dark">General Science (500)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Rack G-01 / Shelf 4</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">40 Copies</span></td>
+        <td><small class="text-muted">35 Issued</small></td>
+        <td><span class="badge-status badge-active">5 Available</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
             <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Library Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
-    
+      
       <tr>
         <td class="fw-bold text-primary font-mono font-size-13">ACC-10826</td>
         <td>
-          <div class="fw-semibold text-dark dark-text-white">Oxford Advanced Learner's Dictionary</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
+          <div class="fw-semibold text-dark">Oxford Advanced Learner's Dictionary</div>
+          <small class="text-muted font-size-11">English Language Standard</small>
         </td>
-        <td><small class="text-muted">A. S. Hornby</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Reference (420)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack R-01 / Shelf 1</span></td>
-        <td class="fw-semibold">10</td>
-        <td class="text-warning fw-semibold">3</td>
-        <td class="text-success fw-bold">7</td>
+        <td><span class="badge bg-light text-muted border font-size-12">A. S. Hornby</span></td>
+        <td><small class="text-dark">Reference (420)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Rack R-01 / Shelf 1</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">10 Copies</span></td>
+        <td><small class="text-muted">3 Issued</small></td>
+        <td><span class="badge-status badge-active">7 Available</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
             <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Library Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
-    
+      
       <tr>
         <td class="fw-bold text-primary font-mono font-size-13">ACC-10827</td>
         <td>
-          <div class="fw-semibold text-dark dark-text-white">Discovery of India</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
+          <div class="fw-semibold text-dark">Discovery of India</div>
+          <small class="text-muted font-size-11">Historical Chronicle</small>
         </td>
-        <td><small class="text-muted">Jawaharlal Nehru</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Indian History (954)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack H-04 / Shelf 3</span></td>
-        <td class="fw-semibold">12</td>
-        <td class="text-warning fw-semibold">8</td>
-        <td class="text-success fw-bold">4</td>
+        <td><span class="badge bg-light text-muted border font-size-12">Jawaharlal Nehru</span></td>
+        <td><small class="text-dark">Indian History (954)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Rack H-04 / Shelf 3</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">12 Copies</span></td>
+        <td><small class="text-muted">8 Issued</small></td>
+        <td><span class="badge-status badge-active">4 Available</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
             <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Library Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
-    
+      
       <tr>
         <td class="fw-bold text-primary font-mono font-size-13">ACC-10828</td>
         <td>
-          <div class="fw-semibold text-dark dark-text-white">Computer Science with Python XII</div>
-          <small class="text-muted">ISBN Barcode Enabled</small>
+          <div class="fw-semibold text-dark">Computer Science with Python XII</div>
+          <small class="text-muted font-size-11">CBSE Class 12 Syllabus</small>
         </td>
-        <td><small class="text-muted">Sumita Arora</small></td>
-        <td><span class="badge bg-light text-muted border font-size-12">Computer Science (004)</span></td>
-        <td><span class="font-mono font-size-12 text-primary">Rack CS-03 / Shelf 2</span></td>
-        <td class="fw-semibold">35</td>
-        <td class="text-warning fw-semibold">31</td>
-        <td class="text-success fw-bold">4</td>
+        <td><span class="badge bg-light text-muted border font-size-12">Sumita Arora</span></td>
+        <td><small class="text-dark">Computer Science (004)</small></td>
+        <td><small class="text-muted font-mono font-size-12">Rack CS-03 / Shelf 2</small></td>
+        <td><span class="badge bg-light text-primary border font-size-12">35 Copies</span></td>
+        <td><small class="text-muted">31 Issued</small></td>
+        <td><span class="badge-status badge-active">4 Available</span></td>
         <td class="text-center">
           <div class="action-btn-group justify-content-center">
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#viewRecordModal" title="View Details"><i class="bi bi-eye"></i></button>
+            <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editRecordModal" title="Edit Record"><i class="bi bi-pencil"></i></button>
             <button class="action-btn action-delete" onclick="EduTables.deleteRow(this, 'Library Dashboard')" title="Delete"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       </tr>
-    
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Pagination -->
-    <div class="erp-pagination-bar">
-      <div class="pagination-info">
-        Showing 1 to 8 of 1,482 entries
-      </div>
-      <ul class="pagination-custom">
-        <li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a></li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">...</a></li>
-        <li class="page-item"><a class="page-link" href="#">185</a></li>
-        <li class="page-item"><a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a></li>
-      </ul>
-    </div>
-  
-  
-
       
+    </tbody>
+  </table>
+</div>
 
-<?php
-require_once __DIR__ . '/../../includes/footer.php';
-?>
+
+<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
